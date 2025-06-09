@@ -45,6 +45,7 @@ export type LeadCaptureInput = {
     name?: string;
     email?: string;
     phone?: string;
+    message?: string;
 };
 export type LeadCaptureRequest = BaseRequest & {
     body: Partial<LeadCaptureInput>;

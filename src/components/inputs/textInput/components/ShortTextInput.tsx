@@ -14,7 +14,6 @@ export const ShortTextInput = (props: ShortTextInputProps) => {
   const [local, others] = splitProps(props, ['ref', 'onInput']);
   const [height, setHeight] = createSignal(56);
 
-  // @ts-expect-error: unknown type
   const handleInput = (e) => {
     if (props.ref) {
       if (e.currentTarget.value === '') {
@@ -28,7 +27,6 @@ export const ShortTextInput = (props: ShortTextInputProps) => {
     }
   };
 
-  // @ts-expect-error: unknown type
   const handleKeyDown = (e) => {
     // Handle Shift + Enter new line
     if (e.keyCode == 13 && e.shiftKey) {

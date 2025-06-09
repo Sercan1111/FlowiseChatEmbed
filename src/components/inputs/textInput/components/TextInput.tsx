@@ -2,7 +2,7 @@ import { ShortTextInput } from './ShortTextInput';
 import { isMobile } from '@/utils/isMobileSignal';
 import { Show, createSignal, createEffect, onMount, Setter } from 'solid-js';
 import { SendButton } from '@/components/buttons/SendButton';
-import { FileEvent, UploadsConfig } from '@/components/Bot';
+import type { FileEvent } from '@/components/Bot';
 import { ImageUploadButton } from '@/components/buttons/ImageUploadButton';
 import { RecordAudioButton } from '@/components/buttons/RecordAudioButton';
 import { AttachmentUploadButton } from '@/components/buttons/AttachmentUploadButton';
@@ -18,7 +18,7 @@ type TextInputProps = {
   disabled?: boolean;
   onSubmit: (value: string) => void;
   onInputChange: (value: string) => void;
-  uploadsConfig?: Partial<UploadsConfig>;
+  uploadsConfig?: Partial<any>; // veya kaldır
   isFullFileUpload?: boolean;
   setPreviews: Setter<unknown[]>;
   onMicrophoneClicked: () => void;
@@ -31,7 +31,12 @@ type TextInputProps = {
   fullFileUploadAllowedTypes?: string;
   enableInputHistory?: boolean;
   maxHistorySize?: number;
+
+  // 🟢 Eksik olanlar:
+  isDragActive?: boolean;
+  setIsDragActive?: (active: boolean) => void;
 };
+
 
 const defaultBackgroundColor = '#ffffff';
 const defaultTextColor = '#303235';

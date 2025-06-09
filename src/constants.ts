@@ -1,4 +1,4 @@
-import type { BubbleProps } from './features/bubble';
+import type { BubbleProps } from './features/bubble/types'; // types'tan import edin
 
 export const defaultBotProps: BubbleProps = {
   chatflowid: '',

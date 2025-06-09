@@ -176,11 +176,39 @@ export type BotProps = {
 
 export type LeadsConfig = {
   status: boolean;
+  
+  // Trigger Settings
+  triggerMode?: 'auto' | 'button' | 'inactivity' | 'both';
+  buttonText?: string;
+  buttonColor?: string;
+  buttonPosition?: 'top-left' | 'top-right' | 'top-center';
+  inactivityDuration?: number;
+  
+  // Form Content
   title?: string;
+  successMessage?: string;
+  
+  // Form Fields
   name?: boolean;
   email?: boolean;
   phone?: boolean;
-  successMessage?: string;
+  enableMessage?: boolean;
+  
+  // Validation Settings
+  emailValidationLevel?: 'basic' | 'strict';
+  blockDisposableEmail?: boolean;
+  minNameLength?: number;
+  maxNameLength?: number;
+  blockTestNames?: boolean;
+  
+  // Styling
+  formContainerBackground?: string;
+  formContainerBorder?: string;
+  inputBackgroundColor?: string;
+  inputTextColor?: string;
+  inputBorderColor?: string;
+  saveButtonBackground?: string;
+  saveButtonTextColor?: string;
 };
 
 const defaultWelcomeMessage = 'Hi there! How can I help?';
@@ -459,6 +487,9 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   let bottomSpacer: HTMLDivElement | undefined;
   let botContainer: HTMLDivElement | undefined;
 
+  // Debug mode signal
+  const [debugMode, setDebugMode] = createSignal(false);
+
   const [userInput, setUserInput] = createSignal('');
   const [loading, setLoading] = createSignal(false);
   const [sourcePopupOpen, setSourcePopupOpen] = createSignal(false);
@@ -516,42 +547,273 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [uploadedFiles, setUploadedFiles] = createSignal<{ file: File; type: string }[]>([]);
   const [fullFileUploadAllowedTypes, setFullFileUploadAllowedTypes] = createSignal('*');
 
+// lead capture activity tracking
+const [lastActivityTime, setLastActivityTime] = createSignal(Date.now());
+let currentInactivityTimer: NodeJS.Timeout | null = null;
+const [showLeadForm, setShowLeadForm] = createSignal<boolean>(false);
+const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false);
+
+// ✅ Activity tracking function - sadece lastActivityTime'ı günceller
+const trackActivity = () => {
+  console.log('🎯 Activity tracked at:', new Date().toISOString());
+  setLastActivityTime(Date.now());
+  // Timer işlemleri createEffect tarafından yapılıyor
+};
+
+const startInactivityTimer = () => {
+  const config = leadsConfig();
+  const leadSaved = isLeadSaved();
+  const formDismissed = leadFormDismissed(); // ✅ SESSION state kontrolü
+  
+  console.log('⏰ startInactivityTimer called');
+  console.log('📊 Config:', { 
+    status: config?.status, 
+    triggerMode: config?.triggerMode,
+    inactivityDuration: config?.inactivityDuration 
+  });
+  console.log('📊 State:', { leadSaved, formDismissed, showLeadForm: showLeadForm() });
+  
+  if (!config?.status || leadSaved || formDismissed) {
+    console.log('❌ Timer not started - config/saved/dismissed');
+    return;
+  }
+  
+  if (!['inactivity', 'both'].includes(config?.triggerMode || '')) {
+    console.log('❌ Timer not started - wrong trigger mode:', config?.triggerMode);
+    return;
+  }
+
+  // ✅ CANVAS LOGIC: Sadece lead kaydı kontrolü yap, dismiss state'i SESSION-based
+  const storage = getLocalStorageChatflow(props.chatflowid);
+  console.log('📦 Storage data:', storage);
+  
+  // ✅ Sadece lead kaydını kontrol et, dismiss state'i session-based
+  if (storage?.lead) {
+    console.log('❌ Timer not started - lead already saved');
+    return;
+  }
+
+  const duration = (config?.inactivityDuration || 30) * 1000;
+  console.log('✅ Starting timer for', duration, 'ms');
+  
+  const timer = setTimeout(() => {
+    console.log('🔔 Inactivity timer fired!');
+    console.log('🔔 Current state check:', {
+      isLeadSaved: isLeadSaved(),
+      leadFormDismissed: leadFormDismissed(),
+      showLeadForm: showLeadForm()
+    });
+    
+    if (!isLeadSaved() && !leadFormDismissed() && !showLeadForm()) {
+      console.log('✅ Showing lead form due to inactivity');
+      showLeadCaptureForm();
+    } else {
+      console.log('❌ Lead form not shown - conditions not met');
+    }
+  }, duration);
+  
+  currentInactivityTimer = timer;
+  console.log('⏰ Timer set with ID:', timer);
+};
+
+
   createMemo(() => {
     const customerId = (props.chatflowConfig?.vars as any)?.customerId;
     setChatId(customerId ? `${customerId.toString()}+${uuidv4()}` : uuidv4());
   });
 
-  onMount(() => {
-    if (botProps?.observersConfig) {
-      const { observeUserInput, observeLoading, observeMessages } = botProps.observersConfig;
-      typeof observeUserInput === 'function' &&
-        // eslint-disable-next-line solid/reactivity
-        createMemo(() => {
-          observeUserInput(userInput());
-        });
-      typeof observeLoading === 'function' &&
-        // eslint-disable-next-line solid/reactivity
-        createMemo(() => {
-          observeLoading(loading());
-        });
-      typeof observeMessages === 'function' &&
-        // eslint-disable-next-line solid/reactivity
-        createMemo(() => {
-          observeMessages(messages());
-        });
+  // ✅ BONUS: localStorage reset fonksiyonu ekle
+  const resetLeadState = () => {
+    console.log('🔄 Resetting lead state...');
+    
+    // localStorage'ı temizle
+    const storage = getLocalStorageChatflow(props.chatflowid);
+    if (storage) {
+      const newStorage = { ...storage };
+      delete newStorage.leadFormDismissed;
+      delete newStorage.lead;
+      setLocalStorageChatflow(props.chatflowid, chatId(), newStorage);
+    }
+    
+    // State'leri reset et
+    setLeadFormDismissed(false);
+    setIsLeadSaved(false);
+    setShowLeadForm(false);
+    
+    // Timer'ı yeniden başlat
+    if (leadsConfig()?.status && ['inactivity', 'both'].includes(leadsConfig()?.triggerMode || '')) {
+      console.log('🔄 Restarting timer after reset');
+      resetInactivityTimer();
+      startInactivityTimer();
+    }
+  };
+
+onMount(async () => {
+  console.log('🚀 Bot onMount started');
+  
+  // ✅ SESSION RESET: Her sayfa yenilendiğinde leadFormDismissed false olur
+  setLeadFormDismissed(false);
+  
+  // ✅ CRITICAL: localStorage'taki dismiss state'ini de temizle (Canvas'ta böyle oluyor)
+  const currentStorage = getLocalStorageChatflow(props.chatflowid) || {};
+  if (currentStorage.leadFormDismissed) {
+    console.log('🧹 Clearing localStorage dismiss state on mount');
+    const newStorage = { ...currentStorage };
+    delete newStorage.leadFormDismissed; // ✅ localStorage'tan dismiss state'ini kaldır
+    setLocalStorageChatflow(props.chatflowid, chatId(), newStorage);
+  }
+  
+  // ✅ DEBUG MODE: URL'de debug=true varsa localStorage'ı temizle
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('debug') === 'true') {
+      console.log('� DEBUG MODE: Clearing localStorage');
+      setDebugMode(true);
+      
+      // FloWise related localStorage'ı temizle
+      Object.keys(localStorage).forEach(key => {
+        if (key.includes('flowise') || key.includes('chatbot')) {
+          console.log('🗑️ Removing:', key);
+          localStorage.removeItem(key);
+        }
+      });
     }
 
-    if (!bottomSpacer) return;
-    setTimeout(() => {
-      chatContainer?.scrollTo(0, chatContainer.scrollHeight);
-    }, 50);
-  });
+    console.log('Props chatflowConfig:', props.chatflowConfig);
 
-  const scrollToBottom = () => {
-    setTimeout(() => {
-      chatContainer?.scrollTo(0, chatContainer.scrollHeight);
-    }, 50);
-  };
+    // clearChatOnReload kontrolü
+    if (props.clearChatOnReload) {
+      clearChat();
+      window.addEventListener('beforeunload', clearChat);
+    }
+
+    // API'den chatbot configuration'ı çek
+    try {
+      const configResponse = await getChatbotConfig({
+        chatflowid: props.chatflowid,
+        apiHost: props.apiHost,
+        onRequest: props.onRequest,
+      });
+
+      console.log('📡 API Response:', configResponse.data);
+
+      if (configResponse.data) {
+        const chatbotConfig = configResponse.data;
+        
+        if (chatbotConfig.leads) {
+          console.log('📡 API leads config:', chatbotConfig.leads);
+          
+          // ✅ DOĞRU: Props config'i API config ile merge et, props öncelikli
+          const finalLeadsConfig = {
+            // Önce API config'i al
+            ...chatbotConfig.leads,
+            // Sonra props config ile override et (props öncelikli)
+            ...(props.chatflowConfig?.leads || {})
+          };
+          
+          console.log('🎯 Final leads config:', finalLeadsConfig);
+          setLeadsConfig(finalLeadsConfig);
+          
+          // ✅ SADECE AUTO MODUNDA FORM GÖSTER:
+          if (finalLeadsConfig.status && 
+              finalLeadsConfig.triggerMode === 'auto' && 
+              !getLocalStorageChatflow(props.chatflowid)?.lead) {
+            console.log('🔄 AUTO mode: Showing lead form immediately');
+            setMessages((prevMessages) => [...prevMessages, { message: '', type: 'leadCaptureMessage' }]);
+          }
+          
+          // ✅ INACTIVITY TIMER BAŞLAT (sadece inactivity/both modunda):
+          if (['inactivity', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
+            console.log('⏰ Starting inactivity timer for mode:', finalLeadsConfig.triggerMode);
+            startInactivityTimer();
+          }
+          
+          // ReachUsButton kontrolü
+          if (finalLeadsConfig.status && 
+              ['button', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
+            console.log('✅ ReachUsButton should be visible!');
+            console.log('📝 Button Text:', finalLeadsConfig.buttonText);
+            console.log('🎨 Button Color:', finalLeadsConfig.buttonColor);
+            console.log('📍 Button Position:', finalLeadsConfig.buttonPosition);
+          } else {
+            console.log('❌ ReachUsButton hidden. Status:', finalLeadsConfig.status, 'TriggerMode:', finalLeadsConfig.triggerMode);
+          }
+        } else {
+          console.log('❌ No leads config in API response');
+          
+          // Props'ta leads config varsa onu kullan
+          if (props.chatflowConfig?.leads) {
+            console.log('✅ Using props leads config as fallback');
+            setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+          }
+        }
+        
+        // Diğer config'ler...
+        if (chatbotConfig.uploads) {
+          setUploadsConfig(chatbotConfig.uploads);
+        }
+        
+        // Starter prompts
+        if (chatbotConfig.starterPrompts) {
+          setStarterPrompts(chatbotConfig.starterPrompts);
+        }
+        
+        // Chat feedback
+        if (chatbotConfig.chatFeedback) {
+          setChatFeedbackStatus(chatbotConfig.chatFeedback.status);
+        }
+        
+        // Follow-up prompts
+        if (chatbotConfig.followUpPrompts) {
+          setFollowUpPromptsStatus(chatbotConfig.followUpPrompts.status);
+        }
+        
+        // Full file upload
+        if (chatbotConfig.fullFileUpload) {
+          setFullFileUpload(chatbotConfig.fullFileUpload.status);
+        }
+        
+        // StreamAvailable kontrol...
+        const { data } = await isStreamAvailableQuery({
+          chatflowid: props.chatflowid,
+          apiHost: props.apiHost,
+          onRequest: props.onRequest,
+        });
+        if (data) {
+          setIsChatFlowAvailableToStream(data?.isStreaming ?? false);
+        }
+      } else {
+        console.log('❌ No API response data');
+        
+        // API response yoksa props config'i kullan
+        if (props.chatflowConfig?.leads) {
+          console.log('✅ Using props leads config (API failed)');
+          setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+        }
+      }
+    } catch (error) {
+      console.error('❌ API Error:', error);
+      
+      // API error durumunda props config'i kullan
+      if (props.chatflowConfig?.leads) {
+        console.log('✅ Using props leads config (API error fallback)');
+        setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+      }
+    }
+
+    // Storage'dan lead bilgisini kontrol et
+    const savedLead = getLocalStorageChatflow(props.chatflowid)?.lead;
+    if (savedLead) {
+      setIsLeadSaved(true);
+      setLeadEmail(savedLead.email);
+      console.log('💾 Lead already saved:', savedLead);
+    }
+
+    if (props.clearChatOnReload) {
+      return () => {
+        window.removeEventListener('beforeunload', clearChat);
+      };
+    }
+  });
 
   /**
    * Add each chat message into localStorage
@@ -734,11 +996,48 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setCookie('chatbotDisclaimer', 'true', 365); // Disclaimer accepted
   };
 
+  const resetInactivityTimer = () => {
+    if (currentInactivityTimer) {
+      clearTimeout(currentInactivityTimer);
+      currentInactivityTimer = null;
+      console.log('🔄 Inactivity timer reset');
+    }
+  };
+
+  const showLeadCaptureForm = () => {
+    if (!showLeadForm()) {
+      setShowLeadForm(true);
+      setMessages((prevMessages) => {
+        const lastMessage = prevMessages[prevMessages.length - 1];
+        if (lastMessage?.type === 'leadCaptureMessage') return prevMessages;
+
+        const leadCaptureMessage = {
+          message: '',
+          type: 'leadCaptureMessage' as messageType
+        };
+        return [...prevMessages, leadCaptureMessage];
+      });
+    }
+  };
+
+const hideLeadCaptureForm = () => {
+  setShowLeadForm(false);
+  setLeadFormDismissed(true); // ✅ Sadece session için
+  setMessages((prevMessages) => {
+    return prevMessages.filter((msg) => msg.type !== 'leadCaptureMessage');
+  });
+
+  // ✅ Artık localStorage'a dismiss state kaydetme - Canvas'ta da böyle
+  console.log('✅ Lead form dismissed for this session only');
+};
+
   const promptClick = (prompt: string) => {
+    trackActivity();
     handleSubmit(prompt);
   };
 
   const followUpPromptClick = (prompt: string) => {
+    trackActivity();
     setFollowUpPrompts([]);
     handleSubmit(prompt);
   };
@@ -975,8 +1274,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   };
 
   // Handle form submission
-  const handleSubmit = async (value: string | object, action?: IAction | undefined | null, humanInput?: any) => {
-    if (typeof value === 'string' && value.trim() === '') {
+const handleSubmit = async (value: string | object, action?: IAction | undefined | null, humanInput?: any) => {
+  trackActivity(); // ✅ ADD: Activity tracking on submit
+  
+  if (typeof value === 'string' && value.trim() === '') {
       const containsFile = previews().filter((item) => !item.mime.startsWith('image') && item.type !== 'audio').length > 0;
       if (!previews().length || (previews().length && containsFile)) {
         return;
@@ -1189,25 +1490,24 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
           type: 'apiMessage',
         },
       ];
-      if (leadsConfig()?.status && !getLocalStorageChatflow(props.chatflowid)?.lead) {
-        messages.push({ message: '', type: 'leadCaptureMessage' });
-      }
+        if (leadsConfig()?.status && leadsConfig()?.triggerMode === 'auto' && !getLocalStorageChatflow(props.chatflowid)?.lead) {
+          messages.push({ message: '', type: 'leadCaptureMessage' });
+        }
       setMessages(messages);
     } catch (error: any) {
       const errorData = error.response.data || `${error.response.status}: ${error.response.statusText}`;
       console.error(`error: ${errorData}`);
     }
   };
-
-  onMount(() => {
-    if (props.clearChatOnReload) {
-      clearChat();
-      window.addEventListener('beforeunload', clearChat);
-      return () => {
-        window.removeEventListener('beforeunload', clearChat);
-      };
+  const scrollToBottom = () => {
+    if (chatContainer) {
+      setTimeout(() => {
+        if (chatContainer) {
+            chatContainer.scrollTo(0, chatContainer.scrollHeight);
+        }
+      }, 100);
     }
-  });
+  };
 
   createEffect(() => {
     if (props.starterPrompts) {
@@ -1242,180 +1542,6 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   });
 
   // eslint-disable-next-line solid/reactivity
-  createEffect(async () => {
-    if (props.disclaimer) {
-      if (getCookie('chatbotDisclaimer') == 'true') {
-        setDisclaimerPopupOpen(false);
-      } else {
-        setDisclaimerPopupOpen(true);
-      }
-    } else {
-      setDisclaimerPopupOpen(false);
-    }
-
-    const chatMessage = getLocalStorageChatflow(props.chatflowid);
-    if (chatMessage && Object.keys(chatMessage).length) {
-      if (chatMessage.chatId) setChatId(chatMessage.chatId);
-      const savedLead = chatMessage.lead;
-      if (savedLead) {
-        setIsLeadSaved(!!savedLead);
-        setLeadEmail(savedLead.email);
-      }
-      const loadedMessages: MessageType[] =
-        chatMessage?.chatHistory?.length > 0
-          ? chatMessage.chatHistory?.map((message: MessageType) => {
-              const chatHistory: MessageType = {
-                messageId: message?.messageId,
-                message: message.message,
-                type: message.type,
-                rating: message.rating,
-                dateTime: message.dateTime,
-              };
-              if (message.sourceDocuments) chatHistory.sourceDocuments = message.sourceDocuments;
-              if (message.fileAnnotations) chatHistory.fileAnnotations = message.fileAnnotations;
-              if (message.fileUploads) chatHistory.fileUploads = message.fileUploads;
-              if (message.agentReasoning) chatHistory.agentReasoning = message.agentReasoning;
-              if (message.action) chatHistory.action = message.action;
-              if (message.artifacts) chatHistory.artifacts = message.artifacts;
-              if (message.followUpPrompts) chatHistory.followUpPrompts = message.followUpPrompts;
-              if (message.execution && message.execution.executionData)
-                chatHistory.agentFlowExecutedData =
-                  typeof message.execution.executionData === 'string' ? JSON.parse(message.execution.executionData) : message.execution.executionData;
-              if (message.agentFlowExecutedData)
-                chatHistory.agentFlowExecutedData =
-                  typeof message.agentFlowExecutedData === 'string' ? JSON.parse(message.agentFlowExecutedData) : message.agentFlowExecutedData;
-              return chatHistory;
-            })
-          : [{ message: props.welcomeMessage ?? defaultWelcomeMessage, type: 'apiMessage' }];
-
-      const filteredMessages = loadedMessages.filter((message) => message.type !== 'leadCaptureMessage');
-      setMessages([...filteredMessages]);
-    }
-
-    // Determine if particular chatflow is available for streaming
-    const { data } = await isStreamAvailableQuery({
-      chatflowid: props.chatflowid,
-      apiHost: props.apiHost,
-      onRequest: props.onRequest,
-    });
-
-    if (data) {
-      setIsChatFlowAvailableToStream(data?.isStreaming ?? false);
-    }
-
-    // Get the chatbotConfig
-    const result = await getChatbotConfig({
-      chatflowid: props.chatflowid,
-      apiHost: props.apiHost,
-      onRequest: props.onRequest,
-    });
-
-    if (result.data) {
-      const chatbotConfig = result.data;
-
-      if (chatbotConfig.flowData) {
-        const nodes = JSON.parse(chatbotConfig.flowData).nodes ?? [];
-        const startNode = nodes.find((node: any) => node.data.name === 'startAgentflow');
-        if (startNode) {
-          const startInputType = startNode.data.inputs?.startInputType;
-          setStartInputType(startInputType);
-
-          const formInputTypes = startNode.data.inputs?.formInputTypes;
-          /* example:
-          "formInputTypes": [
-              {
-                "type": "string",
-                "label": "From",
-                "name": "from",
-                "addOptions": ""
-              },
-              {
-                "type": "number",
-                "label": "Subject",
-                "name": "subject",
-                "addOptions": ""
-              },
-              {
-                "type": "boolean",
-                "label": "Body",
-                "name": "body",
-                "addOptions": ""
-              },
-              {
-                "type": "options",
-                "label": "Choices",
-                "name": "choices",
-                "addOptions": [
-                  {
-                    "option": "choice 1"
-                  },
-                  {
-                    "option": "choice 2"
-                  }
-                ]
-              }
-            ]
-          */
-          if (startInputType === 'formInput' && formInputTypes && formInputTypes.length > 0) {
-            for (const formInputType of formInputTypes) {
-              if (formInputType.type === 'options') {
-                formInputType.options = formInputType.addOptions.map((option: any) => ({
-                  label: option.option,
-                  name: option.option,
-                }));
-              }
-            }
-            setFormInputParams(formInputTypes);
-            setFormTitle(startNode.data.inputs?.formTitle);
-            setFormDescription(startNode.data.inputs?.formDescription);
-          }
-        }
-      }
-
-      if ((!props.starterPrompts || props.starterPrompts?.length === 0) && chatbotConfig.starterPrompts) {
-        const prompts: string[] = [];
-        Object.getOwnPropertyNames(chatbotConfig.starterPrompts).forEach((key) => {
-          prompts.push(chatbotConfig.starterPrompts[key].prompt);
-        });
-        setStarterPrompts(prompts.filter((prompt) => prompt !== ''));
-      }
-      if (chatbotConfig.chatFeedback) {
-        const chatFeedbackStatus = chatbotConfig.chatFeedback.status;
-        setChatFeedbackStatus(chatFeedbackStatus);
-      }
-      if (chatbotConfig.uploads) {
-        setUploadsConfig(chatbotConfig.uploads);
-      }
-      if (chatbotConfig.leads) {
-        setLeadsConfig(chatbotConfig.leads);
-        if (chatbotConfig.leads?.status && !getLocalStorageChatflow(props.chatflowid)?.lead) {
-          setMessages((prevMessages) => [...prevMessages, { message: '', type: 'leadCaptureMessage' }]);
-        }
-      }
-      if (chatbotConfig.followUpPrompts) {
-        setFollowUpPromptsStatus(chatbotConfig.followUpPrompts.status);
-      }
-      if (chatbotConfig.fullFileUpload) {
-        setFullFileUpload(chatbotConfig.fullFileUpload.status);
-        if (chatbotConfig.fullFileUpload?.allowedUploadFileTypes) {
-          setFullFileUploadAllowedTypes(chatbotConfig.fullFileUpload?.allowedUploadFileTypes);
-        }
-      }
-    }
-
-    // eslint-disable-next-line solid/reactivity
-    return () => {
-      setUserInput('');
-      setUploadedFiles([]);
-      setLoading(false);
-      setMessages([
-        {
-          message: props.welcomeMessage ?? defaultWelcomeMessage,
-          type: 'apiMessage',
-        },
-      ]);
-    };
-  });
 
   createEffect(() => {
     if (followUpPromptsStatus() && messages().length > 0) {
@@ -1427,6 +1553,47 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       }
     }
   });
+
+  createEffect(() => {
+    // ✅ Track all reactive dependencies at start to avoid stale closures
+    const activityTime = lastActivityTime();
+    const currentConfig = leadsConfig();
+    const leadSaved = isLeadSaved();
+    const formDismissed = leadFormDismissed();
+    
+    console.log('🔄 Activity effect triggered');
+    console.log('📊 Dependencies:', {
+      lastActivityTime: activityTime,
+      configStatus: currentConfig?.status,
+      triggerMode: currentConfig?.triggerMode,
+      leadSaved,
+      formDismissed,
+      showLeadFormState: showLeadForm()
+    });
+    
+    if (!currentConfig?.status || leadSaved || formDismissed) { // ✅ SESSION state
+      console.log('❌ Effect early return - config/saved/dismissed');
+      return;
+    }
+    
+    if (!['inactivity', 'both'].includes(currentConfig?.triggerMode || '')) {
+      console.log('❌ Effect early return - wrong trigger mode');
+      return;
+    }
+    
+    // ✅ Sadece lead kaydını kontrol et, son bariyerimiz
+    const storage = getLocalStorageChatflow(props.chatflowid);
+    console.log('📦 Effect storage data:', storage);
+    
+    if (storage?.lead) {
+      console.log('❌ Effect early return - lead already saved in storage');
+      return;
+    }
+    
+    console.log('✅ Effect: All checks passed, restarting timer');
+    resetInactivityTimer();
+    startInactivityTimer();
+  }, [lastActivityTime, leadsConfig, isLeadSaved, leadFormDismissed]);
 
   const addRecordingToPreviews = (blob: Blob) => {
     let mimeType = '';
@@ -1490,8 +1657,12 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (!files || files.length === 0) {
       return;
     }
-    const filesList = [];
-    const uploadedFiles = [];
+    
+    type FileListItem = Promise<FilePreview>;
+    type UploadedFileItem = { file: File; type: string };
+    
+    const filesList: FileListItem[] = [];
+    const uploadedFiles: UploadedFileItem[] = [];
     for (const file of files) {
       if (isFileAllowedForUpload(file) === false) {
         return;
@@ -1560,8 +1731,8 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     }
     e.preventDefault();
     setIsDragActive(false);
-    const files = [];
-    const uploadedFiles = [];
+    const files: Promise<FilePreview>[] = [];
+    const uploadedFiles: { file: File; type: string }[] = [];
     if (e.dataTransfer && e.dataTransfer.files.length > 0) {
       for (const file of e.dataTransfer.files) {
         if (isFileAllowedForUpload(file) === false) {
@@ -1669,15 +1840,16 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
   const getInputDisabled = (): boolean => {
     const messagesArray = messages();
-    const disabled =
+    const leadFormOpen = showLeadForm();
+    
+    return Boolean(
       loading() ||
       !props.chatflowid ||
-      (leadsConfig()?.status && !isLeadSaved()) ||
-      (messagesArray[messagesArray.length - 1].action && Object.keys(messagesArray[messagesArray.length - 1].action as any).length > 0);
-    if (disabled) {
-      return true;
-    }
-    return false;
+      leadFormOpen ||
+      (leadsConfig()?.status && !isLeadSaved() && leadsConfig()?.triggerMode === 'auto') ||
+      (messagesArray[messagesArray.length - 1]?.action && 
+      Object.keys(messagesArray[messagesArray.length - 1].action as any).length > 0)
+    );
   };
 
   createEffect(
@@ -1729,8 +1901,236 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     }
   };
 
+  // Visual Debug ReachUsButton
+  const ReachUsButton = () => {
+    const config = leadsConfig();
+    const leadSaved = isLeadSaved();
+    const localStorage = getLocalStorageChatflow(props.chatflowid);
+    
+    console.log('🔍 ReachUsButton render - Config:', config);
+    console.log('🔍 Status:', config?.status);
+    console.log('🔍 TriggerMode:', config?.triggerMode);
+    console.log('🔍 Lead Saved:', leadSaved);
+    console.log('🔍 LocalStorage Lead:', localStorage?.lead);
+    
+    // ✅ Görünürlük koşulları
+    const shouldShow = config?.status === true && 
+                      ['button', 'both'].includes(config?.triggerMode || '') &&
+                      !leadSaved && 
+                      !localStorage?.lead;
+    
+    console.log('🔍 Should show button:', shouldShow);
+    
+    // ❌ Görünmeyecek durumlar için debug
+    if (!config?.status) {
+      console.log('❌ Config status false or missing');
+      return null;
+    }
+    
+    if (!['button', 'both'].includes(config?.triggerMode || '')) {
+      console.log('❌ Wrong trigger mode:', config?.triggerMode);
+      return null;
+    }
+    
+    if (leadSaved || localStorage?.lead) {
+      console.log('❌ Lead already saved');
+      return null;
+    }
+    
+    // ✅ SUCCESS: Show actual button
+    const position = config.buttonPosition || 'top-right';
+    const buttonColor = config.buttonColor || '#1976d2';
+    const buttonText = config.buttonText || 'Reach Us';
+
+    const getPositionStyles = () => {
+      const baseStyles = {
+        position: 'absolute' as const,
+        'z-index': '2000',
+        top: '15px',
+        padding: '12px 24px',
+        'border-radius': '25px',
+        border: 'none',
+        color: 'white',
+        cursor: 'pointer',
+        'font-size': '14px',
+        'font-weight': '600',
+        'box-shadow': '0 4px 12px rgba(0,0,0,0.15)',
+        transition: 'all 0.3s ease',
+        'backdrop-filter': 'blur(10px)',
+        background: `linear-gradient(135deg, ${buttonColor}, ${buttonColor}dd)`,
+        'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      } as const;
+
+      switch (position) {
+        case 'top-left':
+          return { ...baseStyles, left: '10px' };
+        case 'top-center':
+          return { ...baseStyles, left: '50%', transform: 'translateX(-50%)' };
+        case 'top-right':
+        default:
+          return { ...baseStyles, right: '10px' };
+      }
+    };
+
+    const handleClick = () => {
+      console.log('🎯 ReachUsButton clicked!');
+      showLeadCaptureForm();
+    };
+
+    return (
+      <div style={{ position: 'relative' }}>
+        <button
+          style={getPositionStyles()}
+          onClick={handleClick}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.opacity = '0.9';
+            e.currentTarget.style.transform = 'translateY(-2px) scale(1.05)';
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.25)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.opacity = '1';
+            e.currentTarget.style.transform = 'translateY(0px) scale(1)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+          }}
+          class="reach-us-button"
+        >
+          {buttonText}
+        </button>
+        
+        {/* Debug mode'da reset butonu göster */}
+        <Show when={debugMode()}>
+          <button
+            onClick={resetLeadState}
+            style={{
+              position: 'absolute',
+              top: '45px',
+              right: '0px',
+              background: '#ff4444',
+              color: 'white',
+              border: 'none',
+              padding: '4px 8px',
+              'border-radius': '3px',
+              cursor: 'pointer',
+              'font-size': '10px',
+              'z-index': '2001'
+            }}
+          >
+            🔄 Reset
+          </button>
+        </Show>
+      </div>
+    );
+};
+
   return (
     <>
+      {/* ✅ ReachUsButton'ı en üste koy, tüm container'lardan önce */}
+      <Show when={leadsConfig()?.status && ['button', 'both'].includes(leadsConfig()?.triggerMode || '')}>
+        <ReachUsButton />
+      </Show>
+      
+      {/* YENİ: Config Debug Info */}
+      <div style={{
+        position: 'absolute',
+        top: '50px',
+        left: '10px',
+        background: 'rgba(0,0,0,0.8)',
+        color: 'white',
+        padding: '8px',
+        'border-radius': '4px',
+        'z-index': '9998',
+        'font-size': '11px',
+        'max-width': '200px'
+      }}>
+        Config: {leadsConfig()?.status ? '✅' : '❌'}<br/>
+        Mode: {leadsConfig()?.triggerMode}<br/>
+        Saved: {isLeadSaved() ? '✅' : '❌'}
+      </div>
+
+      {/* YENİ: Timer Debug Info */}
+      <div style={{
+        position: 'absolute',
+        top: '80px',
+        left: '10px',
+        background: 'rgba(0,0,0,0.8)',
+        color: 'white',
+        padding: '8px',
+        'border-radius': '4px',
+        'z-index': '9997',
+        'font-size': '11px',
+        'max-width': '200px'
+      }}>
+        Timer: {currentInactivityTimer ? '⏰' : '❌'}<br/>
+        Activity: {new Date(lastActivityTime()).toLocaleTimeString()}<br/>
+        Form: {showLeadForm() ? '✅' : '❌'}
+      </div>
+
+      {/* Debug Panel - sadece debug mode'da görünür */}
+      <Show when={debugMode()}>
+        <div style={{
+          position: 'absolute',
+          top: '120px', // Timer debug'ın altında
+          left: '10px',
+          background: 'rgba(255,0,0,0.8)',
+          color: 'white',
+          padding: '8px',
+          'border-radius': '4px',
+          'z-index': '9996',
+          'font-size': '11px',
+          'max-width': '300px'
+        }}>
+          <strong>🧪 DEBUG PANEL</strong><br/>
+          <button 
+            onClick={() => {
+              // localStorage'ı temizle
+              Object.keys(localStorage).forEach(key => {
+                if (key.includes('flowise') || key.includes('chatbot')) {
+                  localStorage.removeItem(key);
+                }
+              });
+              // State'leri reset et
+              setLeadFormDismissed(false);
+              setIsLeadSaved(false);
+              console.log('🔄 localStorage cleared, states reset');
+              // Timer'ı yeniden başlat
+              startInactivityTimer();
+            }}
+            style={{
+              background: '#ff4444',
+              color: 'white',
+              border: 'none',
+              padding: '4px 8px',
+              'border-radius': '3px',
+              cursor: 'pointer',
+              'font-size': '10px',
+              'margin-top': '4px'
+            }}
+          >
+            🗑️ Clear & Restart Timer
+          </button>
+          <br/>
+          <button 
+            onClick={() => {
+              setLeadFormDismissed(false);
+              startInactivityTimer();
+              console.log('🔄 Timer force started');
+            }}
+            style={{
+              background: '#44ff44',
+              color: 'black',
+              border: 'none',
+              padding: '4px 8px',
+              'border-radius': '3px',
+              cursor: 'pointer',
+              'font-size': '10px',
+              'margin-top': '4px'
+            }}
+          >
+            ⏰ Force Start Timer
+          </button>
+        </div>
+      </Show>
+
       {startInputType() === 'formInput' && messages().length === 1 ? (
         <FormInputView
           title={formTitle()}
@@ -1874,6 +2274,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
                           isLeadSaved={isLeadSaved()}
                           setIsLeadSaved={setIsLeadSaved}
                           setLeadEmail={setLeadEmail}
+                          onDismiss={hideLeadCaptureForm}
                         />
                       )}
                       {message.type === 'userMessage' && loading() && index() === messages().length - 1 && <LoadingBubble />}
@@ -1986,7 +2387,10 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
                   fontSize={props.fontSize}
                   disabled={getInputDisabled()}
                   inputValue={userInput()}
-                  onInputChange={(value) => setUserInput(value)}
+                  onInputChange={(value) => {
+                    setUserInput(value);
+                    trackActivity();
+                  }}
                   onSubmit={handleSubmit}
                   uploadsConfig={uploadsConfig()}
                   isFullFileUpload={fullFileUpload()}

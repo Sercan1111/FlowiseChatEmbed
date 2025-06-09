@@ -126,3 +126,20 @@ export type DateTimeToggleTheme = {
   date?: boolean;
   time?: boolean;
 };
+
+// Add missing observer config type
+export type observersConfigType = {
+  observeUserInput?: boolean;
+  observeLoading?: boolean;
+  observeMessages?: boolean;
+};
+
+// Add BubbleProps interface with observersConfig
+export interface BubbleProps {
+  chatflowid: string;
+  apiHost?: string;
+  onRequest?: (request: RequestInit) => Promise<void>;
+  chatflowConfig?: Record<string, unknown>;
+  theme?: BubbleTheme;
+  observersConfig?: observersConfigType;
+}

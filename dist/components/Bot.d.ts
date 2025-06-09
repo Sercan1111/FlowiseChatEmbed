@@ -121,11 +121,29 @@ export type BotProps = {
 };
 export type LeadsConfig = {
     status: boolean;
+    triggerMode?: 'auto' | 'button' | 'inactivity' | 'both';
+    buttonText?: string;
+    buttonColor?: string;
+    buttonPosition?: 'top-left' | 'top-right' | 'top-center';
+    inactivityDuration?: number;
     title?: string;
+    successMessage?: string;
     name?: boolean;
     email?: boolean;
     phone?: boolean;
-    successMessage?: string;
+    enableMessage?: boolean;
+    emailValidationLevel?: 'basic' | 'strict';
+    blockDisposableEmail?: boolean;
+    minNameLength?: number;
+    maxNameLength?: number;
+    blockTestNames?: boolean;
+    formContainerBackground?: string;
+    formContainerBorder?: string;
+    inputBackgroundColor?: string;
+    inputTextColor?: string;
+    inputBorderColor?: string;
+    saveButtonBackground?: string;
+    saveButtonTextColor?: string;
 };
 export declare const Bot: (botProps: BotProps & {
     class?: string;

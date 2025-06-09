@@ -1,0 +1,229 @@
+/* Base container */
+.phone-input-container {
+  min-height: 46px;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+
+/* Phone input component */
+.PhoneInput {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 46px;
+  gap: 8px;
+  padding: 2px 0;
+  box-sizing: border-box;
+}
+
+/* Icons */
+.react-phone-number-input__icon {
+  border: none !important;
+  box-shadow: none !important;
+  width: 24px;
+  height: 24px;
+}
+
+.react-phone-number-input__icon--international {
+  width: 24px;
+  height: 24px;
+}
+
+/* Input field */
+.react-phone-number-input__input {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  line-height: inherit;
+}
+
+.react-phone-number-input__input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Country selection */
+.react-phone-number-input__country {
+  padding-right: 12px;
+  margin-right: 8px;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 90px;
+}
+
+/* Country select button */
+.PhoneInputCountry {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  height: 100%;
+}
+
+.PhoneInputCountrySelect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.PhoneInputCountryIcon {
+  width: 24px;
+  height: 16px;
+  object-fit: cover;
+  box-shadow: none;
+  margin-right: 8px;
+}
+
+.PhoneInputCountryIcon--border {
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+}
+
+.PhoneInputCountrySelectArrow {
+  margin-left: 8px;
+  width: 8px;
+  height: 8px;
+  border-style: solid;
+  border-color: currentColor transparent transparent;
+  border-width: 4px 4px 0;
+  opacity: 0.6;
+}
+
+/* Country select dropdown */
+.PhoneInputCountrySelect > select {
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Country select dropdown styling */
+.PhoneInputCountrySelect > select {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+.PhoneInputCountrySelect > select::-webkit-scrollbar {
+  width: 6px;
+}
+
+.PhoneInputCountrySelect > select::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.PhoneInputCountrySelect > select::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.PhoneInputCountrySelect > select option {
+  color: #000;
+  background: #fff;
+  padding: 8px 12px;
+  font-size: 14px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.PhoneInputCountrySelect > select option:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+.PhoneInputCountrySelect > select option:checked {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #3B81F6;
+}
+
+/* States */
+.PhoneInput--focus {
+  box-shadow: none;
+}
+
+.PhoneInput--error {
+  border-color: #ef4444 !important;
+}
+
+.PhoneInput--error .react-phone-number-input__input {
+  color: inherit;
+}
+
+/* Focus states */
+.PhoneInputCountrySelect > select:focus + .PhoneInputCountryIcon + .PhoneInputCountrySelectArrow {
+  opacity: 1;
+  color: #3B81F6;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .PhoneInputCountrySelect > select option {
+    color: #fff;
+    background: #1a1a1a;
+  }
+
+  .PhoneInputCountrySelect > select option:hover {
+    background-color: rgba(59, 130, 246, 0.15);
+  }
+
+  .PhoneInputCountrySelect > select option:checked {
+    background-color: rgba(59, 130, 246, 0.25);
+    color: #60a5fa;
+  }
+
+  .PhoneInputCountrySelect > select::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .PhoneInputCountrySelect > select {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+
+  .PhoneInput--error {
+    border-color: #ef4444 !important;
+  }
+
+  .react-phone-number-input__input {
+    color: inherit;
+  }
+
+  .react-phone-number-input__country {
+    border-right-color: rgba(226, 232, 240, 0.2);
+  }
+
+  .PhoneInputCountrySelectArrow {
+    opacity: 0.5;
+  }
+
+  .PhoneInputCountrySelect > select:focus + .PhoneInputCountryIcon + .PhoneInputCountrySelectArrow {
+    color: #60a5fa;
+    opacity: 0.8;
+  }
+}

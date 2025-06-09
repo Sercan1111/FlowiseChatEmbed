@@ -55,6 +55,7 @@ export type LeadCaptureInput = {
   name?: string;
   email?: string;
   phone?: string;
+  message?: string; // ← Bu satırı ekle
 };
 
 export type LeadCaptureRequest = BaseRequest & {

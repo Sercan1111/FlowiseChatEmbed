@@ -25,7 +25,6 @@ export const BubbleButton = (props: Props) => {
     right: props.right ?? defaultRight,
   });
 
-  const [isSmallScreen, setIsSmallScreen] = createSignal(false);
   const [userInteracted, setUserInteracted] = createSignal(false);
 
   let dragStartX: number;
@@ -65,9 +64,7 @@ export const BubbleButton = (props: Props) => {
   const handleButtonClick = () => {
     props.toggleBot();
     setUserInteracted(true); // Mark that the user has interacted
-    if (window.innerWidth <= 640) {
-      setIsSmallScreen(true);
-    }
+    // Removed mobile screen detection - keep button always visible
   };
 
   createEffect(() => {
@@ -84,7 +81,7 @@ export const BubbleButton = (props: Props) => {
   });
 
   return (
-    <Show when={!isSmallScreen() || !props.isBotOpened} keyed>
+    <Show when={true} keyed>
       <button
         part="button"
         onClick={handleButtonClick}
