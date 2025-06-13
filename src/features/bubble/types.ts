@@ -28,6 +28,15 @@ export type TextInputTheme = {
   sendSoundLocation?: string;
   receiveMessageSound?: boolean;
   receiveSoundLocation?: string;
+  
+  // ✅ YENİ: Compact design props ekliyoruz
+  inputHeight?: string;
+  buttonSize?: string;
+  padding?: string;
+  fontSize?: number;
+  containerMinHeight?: string;
+  textareaMaxHeight?: string;
+  textareaMinHeight?: string;
 };
 
 export type UserMessageTheme = {
