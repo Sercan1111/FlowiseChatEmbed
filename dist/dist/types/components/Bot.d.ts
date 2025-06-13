@@ -118,6 +118,12 @@ export type BotProps = {
     dateTimeToggle?: DateTimeToggleTheme;
     renderHTML?: boolean;
     closeBot?: () => void;
+    theme?: {
+        chatWindow?: {
+            width?: number;
+            height?: number;
+        };
+    };
 };
 export type LeadsConfig = {
     status: boolean;

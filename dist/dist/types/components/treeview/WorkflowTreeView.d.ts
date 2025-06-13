@@ -4,6 +4,10 @@ export type WorkflowNode = {
     data: any;
     previousNodeIds: string[];
     status: 'FINISHED' | 'PENDING' | 'RUNNING' | 'ERROR' | 'INPROGRESS' | 'STOPPED';
+    children?: WorkflowNode[];
+    executionIndex?: number;
+    virtualParentId?: string;
+    uniqueNodeId?: string;
 };
 type WorkflowTreeViewProps = {
     workflowData: WorkflowNode[];

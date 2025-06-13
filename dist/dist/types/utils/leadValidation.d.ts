@@ -59,6 +59,5 @@ export declare class RateLimiter {
 }
 export declare const validateLeadForm: (formData: FormData, config: LeadsConfig) => ValidationResult;
 export declare const validateFieldRealTime: (fieldName: string, value: string, config: LeadsConfig) => string | null;
-export declare const formatPhoneForDisplay: (phone: string) => string;
 export declare const getEmailDomain: (email: string) => string;
 export { emailValidationPatterns, disposableEmailDomains, testNamePatterns, isDisposableEmail };

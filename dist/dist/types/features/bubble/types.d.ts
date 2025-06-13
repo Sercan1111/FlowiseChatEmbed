@@ -25,6 +25,13 @@ export type TextInputTheme = {
     sendSoundLocation?: string;
     receiveMessageSound?: boolean;
     receiveSoundLocation?: string;
+    inputHeight?: string;
+    buttonSize?: string;
+    padding?: string;
+    fontSize?: number;
+    containerMinHeight?: string;
+    textareaMaxHeight?: string;
+    textareaMinHeight?: string;
 };
 export type UserMessageTheme = {
     backgroundColor?: string;

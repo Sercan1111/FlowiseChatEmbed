@@ -42,6 +42,7 @@ type Chatbot = {
 declare const window:
   | {
       Chatbot: Chatbot | undefined;
+      FlowiseChatbot: Chatbot | undefined;
     }
   | undefined;
 
@@ -54,4 +55,5 @@ export const parseChatbot = () => ({
 export const injectChatbotInWindow = (bot: Chatbot) => {
   if (typeof window === 'undefined') return;
   window.Chatbot = { ...bot };
+  window.FlowiseChatbot = { ...bot }; // UMD format için
 };

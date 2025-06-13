@@ -8,6 +8,10 @@ export type WorkflowNode = {
   data: any;
   previousNodeIds: string[];
   status: 'FINISHED' | 'PENDING' | 'RUNNING' | 'ERROR' | 'INPROGRESS' | 'STOPPED';
+  children?: WorkflowNode[];
+  executionIndex?: number;
+  virtualParentId?: string;
+  uniqueNodeId?: string;
 };
 
 // Props for the workflow tree component
@@ -344,13 +348,14 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
     iterationGroups.forEach((iterationMap, parentId) => {
       iterationMap.forEach((nodeIds: string[], iterationIndex: number) => {
         // Find the parent iteration node
-        let parentNode = null;
+        let parentNode: WorkflowNode | undefined;
         for (let i = 0; i < nodes.length; i++) {
-          if (nodes[i].nodeId === parentId) {
-            parentNode = nodes[i];
-            break;
-          }
+            if (nodes[i].nodeId === parentId) {
+              parentNode = { ...nodes[i] };
+              break;
+            }
         }
+        if (!parentNode) return;
 
         if (!parentNode) return;
 
@@ -422,14 +427,14 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
       } else {
         // Find the most recent (latest) parent node among all previous nodes
         let mostRecentParentIndex = -1;
-        let mostRecentParentId = null;
+        let mostRecentParentId: string | null = null;
 
         node.previousNodeIds.forEach((parentId) => {
           // Find the most recent instance of this parent node
           for (let i = 0; i < index; i++) {
             if (nodes[i].nodeId === parentId && i > mostRecentParentIndex) {
               mostRecentParentIndex = i;
-              mostRecentParentId = parentId;
+              mostRecentParentId = String(parentId);
             }
           }
         });

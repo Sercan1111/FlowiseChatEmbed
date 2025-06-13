@@ -1,4 +1,3 @@
-import { parsePhoneNumber } from 'libphonenumber-js';
 import { LeadsConfig } from '@/components/Bot';
 
 // ✅ Canvas'taki validation patterns
@@ -36,7 +35,6 @@ const disposableEmailDomains = [
 
 // ✅ Canvas'taki test name patterns
 const testNamePatterns = /^(test|demo|sample|example|john doe|jane doe|asdf|qwerty|firstname|lastname|your name|enter name|test user|demo user)$/i;
-
 
 // ✅ Form validation interface
 export interface FormData {
@@ -85,21 +83,17 @@ export const validateEmail = (email: string, config: LeadsConfig) => {
 export const validatePhone = (phone: string, config: LeadsConfig) => {
   if (!config.phone) return { valid: true };
 
-  if (!phone?.trim()) {
+  if (!phone || phone.trim().length === 0) {
     return { valid: false, message: 'Phone number is required' };
   }
-
-  try {
-    const phoneNumber = parsePhoneNumber(phone);
-
-    if (!phoneNumber?.isValid()) {
-      return { valid: false, message: 'Please enter a valid phone number' };
-    }
-
-    return { valid: true };
-  } catch (error) {
+  
+  // Simple regex - only numbers and special characters
+  const phoneRegex = /^[\+]?[0-9\s\-\(\)\.]{7,20}$/;
+  if (!phoneRegex.test(phone)) {
     return { valid: false, message: 'Please enter a valid phone number' };
   }
+  
+  return { valid: true };
 };
 
 export const validateName = (name: string, config: LeadsConfig) => {
@@ -273,17 +267,6 @@ export const validateFieldRealTime = (fieldName: string, value: string, config: 
   }
 
   return error;
-};
-
-
-// ✅ Phone formatting utility (optional)
-export const formatPhoneForDisplay = (phone: string): string => {
-  try {
-    const phoneNumber = parsePhoneNumber(phone);
-    return phoneNumber?.formatInternational() || phone;
-  } catch {
-    return phone;
-  }
 };
 
 // ✅ Email domain extractor
