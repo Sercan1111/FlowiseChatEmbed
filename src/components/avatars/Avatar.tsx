@@ -13,11 +13,22 @@ export const Avatar = (props: { initialAvatarSrc?: string }) => {
   return (
     <Show when={isNotEmpty(avatarSrc())} keyed fallback={<DefaultAvatar />}>
       <figure
+        // ✅ DEFAULT RESPONSIVE CLASSES - Back to original
         class={
-          'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' + (isMobile() ? 'w-6 h-6 text-sm' : 'w-10 h-10 text-xl')
+          'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' + 
+          (isMobile() ? 'w-6 h-6 text-sm' : 'w-10 h-10 text-xl')
         }
+        data-testid="custom-avatar"
       >
-        <img src={avatarSrc()} alt="Bot avatar" class="rounded-full object-cover w-full h-full" />
+        <img 
+          src={avatarSrc()} 
+          alt="Bot avatar" 
+          // ✅ DEFAULT CLASSES - Clean and simple
+          class="rounded-full object-cover w-full h-full"
+          onError={() => {
+            setAvatarSrc(undefined);
+          }}
+        />
       </figure>
     </Show>
   );

@@ -1,3 +1,4 @@
+import type { JSX } from 'solid-js';
 import { LeadsConfig, MessageType } from '@/components/Bot';
 interface FormData {
     name: string;
@@ -10,6 +11,21 @@ type Props = {
     chatflowid: string;
     chatId: string;
     leadsConfig?: LeadsConfig;
+    formStyling?: {
+        formContainer: {
+            background: string;
+            borderColor: string;
+        };
+        inputFields: {
+            background: string;
+            textColor: string;
+            borderColor: string;
+        };
+        saveButton: {
+            background: string;
+            textColor: string;
+        };
+    };
     apiHost?: string;
     showAvatar?: boolean;
     avatarSrc?: string;
@@ -27,6 +43,7 @@ type Props = {
     onFieldBlur?: (fieldName: string, value: string) => void;
     onFormSubmit?: (formData: FormData) => void;
     title?: string;
+    reachUsHandler?: () => void;
 };
-export declare const LeadCaptureBubble: (props: Props) => import("solid-js").JSX.Element;
+export declare const LeadCaptureBubble: (props: Props) => JSX.Element;
 export {};

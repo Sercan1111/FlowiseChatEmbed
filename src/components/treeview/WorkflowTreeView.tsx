@@ -688,12 +688,11 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
         'font-size': props.fontSize ? `${props.fontSize}px` : `${defaultFontSize}px`,
       }}
     >
-      {/* Collapsible header */}
-      <div
+      {/* Collapsible header */}      <div
         class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 transition-colors duration-150"
         onClick={togglePanel}
         style={{
-          'background-color': 'rgba(0,0,0,0.03)',
+          'background-color': '#ffffff',
         }}
       >
         <div class="flex items-center space-x-2">
@@ -757,11 +756,10 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
             </RichTreeView>
           </div>
 
-          {selectedNode() && (
-            <div
+          {selectedNode() && (            <div
               class="mx-4 mb-4 p-4 rounded border node-details-panel"
               style={{
-                'background-color': 'rgba(0,0,0,0.03)',
+                'background-color': '#ffffff',
               }}
             >
               <div class="flex flex-col md:flex-row justify-between items-start mb-3">
@@ -781,9 +779,8 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
               </div>
 
               <div
-                class="json-viewer text-xs overflow-auto max-h-60 p-2 rounded font-mono"
-                style={{
-                  'background-color': 'rgba(0,0,0,0.05)',
+                class="json-viewer text-xs overflow-auto max-h-60 p-2 rounded font-mono"                style={{
+                  'background-color': '#ffffff',
                   'white-space': 'pre-wrap',
                   'word-break': 'break-word',
                 }}

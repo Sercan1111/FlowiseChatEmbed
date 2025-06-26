@@ -1,5 +1,6 @@
+import type { JSX } from 'solid-js';
 import { Setter } from 'solid-js';
-import type { FileEvent } from '@/components/Bot';
+import { FileEvent, UploadsConfig } from '@/components/Bot';
 type TextInputProps = {
     placeholder?: string;
     backgroundColor?: string;
@@ -10,7 +11,7 @@ type TextInputProps = {
     disabled?: boolean;
     onSubmit: (value: string) => void;
     onInputChange: (value: string) => void;
-    uploadsConfig?: Partial<any>;
+    uploadsConfig?: Partial<UploadsConfig>;
     isFullFileUpload?: boolean;
     setPreviews: Setter<unknown[]>;
     onMicrophoneClicked: () => void;
@@ -23,8 +24,6 @@ type TextInputProps = {
     fullFileUploadAllowedTypes?: string;
     enableInputHistory?: boolean;
     maxHistorySize?: number;
-    isDragActive?: boolean;
-    setIsDragActive?: (active: boolean) => void;
 };
-export declare const TextInput: (props: TextInputProps) => import("solid-js").JSX.Element;
+export declare const TextInput: (props: TextInputProps) => JSX.Element;
 export {};

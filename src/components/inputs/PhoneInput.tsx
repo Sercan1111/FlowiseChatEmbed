@@ -117,13 +117,12 @@ export const PhoneInput = (props: PhoneInputProps) => {
           type="button"
           class="country-selector-button"
           onClick={toggleDropdown}
-          disabled={props.disabled}
-          style={{
+          disabled={props.disabled}          style={{
             display: 'flex',
             'align-items': 'center',
             padding: '14px 12px',
             border: 'none',
-            background: 'transparent',
+            background: '#ffffff',
             cursor: props.disabled ? 'not-allowed' : 'pointer',
             'border-right': '1px solid #e2e8f0',
             'font-size': '16px',
@@ -177,12 +176,11 @@ export const PhoneInput = (props: PhoneInputProps) => {
           disabled={props.disabled}
           required={props.required}
           style={{
-            flex: '1',
-            border: 'none',
+            flex: '1',            border: 'none',
             outline: 'none',
             padding: '14px 16px',
             'font-size': '16px',
-            'background-color': 'transparent'
+            'background-color': '#ffffff'
           }}
         />
       </div>
@@ -238,7 +236,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
                     width: '100%',
                     padding: '12px 16px',
                     border: 'none',
-                    background: 'transparent',
+                    background: '#ffffff',
                     cursor: 'pointer',
                     'text-align': 'left',
                     'font-size': '14px',
@@ -246,9 +244,8 @@ export const PhoneInput = (props: PhoneInputProps) => {
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = '#f3f4f6';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }}                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#ffffff';
                   }}
                 >
                   {/* ✅ FLAG IMG TAG - CDN images in dropdown */}

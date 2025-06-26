@@ -6,6 +6,7 @@ const terser = require('@rollup/plugin-terser');
 const postcss = require('rollup-plugin-postcss');
 const json = require('@rollup/plugin-json');
 const babel = require('@rollup/plugin-babel');
+const url = require('@rollup/plugin-url');
 
 /** @type {import('rollup').RollupOptions} */
 module.exports = {
@@ -56,12 +57,21 @@ module.exports = {
         allowSyntheticDefaultImports: true,
         esModuleInterop: true
       }
-    }),
-    postcss({
+    }),    postcss({
       extensions: ['.css'],
       extract: false,
       inject: true,
       minimize: true,
+    }),
+    url({
+      // Include image files
+      include: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
+      // Embed smaller images as base64, serve larger ones as separate files
+      limit: 8192, // 8KB limit
+      // Output directory for assets
+      fileName: '[name][extname]',
+      // Use base64 for all images to ensure they're embedded
+      limit: Infinity,
     }),
     json(),
     // ✅ Production'da console.log'ları KALDIR - debug için geçici olarak kapatıldı

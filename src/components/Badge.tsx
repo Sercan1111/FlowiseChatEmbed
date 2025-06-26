@@ -8,7 +8,7 @@ type Props = {
   badgeBackgroundColor?: string;
 };
 
-const defaultTextColor = '#303235';
+const defaultTextColor = '#000000';
 
 export const Badge = (props: Props) => {
   let liteBadge: HTMLAnchorElement | undefined;
@@ -42,13 +42,29 @@ export const Badge = (props: Props) => {
     <>
       <Show when={props.footer?.showFooter === undefined || props.footer?.showFooter === null || props.footer?.showFooter === true}>
         <span
-          class="w-full text-center px-[10px] pt-[6px] pb-[10px] m-auto text-[13px]"
+          class="w-full px-[10px] pt-[6px] pb-[10px] m-auto"
           style={{
-            color: props.footer?.textColor ?? props.poweredByTextColor ?? defaultTextColor,
-            'background-color': props.badgeBackgroundColor ?? '#ffffff',
+            color: '#000000',
+            'background-color': '#e0e7ff !important',
+            'background': '#e0e7ff !important',
+            'background-image': 'none !important',
+            'backdrop-filter': 'none !important',
+            'box-shadow': 'none !important',
+            'border': 'none !important',
+            'border-bottom-left-radius': '12px',
+            'border-bottom-right-radius': '12px',
+            'text-align': 'center',
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center',
+            'font-weight': '400',
+            'font-family': 'Roboto, sans-serif',
+            'margin-top': '15px',
+            'font-size': '13px',
+            'z-index': 10,
           }}
         >
-          {props.footer?.text ?? 'Powered by'}
+          Powered by{' '}
           <a
             ref={liteBadge}
             href={props.footer?.companyLink ?? 'https://flowiseai.com'}
@@ -56,18 +72,34 @@ export const Badge = (props: Props) => {
             rel="noopener noreferrer"
             class="lite-badge"
             id="lite-badge"
-            style={{ 'font-weight': 'bold', color: props.footer?.textColor ?? props.poweredByTextColor ?? defaultTextColor }}
+            style={{
+              'font-weight': '400',
+              'font-family': 'Roboto, sans-serif',
+              color: props.footer?.textColor ?? props.poweredByTextColor ?? '#6b46c1',
+              'background-color': 'transparent !important',
+              'background': 'transparent !important',
+              'background-image': 'none !important'
+            }}
           >
-            <span>&nbsp;{props.footer?.company ?? 'Flowise'}</span>
+            <strong>{props.footer?.company ?? 'Flowise'}</strong>
           </a>
         </span>
       </Show>
-      <Show when={props.footer?.showFooter === false}>
-        <span
-          class="w-full text-center px-[10px] pt-[6px] pb-[10px] m-auto text-[13px]"
+      <Show when={props.footer?.showFooter === false}>        <span
+          class="w-full px-[10px] pt-[6px] pb-[10px] m-auto text-[13px]"
           style={{
-            color: props.footer?.textColor ?? props.poweredByTextColor ?? defaultTextColor,
-            'background-color': props.badgeBackgroundColor ?? '#ffffff',
+            color: props.footer?.textColor ?? props.poweredByTextColor ?? '#6b46c1',
+            'background-color': '#e0e7ff !important', // ✅ Açık mor
+            'background': '#e0e7ff !important',
+            'background-image': 'none !important',
+            'backdrop-filter': 'none !important',
+            'box-shadow': 'none !important',
+            'border': 'none !important',            'border-bottom-left-radius': '12px',
+            'border-bottom-right-radius': '12px',
+            'text-align': 'center', // ✅ Explicit center alignment
+            'display': 'flex',
+            'justify-content': 'center',
+            'align-items': 'center'
           }}
         />
       </Show>

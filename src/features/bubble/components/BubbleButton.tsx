@@ -2,6 +2,9 @@ import { createSignal, createEffect, Show } from 'solid-js';
 import { isNotDefined, getBubbleButtonSize } from '@/utils/index';
 import { ButtonTheme } from '../types';
 
+// ✅ CLEAN PROFESSIONAL BUBBLE BUTTON - Transparent background with blue icon
+console.log('🔘 BubbleButton: Clean transparent design loaded');
+
 type Props = ButtonTheme & {
   isBotOpened: boolean;
   toggleBot: () => void;
@@ -12,8 +15,8 @@ type Props = ButtonTheme & {
   autoOpenOnMobile?: boolean;
 };
 
-const defaultButtonColor = '#3B81F6';
-const defaultIconColor = 'white';
+const defaultButtonColor = 'transparent';
+const defaultIconColor = '#3B81F6';
 const defaultBottom = 20;
 const defaultRight = 20;
 
@@ -84,9 +87,11 @@ export const BubbleButton = (props: Props) => {
         part="button"
         onClick={handleButtonClick}
         onMouseDown={onMouseDown}
-        class={`fixed shadow-md rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in`}
-        style={{
+        class={`fixed shadow-md rounded-full hover:scale-110 active:scale-95 transition-transform duration-200 flex justify-center items-center animate-fade-in`}        style={{
           'background-color': props.backgroundColor ?? defaultButtonColor,
+          'border': props.backgroundColor ? 'none' : '2px solid #3B81F6',
+          'backdrop-filter': 'blur(10px)',
+          'box-shadow': props.backgroundColor ? '0 4px 15px rgba(0, 0, 0, 0.1)' : '0 4px 15px rgba(59, 129, 246, 0.2)',
           'z-index': '42424242',
           'position': 'fixed',
           'right': `${position().right}px`,
@@ -127,11 +132,9 @@ export const BubbleButton = (props: Props) => {
             }}
             alt="Bubble button icon"
           />
-        </Show>
-
-        <svg
+        </Show>        <svg
           viewBox="0 0 24 24"
-          style={{ fill: props.iconColor ?? 'white' }}
+          style={{ fill: props.iconColor ?? defaultIconColor }}
           class={
             `absolute duration-200 transition ` + 
             (props.isBotOpened ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-180 opacity-0')

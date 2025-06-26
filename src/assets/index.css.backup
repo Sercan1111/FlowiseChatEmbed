@@ -1,0 +1,2623 @@
+/* 🚀 CONTROLLED AVATAR LEFT ALIGNMENT - SOFTER OVERRIDE */
+.host-container *,
+[class*="host-container"] * {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+}
+
+/* Widget container should be visible */
+.chatbot-container,
+[class*="chatbot-container"] {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* 🚀 EXTREME FLEX GAP ELIMINATION */
+flowise-chatbot .flex,
+.host-container.flex,
+[class*="host-container"].flex,
+div[class*="flex"][class*="justify-start"],
+div[class*="flex"][class*="items-start"] {
+  gap: 0px !important;
+  column-gap: 0px !important;
+  row-gap: 0px !important;
+}
+
+/* 🚀 AVATAR CONTAINER ULTRA POSITIONING */
+.host-container > div:first-child {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  margin-right: 12px !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  left: 0px !important;
+}
+
+/* ✅ MAXIMUM SPECIFICITY WIDGET HEADER BUTTONS - Force override everything */
+.widget-header-button.widget-clear-chat-button.rounded-full,
+.widget-header-button.widget-close-button.rounded-full,
+button.widget-header-button.widget-clear-chat-button,
+button.widget-header-button.widget-close-button,
+button[title="Close Chat"].widget-header-button.rounded-full,
+button[title="Clear Chat"].widget-header-button.rounded-full,
+/* ✅ ULTRA GÜÇLÜ WIDGET HEADER BUTTONS - Her durumda BEYAZ arka plan, SİYAH iconlar */
+button[title="Close Chat"],
+button[title="Clear Chat"],
+.widget-header-button,
+.widget-clear-chat-button,
+.widget-close-button,
+.chat-header button[class*="rounded-full"],
+div[style*="gap: 8px"] > button[class*="rounded-full"],
+button[class="rounded-full transition-all duration-200"],
+.rounded-full[style*="background: #000000"],
+button[style*="background: #000000"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #e5e7eb !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  z-index: 10000 !important;
+  width: 32px !important;
+  height: 32px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Hover states */
+button[title="Close Chat"]:hover,
+button[title="Clear Chat"]:hover,
+.widget-header-button:hover,
+.widget-clear-chat-button:hover,
+.widget-close-button:hover,
+.chat-header button[class*="rounded-full"]:hover,
+div[style*="gap: 8px"] > button[class*="rounded-full"]:hover,
+button[class="rounded-full transition-all duration-200"]:hover,
+.rounded-full[style*="background: #000000"]:hover,
+button[style*="background: #000000"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
+}
+
+/* ✅ MAXIMUM SPECIFICITY SVG TARGETING - SIYAH İKONLAR */
+.widget-header-button.widget-clear-chat-button svg,
+.widget-header-button.widget-close-button svg,
+.widget-header-button.widget-clear-chat-button svg *,
+.widget-header-button.widget-close-button svg *,
+button.widget-header-button svg,
+button.widget-header-button svg *,
+button[title="Close Chat"].widget-header-button svg,
+button[title="Clear Chat"].widget-header-button svg,
+button[title="Close Chat"].widget-header-button svg *,
+button[title="Clear Chat"].widget-header-button svg *,
+/* SVG icons içerisinde - SIYAH OLSUN */
+button[title="Close Chat"] svg,
+button[title="Clear Chat"] svg,
+.widget-header-button svg,
+.widget-clear-chat-button svg,
+.widget-close-button svg,
+.chat-header button[class*="rounded-full"] svg,
+div[style*="gap: 8px"] > button[class*="rounded-full"] svg,
+button[class="rounded-full transition-all duration-200"] svg,
+.rounded-full[style*="background: #ffffff"] svg,
+button[style*="background: #ffffff"] svg,
+.widget-header-button svg,
+.widget-clear-chat-button svg,
+.widget-close-button svg {
+  fill: #000000 !important;
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+button[title="Close Chat"] svg path,
+button[title="Clear Chat"] svg path,
+.widget-header-button svg path,
+.widget-clear-chat-button svg path,
+.widget-close-button svg path,
+.chat-header button[class*="rounded-full"] svg path,
+div[style*="gap: 8px"] > button[class*="rounded-full"] svg path,
+button[class="rounded-full transition-all duration-200"] svg path,
+.rounded-full[style*="background: #ffffff"] svg path,
+button[style*="background: #ffffff"] svg path {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+  color: #000000 !important;
+}
+
+
+
+/* ✅ BUTTON VISIBILITY FIX - Ensure buttons are always visible - BEYAZ ARKA PLAN */
+.chat-close-button,
+.widget-header-button,
+button[title="Close Chat"],
+button[title="Clear Chat"],
+.rounded-full[style*="background"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  z-index: 9999 !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.chat-close-button:hover,
+.widget-header-button:hover,
+button[title="Close Chat"]:hover,
+button[title="Clear Chat"]:hover,
+.rounded-full[style*="background"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
+}
+
+/* SVG icon colors - SIYAH İKONLAR */
+.chat-close-button svg,
+.widget-header-button svg,
+/* ✅ WHITE BUTTON ENFORCEMENT - Clear Chat and Close buttons must be WHITE with BLACK icons */
+button[title="Clear Chat"],
+button[title="Close Chat"],
+.chat-close-button,
+.widget-header-button,
+.rounded-full[style*="background"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #e5e7eb !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+button[title="Clear Chat"]:hover,
+button[title="Close Chat"]:hover,
+.chat-close-button:hover,
+.rounded-full[style*="background"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+}
+
+button[title="Close Chat"] svg,
+button[title="Clear Chat"] svg,
+.rounded-full[style*="background"] svg {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.chat-close-button svg path,
+.widget-header-button svg path,
+button[title="Close Chat"] svg path,
+button[title="Clear Chat"] svg path,
+.rounded-full[style*="background"] svg path {
+  stroke: #000000 !important;
+  fill: #000000 !important;
+}
+
+/* ✅ AVATAR POSITIONING AND SIZE - Canvas uyumlu */
+.host-container .flex.justify-center.items-center.rounded-full {
+  margin-right: 8px !important;
+  margin-top: 0px !important;
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ✅ AVATAR SIZE AND POSITIONING FIXES - Canvas uyumlu */
+.host-container figure[data-testid="default-avatar"],
+.host-container .avatar-wrapper {
+  margin-right: 8px !important;
+  margin-top: 0px !important;
+  flex-shrink: 0 !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+/* Desktop avatar size - Biraz daha büyük */
+@media (min-width: 768px) {
+  figure[data-testid="default-avatar"] {
+    width: 44px !important; /* 40px → 44px */
+    height: 44px !important; /* 40px → 44px */
+    margin-right: 8px !important;
+    margin-top: 0px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  figure[data-testid="default-avatar"] img {
+    width: 36px !important; /* 32px → 36px */
+    height: 36px !important; /* 32px → 36px */
+  }
+}
+
+/* Mobile avatar size - Canvas uyumlu */
+@media (max-width: 767px) {
+  figure[data-testid="default-avatar"] {
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 8px !important;
+    margin-top: 0px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  figure[data-testid="default-avatar"] img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
+/* ✅ MESSAGE BUBBLE ALIGNMENT WITH AVATAR - Canvas uyumlu */
+.host-container .chatbot-host-bubble {
+  margin-left: 0 !important;
+}
+
+/* ✅ ULTIMATE LEFT ALIGNMENT FIX - NUCLEAR APPROACH */
+/* Chat container - sol padding ve margin'i zorla 0 yap */
+.flex-1.overflow-y-auto,
+div[class*="flex-1"][class*="overflow-y-auto"] {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  box-sizing: border-box !important;
+}
+
+/* Host container - ABSOLUTE left alignment */
+.host-container,
+.flex.flex-row.justify-start.items-start.host-container,
+div[class*="host-container"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  position: relative !important;
+  left: 0 !important; /* Force to leftmost position */
+}
+
+/* Avatar container - NO left spacing */
+.host-container > div:first-child,
+.host-container [style*="margin-right"],
+.host-container [style*="flex-shrink"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  position: relative !important;
+  left: 0 !important; /* Force avatar to leftmost position */
+}
+
+/* ✅ ULTIMATE LEFT ALIGNMENT FIX - Tailwind override */
+/* Tailwind Flexbox sınıflarını override et */
+flowise-chatbot .flex.flex-row.justify-start,
+flowise-chatbot .flex-1[style*="overflow"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Flowise chatbot container'ın kendisini de kontrol et */
+flowise-chatbot [style*="flex: 1"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ CRITICAL - Tailwind px-6 sınıfını tamamen override et */
+/* px-6 = padding-left: 1.5rem (24px) - Bu sol gap'in ana kaynağı! */
+/* ✅ UPDATED SELECTOR - px-6 kaldırıldı */
+.flex-1.overflow-y-auto.py-6.space-y-4 {
+  padding-left: 0 !important; /* Override px-6 (24px) */
+  margin-left: 0 !important;
+}
+
+/* Alternative selector for safety */
+flowise-chatbot [class*="px-6"] {
+  padding-left: 0 !important;
+}
+
+/* ✅ ULTRA-AGGRESSIVE LEFT ALIGNMENT - Force everything flush left */
+flowise-chatbot * {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ SPECIFIC OVERRIDES FOR CHAT ELEMENTS */
+flowise-chatbot .flex,
+flowise-chatbot [class*="flex"],
+flowise-chatbot .flex-1,
+flowise-chatbot [class*="flex-1"],
+flowise-chatbot .space-y-4,
+flowise-chatbot [class*="space-y"],
+flowise-chatbot .overflow-y-auto,
+flowise-chatbot [class*="overflow"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ BOT MESSAGE CONTAINER - Force flush left */
+flowise-chatbot .flex.items-start.space-x-3,
+flowise-chatbot [class*="items-start"],
+flowise-chatbot [class*="space-x"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  justify-content: flex-start !important;
+}
+
+/* ✅ AVATAR CONTAINER - Absolute left alignment */
+flowise-chatbot .flex-shrink-0,
+flowise-chatbot [class*="flex-shrink"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ EXCEPTION RULES - Restore padding for inputs/buttons where needed */
+flowise-chatbot input,
+flowise-chatbot textarea,
+flowise-chatbot button,
+flowise-chatbot select {
+  padding-left: 12px !important;
+}
+
+/* ✅ FLASH PREVENTION - Critical CSS must be first */
+/* This CSS must be parsed immediately to prevent input width flash */
+
+/* ✅ CLEAN VERSION - Input styling - TAM GENİŞLİK - GÜNCELLENDİ */
+flowise-chatbot input[placeholder*="Type your message"],
+flowise-chatbot textarea[placeholder*="Type your message"],
+input[placeholder*="Type your message"],
+textarea[placeholder*="Type your message"] {
+  /* Ana fix - boyut - TAM GENİŞLİK - GÜNCELLENDİ */
+  width: calc(100% - 40px) !important; /* ✅ Daha az boşluk bırakıldı */
+  min-width: 150px !important; /* ✅ Minimum genişlik daha da azaltıldı */
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  box-sizing: border-box !important;
+  
+  /* ✅ CLEAN STYLING */
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  color: #111827 !important;
+  font-weight: 400 !important;
+}
+
+/* ✅ YENİ - TextInput widget tam genişlik */
+.text-input-widget,
+.widget-textinput-container,
+.widget-input-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ✅ CLEAN VERSION - Container styling - TAM GENİŞLİK */
+flowise-chatbot .input-container,
+.input-container,
+div:has(> input[placeholder*="Type your message"]),
+div:has(> textarea[placeholder*="Type your message"]) {
+  /* Ana fix - layout - TAM GENİŞLİK */
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important; /* ✅ TAM GENİŞLİK için max-width kaldırıldı */
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important; /* ✅ Container padding kaldırıldı, input kendi padding'i kullanacak */
+  
+  /* ✅ CLEAN STYLING */
+  background: #ffffff !important;
+  border: none !important; /* ✅ Container border kaldırıldı */
+  border-radius: 0 !important; /* ✅ Container border-radius kaldırıldı */
+}
+
+/* ✅ CLEAN VERSION - Widget container */
+flowise-chatbot {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ✅ BURADAN SONRA ESKİ CSS'LERİNİZ DEVAM EDECEK... */
+:host {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ULTRA PRIORITY: Input width fix - Applied IMMEDIATELY */
+flowise-chatbot input[placeholder*="Type your message"],
+flowise-chatbot textarea[placeholder*="Type your message"],
+flowise-chatbot input[placeholder*="type your message"],
+flowise-chatbot textarea[placeholder*="type your message"],
+input[placeholder*="Type your message"],
+textarea[placeholder*="Type your message"],
+input[placeholder*="type your message"],
+textarea[placeholder*="type your message"],
+.text-input {
+  width: calc(100% - 70px) !important;
+  min-width: 280px !important;
+  max-width: calc(100% - 70px) !important;
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
+  flex-basis: 0% !important;
+  box-sizing: border-box !important;
+}
+
+/* ULTRA PRIORITY: Container fix - Applied IMMEDIATELY */
+.input-container,
+[class*="input"],
+div:has(> textarea),
+div:has(> input),
+flowise-chatbot .chatbot-input,
+flowise-chatbot div[data-testid="input"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  min-width: 350px !important;
+  box-sizing: border-box !important;
+}
+
+/* ULTRA PRIORITY: Badge background fix - ONLY badges should be transparent */
+.w-full.text-center,
+span.w-full.text-center,
+.lite-badge,
+#lite-badge,
+[id="lite-badge"],
+span:has(> a.lite-badge),
+span:has(> .lite-badge),
+flowise-chatbot .lite-badge,
+flowise-chatbot [id="lite-badge"],
+flowise-chatbot span:has(> a.lite-badge) {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* ✅ REACH US BUTTON EXCEPTION - Keep API color - DO NOT OVERRIDE */
+/* reach-us-button gets its background from inline styles in Bot.tsx */
+
+/* ✅ FORCE WHITE BACKGROUND - All containers MUST be white */
+flowise-chatbot,
+.chatbot-container,
+.input-container,
+.chatbot-input,
+flowise-chatbot > div,
+flowise-chatbot div:not(.lite-badge):not([class*="badge"]):not(.reach-us-button):not(.chat-close-button):not(.w-full),
+div[class*="chatbot"]:not(.lite-badge):not([class*="badge"]):not(.reach-us-button):not(.chat-close-button):not(.w-full) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+/* Force immediate styling on all input containers */
+.input-container,
+[class*="input"],
+div:has(> textarea),
+div:has(> input) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  padding: 6px 10px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  border: 2px solid #f1f5f9 !important;
+  min-height: 36px !important;
+  box-sizing: border-box !important;
+}
+
+/* Force immediate input/textarea sizing */
+.input-container textarea,
+.input-container input,
+textarea[placeholder*="Type your message"],
+input[placeholder*="Type your message"],
+textarea:last-of-type,
+input:not([type="submit"]):not([type="button"]):not([type="hidden"]):last-of-type {
+  width: calc(100% - 70px) !important;
+  min-width: 280px !important;
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
+  flex-basis: 0% !important;
+  background: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+  font-size: 15px !important;
+  padding: 6px 0 !important;
+  min-height: 20px !important;
+  max-height: 60px !important;
+  resize: none !important;
+  box-sizing: border-box !important;
+  font-family: 'Inter', sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Force immediate button sizing */
+button[title="Send Message"],
+[class*="send"] button,
+button:last-child {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+button[title="Send Message"] svg,
+[class*="send"] button svg,
+button:last-child svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* ✅ COMPACT WIDGET DESIGN - Complete CSS */
+
+/* Modern spin animation for loading states */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ✅ COMPACT DESIGN - Updated Widget Container */
+.chatbot-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* ✅ COMPACT HEADER - Further reduced for maximum message space */
+.chatbot-container > div:first-child {
+  flex-shrink: 0 !important;
+  min-height: 50px !important; /* REDUCED */
+  padding: 8px 16px !important; /* REDUCED */
+  backdrop-filter: blur(8px) !important;
+}
+
+/* ✅ MAIN CHAT AREA - Maintains flexibility but optimizes space */
+.chatbot-container > div:nth-child(2) {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* ✅ EXPANDED MESSAGES CONTAINER - AVATAR SOLA YASLAMA */
+.chatbot-container > div:nth-child(2) > div:first-child {
+  flex: 1 1 0% !important;
+  overflow-y: auto !important;
+  padding: 12px 0px 12px 0px !important; /* Sol padding tamamen kaldırıldı: 4px → 0px */
+  min-height: 0 !important;
+  gap: 10px !important; /* REDUCED */
+}
+
+/* ✅ COMPACT INPUT AREA - This is the most critical change for your use case */
+.chatbot-container > div:nth-child(2) > div:last-child {
+  flex-shrink: 0 !important;
+  padding: 16px 20px 12px 20px !important; /* Canvas: 16px 24px → Widget: 16px 20px 12px 20px */
+  min-height: 48px !important; /* Canvas: 80px → Widget: 48px (40% reduction) */
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+  background: #ffffff !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 -8px 16px -8px rgba(0,0,0,0.04) !important;
+}
+
+/* ✅ COMPACT FOOTER - Reduced height for minimalist approach */
+.chatbot-container > div:last-child {
+  flex-shrink: 0 !important;
+  background: #ffffff !important;
+  backdrop-filter: blur(8px) !important;
+  border-top: 1px solid rgba(0,0,0,0.06) !important;
+  min-height: 40px !important; /* Canvas: 50px → Widget: 40px (20% reduction) */
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 8px 20px !important; /* Canvas: 12px 24px → Widget: 8px 20px */
+}
+
+/* ✅ COMPACT CHAT INPUT STYLING - EN ÖNEMLİ KISIM */
+.chatbot-input {
+  border-radius: 12px !important;
+  border: 2px solid #e5e7eb !important;
+  transition: all 0.15s ease-in-out !important;
+  font-family: 'Inter', sans-serif !important;
+  min-height: 36px !important; /* YENİ: Compact height */
+  padding: 6px 10px !important; /* YENİ: Compact padding */
+}
+
+.chatbot-input:focus-within {
+  border-color: #3b82f6 !important;
+  outline: none !important;
+}
+
+/* ✅ COMPACT TEXTAREA STYLING */
+.chatbot-container textarea {
+  min-height: 20px !important; /* YENİ: Canvas'tan daha küçük */
+  max-height: 60px !important; /* YENİ: Canvas'tan daha küçük */
+  padding: 6px 0 !important; /* YENİ: Compact padding */
+  font-size: 15px !important; /* YENİ: Optimal size */
+  font-family: 'Inter', sans-serif !important;
+  line-height: 1.5 !important;
+  resize: none !important;
+  overflow-y: auto !important;
+  background: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+  width: 100% !important;
+  color: #111827 !important;
+  font-weight: 400 !important;
+}
+
+/* ✅ COMPACT SEND BUTTON */
+button[title="Send Message"] {
+  width: 28px !important; /* YENİ: Canvas'tan küçük */
+  height: 28px !important; /* YENİ: Canvas'tan küçük */
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+button[title="Send Message"] svg {
+  width: 12px !important; /* YENİ: Küçük ikon */
+  height: 12px !important; /* YENİ: Küçük ikon */
+}
+
+/* === WIDGET ANA CONTAINER === */
+.chatbot-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 580px !important;
+  width: 420px !important;
+  min-width: 380px !important;
+  max-width: 420px !important;
+  min-height: 480px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #e2e8f0 !important;
+  margin: 0 auto !important;
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+/* === HEADER === */
+.chatbot-container > div:first-child {
+  flex-shrink: 0 !important;
+  min-height: 56px !important;
+  padding: 12px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  background: #fff !important;
+  border-top-left-radius: 20px !important;
+  border-top-right-radius: 20px !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  z-index: 10 !important;
+}
+
+/* === CHAT AREA === */
+.chatbot-container > div:nth-child(2) {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #fff !important;
+}
+
+/* === MESAJLAR === */
+.chatbot-container > div:nth-child(2) > div:first-child {
+  flex: 1 1 0% !important;
+  overflow-y: auto !important;
+  padding: 16px 16px 16px 16px !important;
+  min-height: 0 !important;
+  gap: 12px !important;
+  box-sizing: border-box !important;
+}
+
+/* === INPUT === */
+.chatbot-container > div:nth-child(2) > div:last-child {
+  flex-shrink: 0 !important;
+  padding: 12px 16px 12px 16px !important;
+  min-height: 56px !important;
+  border-top: 1px solid #e5e7eb !important;
+  background: #fff !important;
+  box-shadow: 0 -8px 16px -8px rgba(0,0,0,0.04) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* === BADGE/FOOTER === */
+.chatbot-container > div:last-child {
+  flex-shrink: 0 !important;
+  background: #fff !important;
+  border-top: 1px solid #e5e7eb !important;
+  min-height: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 8px 16px !important;
+}
+
+/* === AVATAR & MESAJ === */
+.chatbot-host-bubble, .guest-bubble {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+.avatar-wrapper, figure[data-testid="default-avatar"] {
+  margin-left: 0 !important;
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+/* === HEADER BUTTONS === */
+.widget-header-button, .widget-clear-chat-button, .widget-close-button, button[title="Close Chat"], button[title="Clear Chat"] {
+  background: #fff !important;
+  color: #374151 !important;
+  border: 1px solid #d1d5db !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  z-index: 20 !important;
+  margin-left: 8px !important;
+}
+
+.widget-header-button svg, .widget-clear-chat-button svg, .widget-close-button svg, button[title="Close Chat"] svg, button[title="Clear Chat"] svg {
+  color: #000 !important;
+  fill: #000 !important;
+  stroke: #000 !important;
+}
+
+/* 🚀 CONTROLLED AVATAR LEFT ALIGNMENT - SOFTER OVERRIDE */
+.host-container *,
+[class*="host-container"] * {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+}
+
+/* Widget container should be visible */
+.chatbot-container,
+[class*="chatbot-container"] {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* 🚀 EXTREME FLEX GAP ELIMINATION */
+flowise-chatbot .flex,
+.host-container.flex,
+[class*="host-container"].flex,
+div[class*="flex"][class*="justify-start"],
+div[class*="flex"][class*="items-start"] {
+  gap: 0px !important;
+  column-gap: 0px !important;
+  row-gap: 0px !important;
+}
+
+/* 🚀 AVATAR CONTAINER ULTRA POSITIONING */
+.host-container > div:first-child {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  margin-right: 12px !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  left: 0px !important;
+}
+
+/* ✅ MAXIMUM SPECIFICITY WIDGET HEADER BUTTONS - Force override everything */
+.widget-header-button.widget-clear-chat-button.rounded-full,
+.widget-header-button.widget-close-button.rounded-full,
+button.widget-header-button.widget-clear-chat-button,
+button.widget-header-button.widget-close-button,
+button[title="Close Chat"].widget-header-button.rounded-full,
+button[title="Clear Chat"].widget-header-button.rounded-full,
+/* ✅ ULTRA GÜÇLÜ WIDGET HEADER BUTTONS - Her durumda BEYAZ arka plan, SİYAH iconlar */
+button[title="Close Chat"],
+button[title="Clear Chat"],
+.widget-header-button,
+.widget-clear-chat-button,
+.widget-close-button,
+.chat-header button[class*="rounded-full"],
+div[style*="gap: 8px"] > button[class*="rounded-full"],
+button[class="rounded-full transition-all duration-200"],
+.rounded-full[style*="background: #000000"],
+button[style*="background: #000000"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #e5e7eb !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  z-index: 10000 !important;
+  width: 32px !important;
+  height: 32px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Hover states */
+button[title="Close Chat"]:hover,
+button[title="Clear Chat"]:hover,
+.widget-header-button:hover,
+.widget-clear-chat-button:hover,
+.widget-close-button:hover,
+.chat-header button[class*="rounded-full"]:hover,
+div[style*="gap: 8px"] > button[class*="rounded-full"]:hover,
+button[class="rounded-full transition-all duration-200"]:hover,
+.rounded-full[style*="background: #000000"]:hover,
+button[style*="background: #000000"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
+}
+
+/* ✅ MAXIMUM SPECIFICITY SVG TARGETING - SIYAH İKONLAR */
+.widget-header-button.widget-clear-chat-button svg,
+.widget-header-button.widget-close-button svg,
+.widget-header-button.widget-clear-chat-button svg *,
+.widget-header-button.widget-close-button svg *,
+button.widget-header-button svg,
+button.widget-header-button svg *,
+button[title="Close Chat"].widget-header-button svg,
+button[title="Clear Chat"].widget-header-button svg,
+button[title="Close Chat"].widget-header-button svg *,
+button[title="Clear Chat"].widget-header-button svg *,
+/* SVG icons içerisinde - SIYAH OLSUN */
+button[title="Close Chat"] svg,
+button[title="Clear Chat"] svg,
+.widget-header-button svg,
+.widget-clear-chat-button svg,
+.widget-close-button svg,
+.chat-header button[class*="rounded-full"] svg,
+div[style*="gap: 8px"] > button[class*="rounded-full"] svg,
+button[class="rounded-full transition-all duration-200"] svg,
+.rounded-full[style*="background: #ffffff"] svg,
+button[style*="background: #ffffff"] svg,
+.widget-header-button svg,
+.widget-clear-chat-button svg,
+.widget-close-button svg {
+  fill: #000000 !important;
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+button[title="Close Chat"] svg path,
+button[title="Clear Chat"] svg path,
+.widget-header-button svg path,
+.widget-clear-chat-button svg path,
+.widget-close-button svg path,
+.chat-header button[class*="rounded-full"] svg path,
+div[style*="gap: 8px"] > button[class*="rounded-full"] svg path,
+button[class="rounded-full transition-all duration-200"] svg path,
+.rounded-full[style*="background: #ffffff"] svg path,
+button[style*="background: #ffffff"] svg path {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+  color: #000000 !important;
+}
+
+
+
+/* ✅ BUTTON VISIBILITY FIX - Ensure buttons are always visible - BEYAZ ARKA PLAN */
+.chat-close-button,
+.widget-header-button,
+button[title="Close Chat"],
+button[title="Clear Chat"],
+.rounded-full[style*="background"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  z-index: 9999 !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.chat-close-button:hover,
+.widget-header-button:hover,
+button[title="Close Chat"]:hover,
+button[title="Clear Chat"]:hover,
+.rounded-full[style*="background"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
+}
+
+/* SVG icon colors - SIYAH İKONLAR */
+.chat-close-button svg,
+.widget-header-button svg,
+/* ✅ WHITE BUTTON ENFORCEMENT - Clear Chat and Close buttons must be WHITE with BLACK icons */
+button[title="Clear Chat"],
+button[title="Close Chat"],
+.chat-close-button,
+.widget-header-button,
+.rounded-full[style*="background"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #e5e7eb !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+button[title="Clear Chat"]:hover,
+button[title="Close Chat"]:hover,
+.chat-close-button:hover,
+.rounded-full[style*="background"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+}
+
+button[title="Close Chat"] svg,
+button[title="Clear Chat"] svg,
+.rounded-full[style*="background"] svg {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.chat-close-button svg path,
+.widget-header-button svg path,
+button[title="Close Chat"] svg path,
+button[title="Clear Chat"] svg path,
+.rounded-full[style*="background"] svg path {
+  stroke: #000000 !important;
+  fill: #000000 !important;
+}
+
+/* ✅ AVATAR POSITIONING AND SIZE - Canvas uyumlu */
+.host-container .flex.justify-center.items-center.rounded-full {
+  margin-right: 8px !important;
+  margin-top: 0px !important;
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ✅ AVATAR SIZE AND POSITIONING FIXES - Canvas uyumlu */
+.host-container figure[data-testid="default-avatar"],
+.host-container .avatar-wrapper {
+  margin-right: 8px !important;
+  margin-top: 0px !important;
+  flex-shrink: 0 !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+/* Desktop avatar size - Biraz daha büyük */
+@media (min-width: 768px) {
+  figure[data-testid="default-avatar"] {
+    width: 44px !important; /* 40px → 44px */
+    height: 44px !important; /* 40px → 44px */
+    margin-right: 8px !important;
+    margin-top: 0px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  figure[data-testid="default-avatar"] img {
+    width: 36px !important; /* 32px → 36px */
+    height: 36px !important; /* 32px → 36px */
+  }
+}
+
+/* Mobile avatar size - Canvas uyumlu */
+@media (max-width: 767px) {
+  figure[data-testid="default-avatar"] {
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 8px !important;
+    margin-top: 0px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  figure[data-testid="default-avatar"] img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
+/* ✅ MESSAGE BUBBLE ALIGNMENT WITH AVATAR - Canvas uyumlu */
+.host-container .chatbot-host-bubble {
+  margin-left: 0 !important;
+}
+
+/* ✅ ULTIMATE LEFT ALIGNMENT FIX - NUCLEAR APPROACH */
+/* Chat container - sol padding ve margin'i zorla 0 yap */
+.flex-1.overflow-y-auto,
+div[class*="flex-1"][class*="overflow-y-auto"] {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  box-sizing: border-box !important;
+}
+
+/* Host container - ABSOLUTE left alignment */
+.host-container,
+.flex.flex-row.justify-start.items-start.host-container,
+div[class*="host-container"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  position: relative !important;
+  left: 0 !important; /* Force to leftmost position */
+}
+
+/* Avatar container - NO left spacing */
+.host-container > div:first-child,
+.host-container [style*="margin-right"],
+.host-container [style*="flex-shrink"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  position: relative !important;
+  left: 0 !important; /* Force avatar to leftmost position */
+}
+
+/* ✅ ULTIMATE LEFT ALIGNMENT FIX - Tailwind override */
+/* Tailwind Flexbox sınıflarını override et */
+flowise-chatbot .flex.flex-row.justify-start,
+flowise-chatbot .flex-1[style*="overflow"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Flowise chatbot container'ın kendisini de kontrol et */
+flowise-chatbot [style*="flex: 1"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ CRITICAL - Tailwind px-6 sınıfını tamamen override et */
+/* px-6 = padding-left: 1.5rem (24px) - Bu sol gap'in ana kaynağı! */
+/* ✅ UPDATED SELECTOR - px-6 kaldırıldı */
+.flex-1.overflow-y-auto.py-6.space-y-4 {
+  padding-left: 0 !important; /* Override px-6 (24px) */
+  margin-left: 0 !important;
+}
+
+/* Alternative selector for safety */
+flowise-chatbot [class*="px-6"] {
+  padding-left: 0 !important;
+}
+
+/* ✅ ULTRA-AGGRESSIVE LEFT ALIGNMENT - Force everything flush left */
+flowise-chatbot * {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ SPECIFIC OVERRIDES FOR CHAT ELEMENTS */
+flowise-chatbot .flex,
+flowise-chatbot [class*="flex"],
+flowise-chatbot .flex-1,
+flowise-chatbot [class*="flex-1"],
+flowise-chatbot .space-y-4,
+flowise-chatbot [class*="space-y"],
+flowise-chatbot .overflow-y-auto,
+flowise-chatbot [class*="overflow"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ BOT MESSAGE CONTAINER - Force flush left */
+flowise-chatbot .flex.items-start.space-x-3,
+flowise-chatbot [class*="items-start"],
+flowise-chatbot [class*="space-x"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  justify-content: flex-start !important;
+}
+
+/* ✅ AVATAR CONTAINER - Absolute left alignment */
+flowise-chatbot .flex-shrink-0,
+flowise-chatbot [class*="flex-shrink"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ EXCEPTION RULES - Restore padding for inputs/buttons where needed */
+flowise-chatbot input,
+flowise-chatbot textarea,
+flowise-chatbot button,
+flowise-chatbot select {
+  padding-left: 12px !important;
+}
+
+/* ✅ FLASH PREVENTION - Critical CSS must be first */
+/* This CSS must be parsed immediately to prevent input width flash */
+
+/* ✅ CLEAN VERSION - Input styling - TAM GENİŞLİK - GÜNCELLENDİ */
+flowise-chatbot input[placeholder*="Type your message"],
+flowise-chatbot textarea[placeholder*="Type your message"],
+input[placeholder*="Type your message"],
+textarea[placeholder*="Type your message"] {
+  /* Ana fix - boyut - TAM GENİŞLİK - GÜNCELLENDİ */
+  width: calc(100% - 40px) !important; /* ✅ Daha az boşluk bırakıldı */
+  min-width: 150px !important; /* ✅ Minimum genişlik daha da azaltıldı */
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  box-sizing: border-box !important;
+  
+  /* ✅ CLEAN STYLING */
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  color: #111827 !important;
+  font-weight: 400 !important;
+}
+
+/* ✅ YENİ - TextInput widget tam genişlik */
+.text-input-widget,
+.widget-textinput-container,
+.widget-input-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ✅ CLEAN VERSION - Container styling - TAM GENİŞLİK */
+flowise-chatbot .input-container,
+.input-container,
+div:has(> input[placeholder*="Type your message"]),
+div:has(> textarea[placeholder*="Type your message"]) {
+  /* Ana fix - layout - TAM GENİŞLİK */
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important; /* ✅ TAM GENİŞLİK için max-width kaldırıldı */
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important; /* ✅ Container padding kaldırıldı, input kendi padding'i kullanacak */
+  
+  /* ✅ CLEAN STYLING */
+  background: #ffffff !important;
+  border: none !important; /* ✅ Container border kaldırıldı */
+  border-radius: 0 !important; /* ✅ Container border-radius kaldırıldı */
+}
+
+/* ✅ CLEAN VERSION - Widget container */
+flowise-chatbot {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ✅ BURADAN SONRA ESKİ CSS'LERİNİZ DEVAM EDECEK... */
+:host {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ULTRA PRIORITY: Input width fix - Applied IMMEDIATELY */
+flowise-chatbot input[placeholder*="Type your message"],
+flowise-chatbot textarea[placeholder*="Type your message"],
+flowise-chatbot input[placeholder*="type your message"],
+flowise-chatbot textarea[placeholder*="type your message"],
+input[placeholder*="Type your message"],
+textarea[placeholder*="Type your message"],
+input[placeholder*="type your message"],
+textarea[placeholder*="type your message"],
+.text-input {
+  width: calc(100% - 70px) !important;
+  min-width: 280px !important;
+  max-width: calc(100% - 70px) !important;
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
+  flex-basis: 0% !important;
+  box-sizing: border-box !important;
+}
+
+/* ULTRA PRIORITY: Container fix - Applied IMMEDIATELY */
+.input-container,
+[class*="input"],
+div:has(> textarea),
+div:has(> input),
+flowise-chatbot .chatbot-input,
+flowise-chatbot div[data-testid="input"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  min-width: 350px !important;
+  box-sizing: border-box !important;
+}
+
+/* ULTRA PRIORITY: Badge background fix - ONLY badges should be transparent */
+.w-full.text-center,
+span.w-full.text-center,
+.lite-badge,
+#lite-badge,
+[id="lite-badge"],
+span:has(> a.lite-badge),
+span:has(> .lite-badge),
+flowise-chatbot .lite-badge,
+flowise-chatbot [id="lite-badge"],
+flowise-chatbot span:has(> a.lite-badge) {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* ✅ REACH US BUTTON EXCEPTION - Keep API color - DO NOT OVERRIDE */
+/* reach-us-button gets its background from inline styles in Bot.tsx */
+
+/* ✅ FORCE WHITE BACKGROUND - All containers MUST be white */
+flowise-chatbot,
+.chatbot-container,
+.input-container,
+.chatbot-input,
+flowise-chatbot > div,
+flowise-chatbot div:not(.lite-badge):not([class*="badge"]):not(.reach-us-button):not(.chat-close-button):not(.w-full),
+div[class*="chatbot"]:not(.lite-badge):not([class*="badge"]):not(.reach-us-button):not(.chat-close-button):not(.w-full) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+/* Force immediate styling on all input containers */
+.input-container,
+[class*="input"],
+div:has(> textarea),
+div:has(> input) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  padding: 6px 10px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+  border: 2px solid #f1f5f9 !important;
+  min-height: 36px !important;
+  box-sizing: border-box !important;
+}
+
+/* Force immediate input/textarea sizing */
+.input-container textarea,
+.input-container input,
+textarea[placeholder*="Type your message"],
+input[placeholder*="Type your message"],
+textarea:last-of-type,
+input:not([type="submit"]):not([type="button"]):not([type="hidden"]):last-of-type {
+  width: calc(100% - 70px) !important;
+  min-width: 280px !important;
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
+  flex-basis: 0% !important;
+  background: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+  font-size: 15px !important;
+  padding: 6px 0 !important;
+  min-height: 20px !important;
+  max-height: 60px !important;
+  resize: none !important;
+  box-sizing: border-box !important;
+  font-family: 'Inter', sans-serif !important;
+  line-height: 1.5 !important;
+}
+
+/* Force immediate button sizing */
+button[title="Send Message"],
+[class*="send"] button,
+button:last-child {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+button[title="Send Message"] svg,
+[class*="send"] button svg,
+button:last-child svg {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+/* === WIDGET ANA CONTAINER === */
+.chatbot-container {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 580px !important;
+  width: 420px !important;
+  min-width: 380px !important;
+  max-width: 420px !important;
+  min-height: 480px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid #e2e8f0 !important;
+  margin: 0 auto !important;
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+/* === HEADER === */
+.chatbot-container > div:first-child {
+  flex-shrink: 0 !important;
+  min-height: 56px !important;
+  padding: 12px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  background: #fff !important;
+  border-top-left-radius: 20px !important;
+  border-top-right-radius: 20px !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  z-index: 10 !important;
+}
+
+/* === CHAT AREA === */
+.chatbot-container > div:nth-child(2) {
+  flex: 1 1 0% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  background: #fff !important;
+}
+
+/* === MESAJLAR === */
+.chatbot-container > div:nth-child(2) > div:first-child {
+  flex: 1 1 0% !important;
+  overflow-y: auto !important;
+  padding: 16px 16px 16px 16px !important;
+  min-height: 0 !important;
+  gap: 12px !important;
+  box-sizing: border-box !important;
+}
+
+/* === INPUT === */
+.chatbot-container > div:nth-child(2) > div:last-child {
+  flex-shrink: 0 !important;
+  padding: 12px 16px 12px 16px !important;
+  min-height: 56px !important;
+  border-top: 1px solid #e5e7eb !important;
+  background: #fff !important;
+  box-shadow: 0 -8px 16px -8px rgba(0,0,0,0.04) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* === BADGE/FOOTER === */
+.chatbot-container > div:last-child {
+  flex-shrink: 0 !important;
+  background: #fff !important;
+  border-top: 1px solid #e5e7eb !important;
+  min-height: 40px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 8px 16px !important;
+}
+
+/* === AVATAR & MESAJ === */
+.chatbot-host-bubble, .guest-bubble {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+.avatar-wrapper, figure[data-testid="default-avatar"] {
+  margin-left: 0 !important;
+  margin-right: 8px !important;
+  flex-shrink: 0 !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+
+/* === HEADER BUTTONS === */
+.widget-header-button, .widget-clear-chat-button, .widget-close-button, button[title="Close Chat"], button[title="Clear Chat"] {
+  background: #fff !important;
+  color: #374151 !important;
+  border: 1px solid #d1d5db !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  z-index: 20 !important;
+  margin-left: 8px !important;
+}
+
+.widget-header-button svg, .widget-clear-chat-button svg, .widget-close-button svg, button[title="Close Chat"] svg, button[title="Clear Chat"] svg {
+  color: #000 !important;
+  fill: #000 !important;
+  stroke: #000 !important;
+}
+
+/* 🚀 CONTROLLED AVATAR LEFT ALIGNMENT - SOFTER OVERRIDE */
+.host-container *,
+[class*="host-container"] * {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+}
+
+/* Widget container should be visible */
+.chatbot-container,
+[class*="chatbot-container"] {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* 🚀 EXTREME FLEX GAP ELIMINATION */
+flowise-chatbot .flex,
+.host-container.flex,
+[class*="host-container"].flex,
+div[class*="flex"][class*="justify-start"],
+div[class*="flex"][class*="items-start"] {
+  gap: 0px !important;
+  column-gap: 0px !important;
+  row-gap: 0px !important;
+}
+
+/* 🚀 AVATAR CONTAINER ULTRA POSITIONING */
+.host-container > div:first-child {
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  margin-right: 12px !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  left: 0px !important;
+}
+
+/* ✅ MAXIMUM SPECIFICITY WIDGET HEADER BUTTONS - Force override everything */
+.widget-header-button.widget-clear-chat-button.rounded-full,
+.widget-header-button.widget-close-button.rounded-full,
+button.widget-header-button.widget-clear-chat-button,
+button.widget-header-button.widget-close-button,
+button[title="Close Chat"].widget-header-button.rounded-full,
+button[title="Clear Chat"].widget-header-button.rounded-full,
+/* ✅ ULTRA GÜÇLÜ WIDGET HEADER BUTTONS - Her durumda BEYAZ arka plan, SİYAH iconlar */
+button[title="Close Chat"],
+button[title="Clear Chat"],
+.widget-header-button,
+.widget-clear-chat-button,
+.widget-close-button,
+.chat-header button[class*="rounded-full"],
+div[style*="gap: 8px"] > button[class*="rounded-full"],
+button[class="rounded-full transition-all duration-200"],
+.rounded-full[style*="background: #000000"],
+button[style*="background: #000000"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #e5e7eb !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  z-index: 10000 !important;
+  width: 32px !important;
+  height: 32px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* Hover states */
+button[title="Close Chat"]:hover,
+button[title="Clear Chat"]:hover,
+.widget-header-button:hover,
+.widget-clear-chat-button:hover,
+.widget-close-button:hover,
+.chat-header button[class*="rounded-full"]:hover,
+div[style*="gap: 8px"] > button[class*="rounded-full"]:hover,
+button[class="rounded-full transition-all duration-200"]:hover,
+.rounded-full[style*="background: #000000"]:hover,
+button[style*="background: #000000"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
+}
+
+/* ✅ MAXIMUM SPECIFICITY SVG TARGETING - SIYAH İKONLAR */
+.widget-header-button.widget-clear-chat-button svg,
+.widget-header-button.widget-close-button svg,
+.widget-header-button.widget-clear-chat-button svg *,
+.widget-header-button.widget-close-button svg *,
+button.widget-header-button svg,
+button.widget-header-button svg *,
+button[title="Close Chat"].widget-header-button svg,
+button[title="Clear Chat"].widget-header-button svg,
+button[title="Close Chat"].widget-header-button svg *,
+button[title="Clear Chat"].widget-header-button svg *,
+/* SVG icons içerisinde - SIYAH OLSUN */
+button[title="Close Chat"] svg,
+button[title="Clear Chat"] svg,
+.widget-header-button svg,
+.widget-clear-chat-button svg,
+.widget-close-button svg,
+.chat-header button[class*="rounded-full"] svg,
+div[style*="gap: 8px"] > button[class*="rounded-full"] svg,
+button[class="rounded-full transition-all duration-200"] svg,
+.rounded-full[style*="background: #ffffff"] svg,
+button[style*="background: #ffffff"] svg,
+.widget-header-button svg,
+.widget-clear-chat-button svg,
+.widget-close-button svg {
+  fill: #000000 !important;
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+button[title="Close Chat"] svg path,
+button[title="Clear Chat"] svg path,
+.widget-header-button svg path,
+.widget-clear-chat-button svg path,
+.widget-close-button svg path,
+.chat-header button[class*="rounded-full"] svg path,
+div[style*="gap: 8px"] > button[class*="rounded-full"] svg path,
+button[class="rounded-full transition-all duration-200"] svg path,
+.rounded-full[style*="background: #ffffff"] svg path,
+button[style*="background: #ffffff"] svg path {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+  color: #000000 !important;
+}
+
+
+
+/* ✅ BUTTON VISIBILITY FIX - Ensure buttons are always visible - BEYAZ ARKA PLAN */
+.chat-close-button,
+.widget-header-button,
+button[title="Close Chat"],
+button[title="Clear Chat"],
+.rounded-full[style*="background"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  z-index: 9999 !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 50% !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.chat-close-button:hover,
+.widget-header-button:hover,
+button[title="Close Chat"]:hover,
+button[title="Clear Chat"]:hover,
+.rounded-full[style*="background"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
+}
+
+/* SVG icon colors - SIYAH İKONLAR */
+.chat-close-button svg,
+.widget-header-button svg,
+/* ✅ WHITE BUTTON ENFORCEMENT - Clear Chat and Close buttons must be WHITE with BLACK icons */
+button[title="Clear Chat"],
+button[title="Close Chat"],
+.chat-close-button,
+.widget-header-button,
+.rounded-full[style*="background"] {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #e5e7eb !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+button[title="Clear Chat"]:hover,
+button[title="Close Chat"]:hover,
+.chat-close-button:hover,
+.rounded-full[style*="background"]:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+}
+
+button[title="Close Chat"] svg,
+button[title="Clear Chat"] svg,
+.rounded-full[style*="background"] svg {
+  color: #000000 !important;
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.chat-close-button svg path,
+.widget-header-button svg path,
+button[title="Close Chat"] svg path,
+button[title="Clear Chat"] svg path,
+.rounded-full[style*="background"] svg path {
+  stroke: #000000 !important;
+  fill: #000000 !important;
+}
+
+/* ✅ AVATAR POSITIONING AND SIZE - Canvas uyumlu */
+.host-container .flex.justify-center.items-center.rounded-full {
+  margin-right: 8px !important;
+  margin-top: 0px !important;
+  width: 30px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ✅ AVATAR SIZE AND POSITIONING FIXES - Canvas uyumlu */
+.host-container figure[data-testid="default-avatar"],
+.host-container .avatar-wrapper {
+  margin-right: 8px !important;
+  margin-top: 0px !important;
+  flex-shrink: 0 !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+/* Desktop avatar size - Biraz daha büyük */
+@media (min-width: 768px) {
+  figure[data-testid="default-avatar"] {
+    width: 44px !important; /* 40px → 44px */
+    height: 44px !important; /* 40px → 44px */
+    margin-right: 8px !important;
+    margin-top: 0px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  figure[data-testid="default-avatar"] img {
+    width: 36px !important; /* 32px → 36px */
+    height: 36px !important; /* 32px → 36px */
+  }
+}
+
+/* Mobile avatar size - Canvas uyumlu */
+@media (max-width: 767px) {
+  figure[data-testid="default-avatar"] {
+    width: 36px !important;
+    height: 36px !important;
+    margin-right: 8px !important;
+    margin-top: 0px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  figure[data-testid="default-avatar"] img {
+    width: 28px !important;
+    height: 28px !important;
+  }
+}
+
+/* ✅ MESSAGE BUBBLE ALIGNMENT WITH AVATAR - Canvas uyumlu */
+.host-container .chatbot-host-bubble {
+  margin-left: 0 !important;
+}
+
+/* ✅ ULTIMATE LEFT ALIGNMENT FIX - NUCLEAR APPROACH */
+/* Chat container - sol padding ve margin'i zorla 0 yap */
+.flex-1.overflow-y-auto,
+div[class*="flex-1"][class*="overflow-y-auto"] {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+  box-sizing: border-box !important;
+}
+
+/* Host container - ABSOLUTE left alignment */
+.host-container,
+.flex.flex-row.justify-start.items-start.host-container,
+div[class*="host-container"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  position: relative !important;
+  left: 0 !important; /* Force to leftmost position */
+}
+
+/* Avatar container - NO left spacing */
+.host-container > div:first-child,
+.host-container [style*="margin-right"],
+.host-container [style*="flex-shrink"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  position: relative !important;
+  left: 0 !important; /* Force avatar to leftmost position */
+}
+
+/* ✅ ULTIMATE LEFT ALIGNMENT FIX - Tailwind override */
+/* Tailwind Flexbox sınıflarını override et */
+flowise-chatbot .flex.flex-row.justify-start,
+flowise-chatbot .flex-1[style*="overflow"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Flowise chatbot container'ın kendisini de kontrol et */
+flowise-chatbot [style*="flex: 1"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ CRITICAL - Tailwind px-6 sınıfını tamamen override et */
+/* px-6 = padding-left: 1.5rem (24px) - Bu sol gap'in ana kaynağı! */
+/* ✅ UPDATED SELECTOR - px-6 kaldırıldı */
+.flex-1.overflow-y-auto.py-6.space-y-4 {
+  padding-left: 0 !important; /* Override px-6 (24px) */
+  margin-left: 0 !important;
+}
+
+/* Alternative selector for safety */
+flowise-chatbot [class*="px-6"] {
+  padding-left: 0 !important;
+}
+
+/* ✅ ULTRA-AGGRESSIVE LEFT ALIGNMENT - Force everything flush left */
+flowise-chatbot * {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ SPECIFIC OVERRIDES FOR CHAT ELEMENTS */
+flowise-chatbot .flex,
+flowise-chatbot [class*="flex"],
+flowise-chatbot .flex-1,
+flowise-chatbot [class*="flex-1"],
+flowise-chatbot .space-y-4,
+flowise-chatbot [class*="space-y"],
+flowise-chatbot .overflow-y-auto,
+flowise-chatbot [class*="overflow"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ BOT MESSAGE CONTAINER - Force flush left */
+flowise-chatbot .flex.items-start.space-x-3,
+flowise-chatbot [class*="items-start"],
+flowise-chatbot [class*="space-x"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  justify-content: flex-start !important;
+}
+
+/* ✅ AVATAR CONTAINER - Absolute left alignment */
+flowise-chatbot .flex-shrink-0,
+flowise-chatbot [class*="flex-shrink"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ EXCEPTION RULES - Restore padding for inputs/buttons where needed */
+flowise-chatbot input,
+flowise-chatbot textarea,
+flowise-chatbot button,
+flowise-chatbot select {
+  padding-left: 12px !important;
+}
+
+/* ✅ FLASH PREVENTION - Critical CSS must be first */
+/* This CSS must be parsed immediately to prevent input width flash */
+
+/* ✅ CLEAN VERSION - Input styling - TAM GENİŞLİK - GÜNCELLENDİ */
+flowise-chatbot input[placeholder*="Type your message"],
+flowise-chatbot textarea[placeholder*="Type your message"],
+input[placeholder*="Type your message"],
+textarea[placeholder*="Type your message"] {
+  /* Ana fix - boyut - TAM GENİŞLİK - GÜNCELLENDİ */
+  width: calc(100% - 40px) !important; /* ✅ Daha az boşluk bırakıldı */
+  min-width: 150px !important; /* ✅ Minimum genişlik daha da azaltıldı */
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  box-sizing: border-box !important;
+  
+  /* ✅ CLEAN STYLING */
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  color: #111827 !important;
+  font-weight: 400 !important;
+}
+
+/* ✅ YENİ - TextInput widget tam genişlik */
+.text-input-widget,
+.widget-textinput-container,
+.widget-input-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ✅ CLEAN VERSION - Container styling - TAM GENİŞLİK */
+flowise-chatbot .input-container,
+.input-container,
+div:has(> input[placeholder*="Type your message"]),
+div:has(> textarea[placeholder*="Type your message"]) {
+  /* Ana fix - layout - TAM GENİŞLİK */
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important; /* ✅ TAM GENİŞLİK için max-width kaldırıldı */
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important; /* ✅ Container padding kaldırıldı, input kendi padding'i kullanacak */
+  
+  /* ✅ CLEAN STYLING */
+  background: #ffffff !important;
+  border: none !important; /* ✅ Container border kaldırıldı */
+  border-radius: 0 !important; /* ✅ Container border-radius kaldırıldı */
+}
+
+/* ✅ CLEAN VERSION - Widget container */
+flowise-chatbot {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* ✅ BURADAN SONRA ESKİ CSS'LERİNİZ DEVAM EDECEK... */
+:host {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ULTRA PRIORITY: Input width fix - Applied IMMEDIATELY */
+flowise-chatbot input[placeholder*="Type your message"],
+flowise-chatbot textarea[placeholder*="Type your message"],
+flowise-chatbot input[placeholder*="type your message"],
+flowise-chatbot textarea[placeholder*="type your message"],
+input[placeholder*="Type your message"],
+textarea[placeholder*="Type your message"],
+input[placeholder*="type your message"],
+textarea[placeholder*="type your message"],
+.text-input {
+  width: calc(100% - 70px) !important;
+  min-width: 280px !important;
+  max-width: calc(100% - 70px) !important;
+  flex: 1 1 0% !important;
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
+  flex-basis: 0% !important;
+  box-sizing: border-box !important;
+}
+.input-container {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important; /* YENİ: Compact spacing */
+  min-height: 36px !important; /* YENİ: Compact container */
+  padding: 6px 10px !important; /* YENİ: Compact padding */
+  background: #ffffff !important;
+  border: 2px solid #f1f5f9 !important;
+  border-radius: 12px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: blur(8px) !important;
+  width: 100% !important;
+  max-width: 420px !important; /* ADDED: Prevent oversizing */
+}
+
+/* ✅ CRITICAL: Textarea width fix - This prevents the flash */
+.input-container textarea,
+.input-container input {
+  width: calc(100% - 70px) !important; /* CRITICAL: Reserve space for buttons */
+  min-width: 280px !important; /* CRITICAL: Minimum readable width */
+  flex: 1 1 0% !important; /* CRITICAL: Flex grow */
+  flex-grow: 1 !important;
+  flex-shrink: 1 !important;
+  flex-basis: 0% !important;
+  box-sizing: border-box !important;
+}
+
+/* ✅ CANVAS UYUMLU LEAD FORM STYLING - Çok daha küçük ve kompakt */
+.chatbot-host-bubble {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important; /* Daha küçük radius: 12px → 8px */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important; /* Daha yumuşak shadow */
+  max-width: 200px !important; /* Canvas gibi çok küçük: 240px → 200px */
+  min-width: 180px !important; /* Daha küçük minimum: 220px → 180px */
+  width: auto !important; /* Genişlik otomatik */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  margin-right: 20px !important; /* Sola kaydırmak için margin */
+  padding: 8px !important; /* Canvas'tan da küçük padding: 12px → 8px */
+  backdrop-filter: blur(10px) !important;
+  position: relative !important;
+}
+
+/* ✅ ULTRA STRONG LEAD FORM INPUT STYLING - Override inline styles */
+.chatbot-host-bubble input[placeholder*="Name"],
+.chatbot-host-bubble input[placeholder*="Email"],
+.chatbot-host-bubble input[placeholder*="Phone"],
+.chatbot-host-bubble textarea[placeholder*="Message"],
+.chatbot-host-bubble input[name="name"],
+.chatbot-host-bubble input[name="email"],
+.chatbot-host-bubble input[type="email"],
+.chatbot-host-bubble textarea[name="message"],
+.chatbot-host-bubble .PhoneInputInput,
+div:has(.chatbot-host-bubble) input,
+div:has(.chatbot-host-bubble) textarea,
+/* Genel lead form input targeting */
+.lead-form-input,
+input[placeholder*="name"],
+input[placeholder*="email"],
+input[placeholder*="Enter"],
+textarea[placeholder*="Tell"] {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important; /* Canvas border */
+  border-radius: 6px !important; /* Küçük radius */
+  padding: 8px 10px !important; /* Çok küçük padding - inline style override */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  transition: all 0.15s ease-in-out !important;
+  outline: none !important;
+  width: 100% !important;
+  font-size: 12px !important; /* Çok küçük font - inline style override */
+  color: #1f2937 !important;
+  line-height: 1.3 !important; /* Küçük line height */
+  font-weight: 400 !important;
+  box-sizing: border-box !important;
+  min-height: 30px !important; /* Çok küçük height - inline style override */
+  max-height: none !important;
+}
+
+/* ✅ ULTRA STRONG LEAD FORM INPUT FOCUS - Override inline styles */
+.chatbot-host-bubble input[placeholder*="Name"]:focus,
+.chatbot-host-bubble input[placeholder*="Email"]:focus,
+.chatbot-host-bubble input[placeholder*="Phone"]:focus,
+.chatbot-host-bubble textarea[placeholder*="Message"]:focus,
+.chatbot-host-bubble input[name="name"]:focus,
+.chatbot-host-bubble input[name="email"]:focus,
+.chatbot-host-bubble input[type="email"]:focus,
+.chatbot-host-bubble textarea[name="message"]:focus,
+.chatbot-host-bubble .PhoneInputInput:focus,
+div:has(.chatbot-host-bubble) input:focus,
+div:has(.chatbot-host-bubble) textarea:focus,
+.lead-form-input:focus,
+input[placeholder*="name"]:focus,
+input[placeholder*="email"]:focus,
+input[placeholder*="Enter"]:focus,
+textarea[placeholder*="Tell"]:focus {
+  border-color: #3b82f6 !important;
+  outline: none !important;
+}
+
+.chatbot-host-bubble input.error,
+.chatbot-host-bubble textarea.error,
+.lead-form-input.error {
+  border-color: #ef4444 !important;
+}
+
+/* ✅ ULTRA STRONG LEAD FORM BUTTON STYLING - Override inline styles */
+.chatbot-host-bubble button[type="submit"],
+.chatbot-host-bubble button:not([title]):not([class*="close"]),
+div:has(.chatbot-host-bubble) button[type="submit"],
+.lead-form-button,
+button[type="submit"] {
+  background: #3b82f6 !important;
+  border: none !important;
+  border-radius: 6px !important; /* Küçük radius */
+  padding: 8px 12px !important; /* Çok küçük padding - inline style override */
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  font-size: 12px !important; /* Çok küçük font - inline style override */
+  min-height: 32px !important; /* Çok küçük height - inline style override */
+  box-sizing: border-box !important;
+}
+
+/* ✅ ULTRA STRONG LEAD FORM BUTTON HOVER - Override inline styles */
+.chatbot-host-bubble button[type="submit"]:hover:not(:disabled),
+.chatbot-host-bubble button:not([title]):not([class*="close"]):hover:not(:disabled),
+div:has(.chatbot-host-bubble) button[type="submit"]:hover:not(:disabled),
+.lead-form-button:hover:not(:disabled),
+button[type="submit"]:hover:not(:disabled) {
+  opacity: 0.9 !important;
+  transform: none !important;
+}
+
+.chatbot-host-bubble button[type="submit"]:disabled,
+.chatbot-host-bubble button:not([title]):not([class*="close"]):disabled,
+div:has(.chatbot-host-bubble) button[type="submit"]:disabled,
+.lead-form-button:disabled,
+button[type="submit"]:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* ✅ LEAD FORM CLOSE BUTTON */
+.lead-form-close {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+  background: #ffffff !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: #6b7280 !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.lead-form-close:hover {
+  background: #f3f4f6 !important;
+}
+
+/* ✅ LEAD FORM LABELS */
+.lead-form-label,
+label {
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: #374151 !important;
+  margin-bottom: 4px !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ✅ LEAD FORM ERROR STYLING */
+.lead-field-error {
+  color: #ef4444 !important;
+  font-size: 12px !important;
+  margin-top: 2px !important;
+}
+
+.lead-error-message {
+  color: #dc2626 !important;
+  background-color: #fef2f2 !important;
+  border: 1px solid #fecaca !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  font-size: 14px !important;
+}
+
+/* ✅ LEAD FORM TITLE */
+.lead-form-title {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+  color: #1f2937 !important;
+  margin-bottom: 4px !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ✅ PHONE INPUT STYLING */
+.PhoneInput {
+  width: 100% !important;
+}
+
+.PhoneInput .PhoneInputInput {
+  border: none !important;
+  outline: none !important;
+  background: #ffffff !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 15px !important; /* Compact */
+  color: #1f2937 !important;
+}
+
+.PhoneInput .PhoneInputCountrySelect {
+  background: #ffffff !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.PhoneInput .PhoneInputCountrySelectArrow {
+  color: #6b7280 !important;
+}
+
+/* ✅ SCROLLBAR STYLING */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.3);
+}
+
+/* ✅ MOBILE RESPONSIVE - Compact Design */
+@media (max-width: 640px) {
+  /* Widget container */
+  div[part='bot'] {
+    width: calc(100vw - 20px) !important;
+    max-width: calc(100vw - 20px) !important;
+    height: calc(100vh - 100px) !important;
+    max-height: calc(100vh - 100px) !important;
+    position: fixed !important;
+    bottom: 10px !important;
+    left: 10px !important;
+    right: 10px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+    overflow: hidden !important;
+  }
+
+  /* Button */
+  button[part='button'] {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 42424243 !important;
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 50% !important;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4) !important;
+  }
+
+  /* Compact mobile header */
+  .chatbot-container > div:first-child {
+    padding: 10px 16px !important;
+    min-height: 56px !important; /* Mobile için daha küçük */
+  }  /* Compact mobile messages - SOLA YASLAMA */
+  .chatbot-container > div:nth-child(2) > div:first-child {
+    padding: 12px 0px !important; /* Sol padding tamamen kaldırıldı: 4px → 0px */
+    gap: 8px !important; /* Daha az gap */
+  }
+  
+  /* Compact mobile input */
+  .chatbot-container > div:nth-child(2) > div:last-child {
+    padding: 12px 16px 8px 16px !important; /* Daha compact */
+    min-height: 44px !important; /* Touch-friendly ama compact */
+  }
+  
+  /* Compact mobile footer */
+  .chatbot-container > div:last-child {
+    padding: 6px 16px !important;
+    min-height: 36px !important;
+  }  /* Lead form mobile - Canvas gibi çok küçük */
+  .chatbot-host-bubble {
+    max-width: 180px !important; /* Çok küçük: 220px → 180px */
+    min-width: 160px !important; /* Çok küçük: 200px → 160px */
+    margin-right: 16px !important; /* Sola kaydırma */
+    border-radius: 8px !important;
+    padding: 8px !important; /* Küçük padding */
+  }
+  
+  /* Input mobile - Canvas gibi küçük */
+  .lead-form-input,
+  input, textarea {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+    border-radius: 6px !important; /* Küçük radius */
+    padding: 8px 10px !important; /* Küçük padding */
+    min-height: 36px !important; /* Daha küçük: 40px → 36px */
+  }
+  
+  /* Button mobile - Canvas gibi küçük */
+  .lead-form-button,
+  button[type="submit"] {
+    min-height: 36px !important; /* Daha küçük: 40px → 36px */
+    touch-action: manipulation !important;
+    border-radius: 6px !important;
+    font-size: 13px !important; /* Küçük font: 14px → 13px */
+    padding: 8px 14px !important; /* Küçük padding */
+  }
+}
+
+/* ✅ TABLET OPTIMIZATIONS */
+@media (max-width: 768px) and (min-width: 641px) {
+  div[part='bot'] {
+    width: 450px !important;
+    height: 600px !important;
+    max-width: 450px !important;
+    max-height: 600px !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    left: auto !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  }  .chatbot-host-bubble {
+    max-width: 180px !important; /* Canvas gibi küçük: 220px → 180px */
+    min-width: 160px !important; /* Canvas gibi küçük: 200px → 160px */
+  }
+}
+
+/* ✅ DESKTOP - Compact Design */
+@media (min-width: 769px) {
+  div[part='bot'] {
+    width: 450px !important;
+    height: 600px !important;
+    max-width: 450px !important;
+    max-height: 600px !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  }  .chatbot-host-bubble {
+    max-width: 200px !important; /* Canvas gibi küçük: 240px → 200px */
+    min-width: 180px !important; /* Canvas gibi küçük: 220px → 180px */
+  }
+}
+
+/* ✅ CHAT POPUP BUTTON MODERN STYLING */
+.chat-popup-button {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  cursor: pointer !important;
+  z-index: 9999 !important;
+  
+  /* Modern blue gradient */
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  
+  /* Modern shadow */
+  box-shadow: 0 8px 25px -3px rgba(59, 130, 246, 0.4), 
+              0 4px 6px -2px rgba(59, 130, 246, 0.2) !important;
+  
+  /* Smooth transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  
+  /* Icon color */
+  color: white !important;
+  
+  /* Backdrop blur */
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* Hover effect */
+.chat-popup-button:hover {
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 12px 30px -3px rgba(59, 130, 246, 0.5), 
+              0 8px 12px -2px rgba(59, 130, 246, 0.3) !important;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%) !important;
+}
+
+/* Active state */
+.chat-popup-button:active {
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+/* Icon inside the button */
+.chat-popup-button svg,
+.chat-popup-button .icon {
+  width: 24px !important;
+  height: 24px !important;
+  color: white !important;
+  fill: white !important;
+}
+
+/* Pulse animation for attention */
+.chat-popup-button::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -2px !important;
+  left: -2px !important;
+  right: -2px !important;
+  bottom: -2px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  z-index: -1 !important;
+  opacity: 0 !important;
+  animation: pulse-chat 2s infinite !important;
+}
+
+@keyframes pulse-chat {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;    transform: scale(1.2);
+  }
+}
+
+/* ✅ MEGA BADGE BACKGROUND FIX - Ultra strong selectors */
+/* Target all possible badge elements */
+.w-full.text-center,
+span.w-full.text-center,
+.lite-badge,
+#lite-badge,
+[id="lite-badge"],
+span:has(> a.lite-badge),
+span:has(> .lite-badge),
+span.w-full,
+.text-center,
+div:has(> .lite-badge),
+div:has(> #lite-badge),
+[class*="w-full"],
+[class*="text-center"],
+a.lite-badge,
+a#lite-badge {
+  background-color: transparent !important;
+  background: transparent !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* ✅ Deep badge targeting with pseudo-elements */
+.w-full.text-center::before,
+.w-full.text-center::after,
+.lite-badge::before,
+.lite-badge::after,
+#lite-badge::before,
+#lite-badge::after {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* ✅ Parent containers of badge */
+div:has(.lite-badge),
+div:has(#lite-badge),
+div:has(.w-full.text-center) {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* ✅ SHADOW DOM & WEB COMPONENT HOST FIX - Force white background */
+flowise-chatbot,
+flowise-fullchatbot,
+:host,
+:host(:not(.badge):not(.popup)) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* ✅ SHADOW DOM CHILDREN FIX */
+flowise-chatbot *:not(.badge):not(.popup),
+flowise-fullchatbot *:not(.badge):not(.popup) {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+/* ✅ ULTRA PRIORITY CONTAINER FIX - Any missed containers */
+.chatbot-container,
+.chat-window,
+.chat-wrapper,
+.bot-wrapper,
+.widget-container,
+.message-container,
+.conversation-container {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* ✅ FINAL NUCLEAR OPTION - HEADER BUTTONS MUST BE WHITE with BLACK icons */
+/* Maximum specificity and placement at end of file for highest priority */
+.widget-header-button.widget-clear-chat-button.rounded-full.transition-all,
+.widget-header-button.widget-close-button.rounded-full.transition-all,
+button.widget-header-button.widget-clear-chat-button.rounded-full,
+button.widget-header-button.widget-close-button.rounded-full,
+button[title="Close Chat"].widget-header-button.rounded-full.transition-all,
+button[title="Clear Chat"].widget-header-button.rounded-full.transition-all {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  color: #000000 !important;
+  border: 2px solid #e5e7eb !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  z-index: 99999 !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+/* ✅ NUCLEAR SVG OPTION - Force BLACK SVG content */
+.widget-header-button.widget-clear-chat-button svg,
+.widget-header-button.widget-close-button svg,
+.widget-header-button.widget-clear-chat-button svg path,
+.widget-header-button.widget-close-button svg path,
+.widget-header-button.widget-clear-chat-button svg *,
+.widget-header-button.widget-close-button svg *,
+button[title="Close Chat"] svg,
+button[title="Clear Chat"] svg,
+button[title="Close Chat"] svg path,
+button[title="Clear Chat"] svg path,
+button[title="Close Chat"] svg *,
+button[title="Clear Chat"] svg * {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+  color: #000000 !important;
+}
+
+/* ✅ HOVER STATES - Keep functionality with light gray */
+.widget-header-button.widget-clear-chat-button:hover,
+.widget-header-button.widget-close-button:hover {
+  background: #f3f4f6 !important;
+  background-color: #f3f4f6 !important;
+  transform: scale(1.05) !important;
+}
+
+/* ✅ AVATAR + MESSAGE SIDE BY SIDE LAYOUT - Perfect left alignment */
+.host-container {
+  align-items: flex-start !important;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 0 !important;
+  margin-bottom: 12px !important;
+  margin-left: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  box-sizing: border-box !important;
+}
+
+/* ✅ AVATAR CONTAINER - Perfect left alignment */
+.host-container figure[data-testid="default-avatar"],
+.host-container .avatar-wrapper,
+.host-container .flex.justify-center.items-center.rounded-full {
+  flex-shrink: 0 !important;
+  align-self: flex-start !important;
+  margin-right: 8px !important;
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+/* ✅ MESSAGE BUBBLE - Perfect left alignment */
+.host-container .chatbot-host-bubble {
+  flex: 1 1 auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  align-self: flex-start !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ MESSAGE TEXT ALIGNMENT - Canvas uyumlu */
+.host-container .chatbot-host-bubble p,
+.host-container .chatbot-host-bubble div {
+  margin: 0 !important;
+  line-height: 1.5 !important;
+  padding: 8px 12px !important;
+}
+
+/* ✅ FORCE LEFT ALIGNMENT - Override any container padding/margin */
+.chatbot-container,
+.chatbot-container > div,
+.chatbot-container > div > div {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* ✅ ENSURE AVATAR IS FLUSH LEFT */
+.host-container {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* ✅ PREVENT ANY SPACING FROM PARENT CONTAINERS */
+.host-container > div:first-child {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ ENSURE DEFAULT AVATAR POSITIONING */
+figure[data-testid="default-avatar"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* ✅ OVERRIDE ANY FLEX GAPS OR SPACING */
+.host-container {
+  gap: 0 !important;
+}
+
+/* ✅ ULTIMATE LEFT ALIGNMENT - Override ALL possible spacing */
+.host-container,
+div.host-container,
+.flex.flex-row.justify-start.mb-2.items-start.host-container {
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ✅ FORCE AVATAR CONTAINER TO ZERO SPACING */
+.host-container > div:first-child,
+.host-container > Show > div,
+.host-container [style*="margin-right"] {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* ✅ OVERRIDE TAILWIND MARGIN CLASSES */
+.host-container.mb-2 {
+  margin-bottom: 12px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-top: 0 !important;
+}
+
+/* ✅ FORCE ZERO LEFT SPACING ON ALL CHILDREN */
+.host-container * {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* ✅ EXCEPT AVATAR MARGIN-RIGHT FOR SPACING */
+.host-container > div:first-child {
+  margin-right: 12px !important;
+}
+
+/* ✅ CHAT CONTAINER FORCED LEFT ALIGNMENT */
+.chatbot-container > div:nth-child(2) > div:first-child,
+div[style*="padding: 70px"] {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* ✅ FORCE ALL CHAT MESSAGE CONTAINERS TO LEFT */
+.chatbot-container > div > div {
+  padding-left: 0 !important;
+}

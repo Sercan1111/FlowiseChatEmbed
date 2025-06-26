@@ -76,15 +76,13 @@ export const GuestBubble = (props: Props) => {
       );
     } else {
       return (
-        <div class={`inline-flex items-center h-12 max-w-max p-2 mr-1 flex-none bg-transparent border border-gray-300 rounded-md`}>
+        <div class={`inline-flex items-center h-12 max-w-max p-2 mr-1 flex-none bg-white border border-gray-300 rounded-md`}>
           <AttachmentIcon color={props.textColor ?? defaultTextColor} />
           <span class={`ml-1.5 text-inherit`}>{item.name}</span>
         </div>
       );
     }
-  };
-
-  return (
+  };  return (
     <div class="flex justify-end mb-2 items-end guest-container" style={{ 'margin-left': '50px' }}>
       <div
         class="max-w-full flex flex-col justify-center items-start chatbot-guest-bubble px-4 py-2 gap-2 mr-2"
@@ -103,8 +101,7 @@ export const GuestBubble = (props: Props) => {
               }}
             </For>
           </div>
-        )}
-        {props.message.message && (
+        )}        {props.message.message && (
           <span
             ref={setUserMessageRef}
             class="mr-2 whitespace-pre-wrap"

@@ -1,10 +1,10 @@
 
-> flowise-embed@3.0.3 build C:\Users\Sercan ARABACI\Desktop\xx\ChatBotStudio\packages\flowise-embed
+> flowise-embed@3.0.3 build C:\Users\Sercan ARABACI\Desktop\19haziran\ChatBotStudio\packages\flowise-embed
 > cross-env NODE_ENV=production rollup --config rollup.config.cjs
 
 [36m
 [1msrc/web.ts[22m → [1mdist/web.umd.js[22m...[39m
-[BABEL] Note: The code generator has deoptimised the styling of C:\Users\Sercan ARABACI\Desktop\xx\ChatBotStudio\node_modules\.pnpm\lodash@4.17.21\node_modules\lodash\lodash.js as it exceeds the max of 500KB.
+[BABEL] Note: The code generator has deoptimised the styling of C:\Users\Sercan ARABACI\Desktop\19haziran\ChatBotStudio\node_modules\.pnpm\lodash@4.17.21\node_modules\lodash\lodash.js as it exceeds the max of 500KB.
 [1m[33m(!) Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m[22m
 [1m../../node_modules/.pnpm/@microsoft+fetch-event-source@2.0.1/node_modules/@microsoft/fetch-event-source/lib/esm/fetch.js (1:13)[22m
 [1m[33m(!) Error when using sourcemap for reporting an error: Can't resolve original location of error.[39m[22m
@@ -17,4 +17,4 @@
 2:   var t = {};
 3:   for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];[39m
 ...and 1 other occurrence
-[32mcreated [1mdist/web.umd.js[22m in [1m18.5s[22m[39m
+[32mcreated [1mdist/web.umd.js[22m in [1m17s[22m[39m

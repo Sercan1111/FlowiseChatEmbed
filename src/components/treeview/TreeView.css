@@ -15,7 +15,7 @@
 }
 
 .tree-item-content:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: #f8f9fa;
 }
 
 .tree-item-content.selected {
@@ -45,6 +45,6 @@
 
 /* Highlighted item style */
 .tree-item-content.highlighted {
-  background-color: rgba(255, 193, 7, 0.1);
+  background-color: #fffbf0;
   font-weight: 500;
-} 
+}

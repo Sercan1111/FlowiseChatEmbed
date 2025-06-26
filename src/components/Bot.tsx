@@ -1,9 +1,6 @@
-import { createSignal, createEffect, For, onMount, Show, mergeProps, on, createMemo } from 'solid-js';
+import { createSignal, createEffect, For, onMount, Show, mergeProps, on, createMemo, onCleanup } from 'solid-js';
 import { v4 as uuidv4 } from 'uuid';
 
-// ✅ WIDGET VERSION TEST - Bu log gözükmezse widget yüklenmiyor
-console.log('🚀 WIDGET VERSION TEST:', new Date().toISOString());
-console.log('🎯 BOT COMPONENT LOADED - TIMESTAMP:', Date.now());
 import {
   sendMessageQuery,
   upsertVectorStoreWithFormData,
@@ -48,30 +45,6 @@ import { removeLocalStorageChatHistory, getLocalStorageChatflow, setLocalStorage
 import { cloneDeep } from 'lodash';
 import { FollowUpPromptBubble } from '@/components/bubbles/FollowUpPromptBubble';
 import { fetchEventSource, EventStreamContentType } from '@microsoft/fetch-event-source';
-
-// ✅ DIRECT CSS INJECTION - Force override
-if (typeof document !== 'undefined') {
-  const style = document.createElement('style');
-  style.setAttribute('id', 'bot-custom-styles');
-  style.textContent = `
-    /* FORCE OVERRIDE - Higher specificity */
-    .chatbot-container .chatbot-container textarea {
-      min-height: 20px !important;
-      max-height: 60px !important;
-      padding: 6px 0 !important;
-      font-size: 15px !important;
-      background: red !important; /* DEBUG - bu görünürse CSS çalışıyor */
-    }
-    
-    .chatbot-container .input-container {
-      min-height: 36px !important;
-      padding: 6px 10px !important;
-      border: 3px solid lime !important; /* DEBUG */
-    }
-  `;
-  document.head.appendChild(style);
-  console.log('🎨 Custom CSS injected with DEBUG colors');
-}
 
 export type FileEvent<T = EventTarget> = {
   target: T;
@@ -255,11 +228,9 @@ export type LeadsConfig = {
 
 const defaultWelcomeMessage = 'Hi there! How can I help?';
 
-const DEFAULT_FORM_TITLE = `Hey 👋 thanks for your interest!
-Let us know where we can reach you`;
+const DEFAULT_FORM_TITLE = ``;
 
-const DEFAULT_SUCCESS_MESSAGE = `Thank you!
-What can I do for you?`;
+const DEFAULT_SUCCESS_MESSAGE = ``;
 
 /*const sourceDocuments = [
     {
@@ -421,16 +392,17 @@ const FormInputView = (props: FormInputViewProps) => {
       <div
         class="w-full max-w-md bg-white shadow-lg rounded-lg overflow-hidden"
         style={{
-          'font-family': 'Poppins, sans-serif',
+          'font-family': "'Baskerville', Baskerville, 'Times New Roman', Times, serif",
+          'font-weight': 500,
           'font-size': props.fontSize ? `${props.fontSize}px` : '16px',
           background: props.backgroundColor || defaultBackgroundColor,
           color: props.textColor || defaultTextColor,
         }}
       >
         <div class="p-6">
-          <h2 class="text-xl font-bold mb-2">{props.title}</h2>
+          <h2 class="text-xl font-bold mb-2 lead-form-label">{props.title}</h2>
           {props.description && (
-            <p class="text-gray-600 mb-6" style={{ color: props.textColor || defaultTextColor }}>
+            <p class="text-gray-600 mb-6 lead-form-label" style={{ color: props.textColor || defaultTextColor }}>
               {props.description}
             </p>
           )}
@@ -439,15 +411,17 @@ const FormInputView = (props: FormInputViewProps) => {
             <For each={props.inputParams}>
               {(param) => (
                 <div class="space-y-2">
-                  <label class="block text-sm font-medium">{param.label}</label>
+                  <label class="block text-sm font-medium lead-form-label">{param.label}</label>
 
                   {param.type === 'string' && (
                     <input
                       type="text"
-                      class="w-full px-3 py-2 rounded-md focus:outline-none"
+                      class="w-full px-3 py-2 rounded-md focus:outline-none lead-form-input"
                       style={{
                         border: '1px solid #9ca3af',
                         'border-radius': '0.375rem',
+                        'font-family': "'Baskerville', Baskerville, 'Times New Roman', Times, serif",
+                        'font-weight': 500,
                       }}
                       onFocus={(e) => (e.target.style.border = '1px solid #3b82f6')}
                       onBlur={(e) => (e.target.style.border = '1px solid #9ca3af')}
@@ -460,10 +434,12 @@ const FormInputView = (props: FormInputViewProps) => {
                   {param.type === 'number' && (
                     <input
                       type="number"
-                      class="w-full px-3 py-2 rounded-md focus:outline-none"
+                      class="w-full px-3 py-2 rounded-md focus:outline-none lead-form-input"
                       style={{
                         border: '1px solid #9ca3af',
                         'border-radius': '0.375rem',
+                        'font-family': "'Baskerville', Baskerville, 'Times New Roman', Times, serif",
+                        'font-weight': 500,
                       }}
                       onFocus={(e) => (e.target.style.border = '1px solid #3b82f6')}
                       onBlur={(e) => (e.target.style.border = '1px solid #9ca3af')}
@@ -477,23 +453,27 @@ const FormInputView = (props: FormInputViewProps) => {
                     <div class="flex items-center">
                       <input
                         type="checkbox"
-                        class="h-4 w-4 rounded text-blue-600 focus:ring-blue-500"
+                        class="h-4 w-4 rounded text-blue-600 focus:ring-blue-500 lead-form-input"
                         style={{
                           border: '1px solid #9ca3af',
+                          'font-family': "'Baskerville', Baskerville, 'Times New Roman', Times, serif",
+                          'font-weight': 500,
                         }}
                         name={param.name}
                         onChange={(e) => handleInputChange(param.name, e.target.checked)}
                       />
-                      <span class="ml-2">Yes</span>
+                      <span class="ml-2 lead-form-label">Yes</span>
                     </div>
                   )}
 
                   {param.type === 'options' && (
                     <select
-                      class="w-full px-3 py-2 rounded-md focus:outline-none"
+                      class="w-full px-3 py-2 rounded-md focus:outline-none lead-form-input"
                       style={{
                         border: '1px solid #9ca3af',
                         'border-radius': '0.375rem',
+                        'font-family': "'Baskerville', Baskerville, 'Times New Roman', Times, serif",
+                        'font-weight': 500,
                       }}
                       onFocus={(e) => (e.target.style.border = '1px solid #3b82f6')}
                       onBlur={(e) => (e.target.style.border = '1px solid #9ca3af')}
@@ -512,9 +492,11 @@ const FormInputView = (props: FormInputViewProps) => {
             <div class="pt-4">
               <button
                 type="submit"
-                class="w-full py-2 px-4 text-white font-semibold rounded-md focus:outline-none transition duration-300 ease-in-out"
+                class="w-full py-2 px-4 text-white font-semibold rounded-md focus:outline-none transition duration-300 ease-in-out lead-form-label"
                 style={{
                   'background-color': props.sendButtonColor || '#3B81F6',
+                  'font-family': "'Baskerville', Baskerville, 'Times New Roman', Times, serif",
+                  'font-weight': 500,
                 }}
               >
                 Submit
@@ -553,6 +535,23 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [leadName, setLeadName] = createSignal('');
   const [leadPhone, setLeadPhone] = createSignal('');
   const [leadMessage, setLeadMessage] = createSignal('');
+
+  // ✅ Form styling configuration signals (Canvas config)
+  const [formStyling, setFormStyling] = createSignal({
+    formContainer: {
+      background: '#ffffff',
+      borderColor: '#e2e8f0'
+    },
+    inputFields: {
+      background: '#ffffff',
+      textColor: '#000000',
+      borderColor: '#e2e8f0'
+    },
+    saveButton: {
+      background: '#3b82f6',
+      textColor: '#ffffff'
+    }
+  });
 
   // ✅ Real-time validation handler
   const handleFieldValidation = (fieldName: string, value: string): boolean => {
@@ -602,7 +601,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     setFieldTouched({
       name: true,
       email: true,
-      phone: true, 
+      phone: true,
       message: true
     });
 
@@ -676,6 +675,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         // Clear form and hide
         setFieldErrors({});
         setShowLeadForm(false);
+        setMessages((prevMessages) => prevMessages.filter((msg) => msg.type !== 'leadCaptureMessage'));
         
       } else if (result.error) {
         console.error('❌ Lead save failed:', result.error);
@@ -745,124 +745,73 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
   // drag & drop
   const [isDragActive, setIsDragActive] = createSignal(false);
-  const [uploadedFiles, setUploadedFiles] = createSignal<{ file: File; type: string }[]>([]);
-  const [fullFileUploadAllowedTypes, setFullFileUploadAllowedTypes] = createSignal('*');
+  const [uploadedFiles, setUploadedFiles] = createSignal<{ file: File; type: string }[]>([]);  const [fullFileUploadAllowedTypes, setFullFileUploadAllowedTypes] = createSignal('*');  // Removed all CSS injections to prevent conflicts
 
 // lead capture activity tracking
 const [lastActivityTime, setLastActivityTime] = createSignal(Date.now());
 let currentInactivityTimer: NodeJS.Timeout | null = null;
 const [showLeadForm, setShowLeadForm] = createSignal<boolean>(false);
-const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false);
-
-// ✅ Activity tracking function - timer'ı da reset eder
-const trackActivity = () => {
-  console.log('🎯 Activity tracked at:', new Date().toISOString());
-  setLastActivityTime(Date.now());
-  
-  // ✅ Aktivity olduğunda mevcut timer'ı reset et
-  resetInactivityTimer();
-  
-  // ✅ Yeni timer başlat (sadece gerekli koşullarda)
-  const config = leadsConfig();
-  if (config?.status && 
-      ['inactivity', 'both'].includes(config?.triggerMode || '') &&
-      !isLeadSaved() && 
-      !leadFormDismissed() &&
-      !getLocalStorageChatflow(props.chatflowid)?.lead) {
-    startInactivityTimer();
-  }
-};
-
+const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false);  // ✅ Activity tracking function - timer'ı da reset eder
+  const trackActivity = () => {
+    setLastActivityTime(Date.now());
+    resetInactivityTimer();
+    
+    // Yeni timer başlat (sadece gerekli koşullarda)
+    const config = leadsConfig();
+    if (config?.status && 
+        ['inactivity', 'both'].includes(config?.triggerMode || '') &&
+        !isLeadSaved() && 
+        !leadFormDismissed() &&
+        !getLocalStorageChatflow(props.chatflowid)?.lead) {
+      startInactivityTimer();
+    }
+  };
   const startInactivityTimer = () => {
-  const config = leadsConfig();
-  const leadSaved = isLeadSaved();
-  const formDismissed = leadFormDismissed();
-  const storage = getLocalStorageChatflow(props.chatflowid);
-  
-  console.log('⏰ startInactivityTimer called');
-  console.log('📊 Config:', { 
-    status: config?.status, 
-    triggerMode: config?.triggerMode,
-    inactivityDuration: config?.inactivityDuration 
-  });
-  console.log('📊 State:', { leadSaved, formDismissed, showLeadForm: showLeadForm() });
-  
-  if (storage?.lead) {
-    console.log('❌ Timer not started - lead already saved');
-    return; // ✅ Lead kaydedilmişse inactivity timer başlatma
-  }
-  
-  if (!config?.status || leadSaved || formDismissed) {
-    console.log('❌ Timer not started - config/saved/dismissed');
-    return;
-  }
-  
-  if (!['inactivity', 'both'].includes(config?.triggerMode || '')) {
-    console.log('❌ Timer not started - wrong trigger mode:', config?.triggerMode);
-    return;
-  }
+    const config = leadsConfig();
+    const leadSaved = isLeadSaved();
+    const formDismissed = leadFormDismissed();
+    const storage = getLocalStorageChatflow(props.chatflowid);
+    
+    if (storage?.lead || !config?.status || leadSaved || formDismissed) {
+      return;
+    }
+    
+    if (!['inactivity', 'both'].includes(config?.triggerMode || '')) {
+      return;
+    }
 
-  // Already checked storage.lead above, so no need to check again
-  console.log('📦 Storage data:', storage);
-
-  const inactivityDuration = (config?.inactivityDuration || 30) * 1000;
-  console.log('✅ Starting timer for', inactivityDuration, 'ms');
-  
-  // ✅ CRITICAL FIX: Timer'ı sadece inactivity süresinden sonra tetikle
-const timer = setTimeout(() => {
-    console.log('🔔 Inactivity timer fired!');
+    const inactivityDuration = (config?.inactivityDuration || 30) * 1000;
     
-    // ✅ Timer tetiklendiğinde son activity'den bu yana geçen süreyi kontrol et
-    const now = Date.now();
-    const timeSinceLastActivity = now - lastActivityTime();
-    const requiredInactivityTime = inactivityDuration;
-    
-    console.log('⏱️ Time since last activity:', timeSinceLastActivity, 'ms');
-    console.log('⏱️ Required inactivity time:', requiredInactivityTime, 'ms');
-    
-    // ✅ Eğer gerçekten inactivity süresi geçtiyse form göster
-    if (timeSinceLastActivity >= requiredInactivityTime) {
-      console.log('🔔 Current state check:', {
-        isLeadSaved: isLeadSaved(),
-        leadFormDismissed: leadFormDismissed(),
-        showLeadForm: showLeadForm()
-      });
+    const timer = setTimeout(() => {
+      const now = Date.now();
+      const timeSinceLastActivity = now - lastActivityTime();
+      const requiredInactivityTime = inactivityDuration;
       
-      if (!isLeadSaved() && !leadFormDismissed() && !showLeadForm()) {
-        console.log('✅ Showing lead form due to inactivity');
-        showLeadCaptureForm();
-      } else {
-        console.log('❌ Lead form not shown - conditions not met');
-      }
-    } else {
-      // ✅ Henüz yeterli inactivity geçmemişse kalan süre için timer kur
-      const remainingTime = requiredInactivityTime - timeSinceLastActivity;
-      console.log('⏰ Not enough inactivity, restarting timer for remaining:', remainingTime, 'ms');
-      
-      const newTimer = setTimeout(() => {
+      if (timeSinceLastActivity >= requiredInactivityTime) {
         if (!isLeadSaved() && !leadFormDismissed() && !showLeadForm()) {
           showLeadCaptureForm();
         }
-      }, remainingTime);
-      
-      currentInactivityTimer = newTimer;
-    }
-  }, inactivityDuration);
-  
-  currentInactivityTimer = timer;
-  console.log('⏰ Timer set with ID:', timer);
-};
+      } else {
+        const remainingTime = requiredInactivityTime - timeSinceLastActivity;
+        const newTimer = setTimeout(() => {
+          if (!isLeadSaved() && !leadFormDismissed() && !showLeadForm()) {
+            showLeadCaptureForm();
+          }
+        }, remainingTime);
+        
+        currentInactivityTimer = newTimer;
+      }
+    }, inactivityDuration);
+    
+    currentInactivityTimer = timer;
+  };
 
 
   createMemo(() => {
     const customerId = (props.chatflowConfig?.vars as any)?.customerId;
     setChatId(customerId ? `${customerId.toString()}+${uuidv4()}` : uuidv4());
   });
-
   const resetLeadState = () => {
-    console.log('🔄 Resetting lead state...');
-    
-    // localStorage'ı temizle
     const storage = getLocalStorageChatflow(props.chatflowid);
     if (storage) {
       const newStorage = { ...storage };
@@ -871,14 +820,11 @@ const timer = setTimeout(() => {
       setLocalStorageChatflow(props.chatflowid, chatId(), newStorage);
     }
     
-    // State'leri reset et
     setLeadFormDismissed(false);
     setIsLeadSaved(false);
     setShowLeadForm(false);
     
-    // Timer'ı yeniden başlat
     if (leadsConfig()?.status && ['inactivity', 'both'].includes(leadsConfig()?.triggerMode || '')) {
-      console.log('🔄 Restarting timer after reset');
       resetInactivityTimer();
       startInactivityTimer();
     }
@@ -891,179 +837,194 @@ const timer = setTimeout(() => {
       style.setAttribute('data-custom-css', 'true');
       style.textContent = props.chatflowConfig.customCSS as string;
       document.head.appendChild(style);
-      
-      // Cleanup on unmount
+        // Cleanup on unmount
       return () => {
         const existingStyle = document.querySelector('[data-custom-css="true"]');
         if (existingStyle) {
           document.head.removeChild(existingStyle);
         }
-      };
+      };    }  });
+    onMount(async () => {
+    console.log('🚀 Bot onMount started');
+    
+    // ✅ CRITICAL: Initialize messages with welcome message first
+    const existingMessages = getLocalStorageChatflow(props.chatflowid)?.chatHistory;
+    if (!existingMessages || existingMessages.length === 0) {
+      console.log('✅ Initializing with welcome message');
+      setMessages([{
+        message: props.welcomeMessage ?? defaultWelcomeMessage,
+        type: 'apiMessage',
+      }]);
+    } else {
+      console.log('✅ Loading existing messages from localStorage');
+      setMessages(existingMessages);
     }
-  });
+    
+    // Removed shadow DOM CSS injection to prevent conflicts
 
-onMount(async () => {
-  console.log('🚀 Bot onMount started');
-  
-  // ✅ SESSION RESET: Her sayfa yenilendiğinde leadFormDismissed false olur
-  setLeadFormDismissed(false);
-  
-  // ✅ CRITICAL: localStorage'taki dismiss state'ini de temizle (Canvas'ta böyle oluyor)
-  const currentStorage = getLocalStorageChatflow(props.chatflowid) || {};
-  if (currentStorage.leadFormDismissed) {
-    console.log('🧹 Clearing localStorage dismiss state on mount');
-    const newStorage = { ...currentStorage };
-    delete newStorage.leadFormDismissed; // ✅ localStorage'tan dismiss state'ini kaldır
-    setLocalStorageChatflow(props.chatflowid, chatId(), newStorage);
-  }
-  
-  // ✅ DEBUG MODE: URL'de debug=true varsa localStorage'ı temizle
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('debug') === 'true') {
-      console.log('� DEBUG MODE: Clearing localStorage');
-      setDebugMode(true);
-      
-      // FloWise related localStorage'ı temizle
-      Object.keys(localStorage).forEach(key => {
-        if (key.includes('Flowera') || key.includes('chatbot')) {
-          console.log('🗑️ Removing:', key);
-          localStorage.removeItem(key);
-        }
-      });
+    // ✅ SESSION RESET: Her sayfa yenilendiğinde leadFormDismissed false olur
+    setLeadFormDismissed(false);
+    
+    // ✅ CRITICAL: localStorage'taki dismiss state'ini de temizle (Canvas'ta böyle oluyor)
+    const currentStorage = getLocalStorageChatflow(props.chatflowid) || {};
+    if (currentStorage.leadFormDismissed) {
+      const newStorage = { ...currentStorage };
+      delete newStorage.leadFormDismissed; // ✅ localStorage'tan dismiss state'ini kaldır
+      setLocalStorageChatflow(props.chatflowid, chatId(), newStorage);
     }
-
-    console.log('Props chatflowConfig:', props.chatflowConfig);
-
-    // clearChatOnReload kontrolü
-    if (props.clearChatOnReload) {
-      clearChat();
-      window.addEventListener('beforeunload', clearChat);
-    }
-
-    // API'den chatbot configuration'ı çek
-    try {
-      const configResponse = await getChatbotConfig({
-        chatflowid: props.chatflowid,
-        apiHost: props.apiHost,
-        onRequest: props.onRequest,
-      });
-
-      console.log('📡 API Response:', configResponse.data);
-
-      if (configResponse.data) {
-        const chatbotConfig = configResponse.data;
+    
+    // ✅ DEBUG MODE: URL'de debug=true varsa localStorage'ı temizle
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('debug') === 'true') {
+        console.log('🐛 DEBUG MODE: Clearing localStorage');
+        setDebugMode(true);
         
-        if (chatbotConfig.leads) {
-          const finalLeadsConfig = {
-            // Önce HTML config'i al (fallback)
-            ...(props.chatflowConfig?.leads || {}),
-            // Sonra API config ile override et (Canvas öncelikli)
-            ...chatbotConfig.leads
-          };
-          
-          setLeadsConfig(finalLeadsConfig);
-          
-          // ✅ SADECE AUTO MODUNDA FORM GÖSTER:
-          if (finalLeadsConfig.status && 
-              finalLeadsConfig.triggerMode === 'auto' && 
-              !getLocalStorageChatflow(props.chatflowid)?.lead) {
-            console.log('🔄 AUTO mode: Showing lead form immediately');
-            setMessages((prevMessages) => [...prevMessages, { message: '', type: 'leadCaptureMessage' }]);
+        // FloWise related localStorage'ı temizle
+        Object.keys(localStorage).forEach(key => {
+          if (key.includes('Flowera') || key.includes('chatbot')) {
+            console.log('🗑️ Removing:', key);
+            localStorage.removeItem(key);
           }
-          
-          // ✅ INACTIVITY TIMER BAŞLAT (sadece inactivity/both modunda):
-          if (['inactivity', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
-            console.log('⏰ Starting inactivity timer for mode:', finalLeadsConfig.triggerMode);
-            startInactivityTimer();
-          }
-          
-          // ReachUsButton kontrolü
-          if (finalLeadsConfig.status && 
-              ['button', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
-            console.log('✅ ReachUsButton should be visible!');
-            console.log('📝 Button Text:', finalLeadsConfig.buttonText);
-            console.log('🎨 Button Color:', finalLeadsConfig.buttonColor);
-            console.log('📍 Button Position:', finalLeadsConfig.buttonPosition);
-          } else {
-            console.log('❌ ReachUsButton hidden. Status:', finalLeadsConfig.status, 'TriggerMode:', finalLeadsConfig.triggerMode);
-          }
-        } else {
-          console.log('❌ No leads config in API response');
-          
-          // Props'ta leads config varsa onu kullan
-          if (props.chatflowConfig?.leads) {
-            console.log('✅ Using props leads config as fallback');
-            setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
-          }
-        }
-        
-        // Diğer config'ler...
-        if (chatbotConfig.uploads) {
-          setUploadsConfig(chatbotConfig.uploads);
-        }
-        
-        // Starter prompts
-        if (chatbotConfig.starterPrompts) {
-          setStarterPrompts(chatbotConfig.starterPrompts);
-        }
-        
-        // Chat feedback
-        if (chatbotConfig.chatFeedback) {
-          setChatFeedbackStatus(chatbotConfig.chatFeedback.status);
-        }
-        
-        // Follow-up prompts
-        if (chatbotConfig.followUpPrompts) {
-          setFollowUpPromptsStatus(chatbotConfig.followUpPrompts.status);
-        }
-        
-        // Full file upload
-        if (chatbotConfig.fullFileUpload) {
-          setFullFileUpload(chatbotConfig.fullFileUpload.status);
-        }
-        
-        // StreamAvailable kontrol...
-        const { data } = await isStreamAvailableQuery({
+        });
+      }
+
+      console.log('Props chatflowConfig:', props.chatflowConfig);
+
+      // clearChatOnReload kontrolü
+      if (props.clearChatOnReload) {
+        clearChat();
+        window.addEventListener('beforeunload', clearChat);
+      }
+
+      // API'den chatbot configuration'ı çek
+      try {
+        const configResponse = await getChatbotConfig({
           chatflowid: props.chatflowid,
           apiHost: props.apiHost,
           onRequest: props.onRequest,
         });
-        if (data) {
-          setIsChatFlowAvailableToStream(data?.isStreaming ?? false);
+
+        console.log('📡 API Response:', configResponse.data);
+
+        if (configResponse.data) {
+          const chatbotConfig = configResponse.data;
+          
+          if (chatbotConfig.leads) {
+            const finalLeadsConfig = {
+              // Önce HTML config'i al (fallback)
+              ...(props.chatflowConfig?.leads || {}),
+              // Sonra API config ile override et (Canvas öncelikli)
+              ...chatbotConfig.leads
+            };
+            
+            setLeadsConfig(finalLeadsConfig);
+            
+            // ✅ SADECE AUTO MODUNDA FORM GÖSTER:
+            if (finalLeadsConfig.status && 
+                finalLeadsConfig.triggerMode === 'auto' && 
+                !getLocalStorageChatflow(props.chatflowid)?.lead) {
+              console.log('🔄 AUTO mode: Showing lead form immediately');
+              setMessages((prevMessages) => [...prevMessages, { message: '', type: 'leadCaptureMessage' }]);
+            }
+            
+            // ✅ INACTIVITY TIMER BAŞLAT (sadece inactivity/both modunda):
+            if (['inactivity', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
+              console.log('⏰ Starting inactivity timer for mode:', finalLeadsConfig.triggerMode);
+              startInactivityTimer();
+            }
+            
+            // ReachUsButton kontrolü
+            if (finalLeadsConfig.status && 
+                ['button', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
+              console.log('✅ ReachUsButton should be visible!');
+              console.log('📝 Button Text:', finalLeadsConfig.buttonText);
+              console.log('🎨 Button Color:', finalLeadsConfig.buttonColor);
+              console.log('📍 Button Position:', finalLeadsConfig.buttonPosition);
+            } else {
+              console.log('❌ ReachUsButton hidden. Status:', finalLeadsConfig.status, 'TriggerMode:', finalLeadsConfig.triggerMode);
+            }
+          } else {
+            console.log('❌ No leads config in API response');
+            
+            // Props'ta leads config varsa onu kullan
+            if (props.chatflowConfig?.leads) {
+              console.log('✅ Using props leads config as fallback');
+              setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+            }
+          }
+          
+          // Diğer config'ler...
+          if (chatbotConfig.uploads) {
+            setUploadsConfig(chatbotConfig.uploads);
+          }
+
+          // ✅ Form styling config (Canvas renkleri)
+          if (chatbotConfig.formStyling) {
+            console.log('🎨 Form styling config received:', chatbotConfig.formStyling);
+            setFormStyling(chatbotConfig.formStyling);
+          }
+          
+          // Starter prompts
+          if (chatbotConfig.starterPrompts) {
+            setStarterPrompts(chatbotConfig.starterPrompts);
+          }
+          
+          // Chat feedback
+          if (chatbotConfig.chatFeedback) {
+            setChatFeedbackStatus(chatbotConfig.chatFeedback.status);
+          }
+          
+          // Follow-up prompts
+          if (chatbotConfig.followUpPrompts) {
+            setFollowUpPromptsStatus(chatbotConfig.followUpPrompts.status);
+          }
+          
+          // Full file upload
+          if (chatbotConfig.fullFileUpload) {
+            setFullFileUpload(chatbotConfig.fullFileUpload.status);
+          }
+          
+          // StreamAvailable kontrol...
+          const { data } = await isStreamAvailableQuery({
+            chatflowid: props.chatflowid,
+            apiHost: props.apiHost,
+            onRequest: props.onRequest,
+          });
+          if (data) {
+            setIsChatFlowAvailableToStream(data?.isStreaming ?? false);
+          }
+        } else {
+          console.log('❌ No API response data');
+          
+          // API response yoksa props config'i kullan
+          if (props.chatflowConfig?.leads) {
+            console.log('✅ Using props leads config (API failed)');
+            setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+          }
         }
-      } else {
-        console.log('❌ No API response data');
+      } catch (error) {
+        console.error('❌ API Error:', error);
         
-        // API response yoksa props config'i kullan
+        // API error durumunda props config'i kullan
         if (props.chatflowConfig?.leads) {
-          console.log('✅ Using props leads config (API failed)');
-          setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
-        }
+          console.log('✅ Using props leads config (API error fallback)');
+          setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);        }
       }
-    } catch (error) {
-      console.error('❌ API Error:', error);
-      
-      // API error durumunda props config'i kullan
-      if (props.chatflowConfig?.leads) {
-        console.log('✅ Using props leads config (API error fallback)');
-        setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+
+      // Storage'dan lead bilgisini kontrol et
+      const savedLead = getLocalStorageChatflow(props.chatflowid)?.lead;
+      if (savedLead) {
+        setIsLeadSaved(true);
+        setLeadEmail(savedLead.email);
       }
-    }
 
-    // Storage'dan lead bilgisini kontrol et
-    const savedLead = getLocalStorageChatflow(props.chatflowid)?.lead;
-    if (savedLead) {
-      setIsLeadSaved(true);
-      setLeadEmail(savedLead.email);
-      console.log('💾 Lead already saved:', savedLead);
-    }
-
-    if (props.clearChatOnReload) {
-      return () => {
-        window.removeEventListener('beforeunload', clearChat);
-      };
-    }
-  });
+      if (props.clearChatOnReload) {
+        window.addEventListener('beforeunload', clearChat);
+        return () => {
+          window.removeEventListener('beforeunload', clearChat);
+        };
+      }
+    });
 
   /**
    * Add each chat message into localStorage
@@ -1255,30 +1216,28 @@ onMount(async () => {
   };
 
   const showLeadCaptureForm = () => {
-    // ✅ Form her durumda açılsın
     setShowLeadForm(true);
     setMessages((prevMessages) => {
-      const lastMessage = prevMessages[prevMessages.length - 1];
-      if (lastMessage?.type === 'leadCaptureMessage') return prevMessages;
-
-      const leadCaptureMessage = {
-        message: '',
-        type: 'leadCaptureMessage' as messageType
-      };
-      return [...prevMessages, leadCaptureMessage];
+      // leadCaptureMessage zaten varsa tekrar ekleme
+      const alreadyExists = prevMessages.some((msg) => msg.type === 'leadCaptureMessage');
+      if (alreadyExists) return prevMessages;
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+      return [...prevMessages, { message: '', type: 'leadCaptureMessage' as messageType }];
     });
   };
 
-const hideLeadCaptureForm = () => {
-  setShowLeadForm(false);
-  setLeadFormDismissed(true); // ✅ Sadece session için
-  setMessages((prevMessages) => {
-    return prevMessages.filter((msg) => msg.type !== 'leadCaptureMessage');
-  });
+  const hideLeadCaptureForm = () => {
+    setShowLeadForm(false);
+    setLeadFormDismissed(true); // ✅ Sadece session için
+    setMessages((prevMessages) => {
+      return prevMessages.filter((msg) => msg.type !== 'leadCaptureMessage');
+    });
 
-  // ✅ Artık localStorage'a dismiss state kaydetme - Canvas'ta da böyle
-  console.log('✅ Lead form dismissed for this session only');
-};
+    // ✅ Artık localStorage'a dismiss state kaydetme - Canvas'ta da böyle
+    console.log('✅ Lead form dismissed for this session only');
+  };
 
   const promptClick = (prompt: string) => {
     trackActivity();
@@ -1561,9 +1520,9 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
     }
 
     clearPreviews();
-
     setMessages((prevMessages) => {
       const messages: MessageType[] = [...prevMessages, { message: value as string, type: 'userMessage', fileUploads: uploads }];
+      console.log('✅ USER MESSAGE ADDED:', value, 'Total messages:', messages.length);
       addChatMessage(messages);
       return messages;
     });
@@ -1838,8 +1797,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
       console.log('❌ Effect early return - lead already saved in storage');
       return;
     }
-    
-    console.log('✅ Effect: All checks passed, restarting timer');
+      console.log('✅ Effect: All checks passed, restarting timer');
     resetInactivityTimer();
     startInactivityTimer();
   }, [lastActivityTime, leadsConfig, isLeadSaved, leadFormDismissed]);
@@ -1927,8 +1885,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
         uploadedFiles.push({ file, type: fullFileUpload() ? 'file:full' : 'file:rag' });
       }
       const reader = new FileReader();
-      const { name } = file;
-      filesList.push(
+      const { name } = file;      filesList.push(
         new Promise((resolve) => {
           reader.onload = (evt) => {
             if (!evt?.target?.result) {
@@ -1938,9 +1895,9 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
             resolve({
               data: result,
               preview: URL.createObjectURL(file),
-              type: 'file',
-              name: name,
               mime: file.type,
+              name: file.name,
+              type: file.type
             });
           };
           reader.readAsDataURL(file);
@@ -2095,6 +2052,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
     return Boolean(
       loading() ||
       !props.chatflowid ||
+
       leadFormOpen ||
       // ✅ Bu koşulu kaldır veya düzelt - input'u sürekli disable ediyor
       // (leadsConfig()?.status && !isLeadSaved() && leadsConfig()?.triggerMode === 'auto') ||
@@ -2119,6 +2077,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
       };
     }),
   );
+
 
   const previewDisplay = (item: FilePreview) => {
     if (item.mime.startsWith('image/')) {
@@ -2155,118 +2114,150 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
   // Visual Debug ReachUsButton
   const ReachUsButton = () => {
     const config = leadsConfig();
-    
-    console.log('🔍 ReachUsButton render - Config:', config);
-    console.log('🔍 Status:', config?.status);
-    console.log('🔍 TriggerMode:', config?.triggerMode);
-    
-    // ✅ SADECE bu kontrolleri yap - lead kontrolleri kaldırıldı
-    if (!config?.status) {
-      console.log('❌ Config status false or missing');
-      return null;
-    }
-    
-    if (!['button', 'both'].includes(config?.triggerMode || '')) {
-      console.log('❌ Wrong trigger mode:', config?.triggerMode);
-      return null;
-    }
-    
-    // ✅ Lead kontrolleri kaldırıldı - buton her zaman görünür!
-    console.log('✅ Button will be shown - lead controls removed');
-    
-    // ✅ SUCCESS: Show actual button
+    if (!config?.status) return null;
+    if (!['button', 'both'].includes(config?.triggerMode || '')) return null;
+    // Class mapping
     const position = config.buttonPosition || 'top-right';
+    let positionClass = 'reach-us-top-right';
+    if (position === 'top-left') positionClass = 'reach-us-top-left';
+    else if (position === 'top-center') positionClass = 'reach-us-top-center';
     const buttonColor = config.buttonColor || '#1976d2';
     const buttonText = config.buttonText || 'Reach Us';
-
-    const getPositionStyles = () => {
-      const baseStyles = {
-        position: 'absolute' as const,
-        'z-index': '2000',
-        top: '15px',
-        padding: '12px 24px',
-        'border-radius': '25px',
-        border: 'none',
-        color: 'white',
-        cursor: 'pointer',
-        'font-size': '14px',
-        'font-weight': '600',
-        'box-shadow': '0 4px 12px rgba(0,0,0,0.15)',
-        transition: 'all 0.3s ease',
-        'backdrop-filter': 'blur(10px)',
-        background: `linear-gradient(135deg, ${buttonColor}, ${buttonColor}dd)`,
-        'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-      } as const;
-
-      switch (position) {
-        case 'top-left':
-          return { ...baseStyles, left: '10px' };
-        case 'top-center':
-          return { ...baseStyles, left: '50%', transform: 'translateX(-50%)' };
-        case 'top-right':
-        default:
-          return { ...baseStyles, right: '10px' };
-      }
-    };
-
-    const handleClick = () => {
-      console.log('🎯 ReachUsButton clicked!');
-      showLeadCaptureForm();
-    };
-
+    const handleClick = () => showLeadCaptureForm();
     return (
-      <div style={{ position: 'relative' }}>
-        <button
-          style={getPositionStyles()}
-          onClick={handleClick}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.opacity = '0.9';
-            e.currentTarget.style.transform = 'translateY(-2px) scale(1.05)';
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,0,0,0.25)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.opacity = '1';
-            e.currentTarget.style.transform = 'translateY(0px) scale(1)';
-            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-          }}
-          class="reach-us-button"
-        >
-          {buttonText}
-        </button>
-        
-        {/* Debug mode'da reset butonu göster */}
-        <Show when={debugMode()}>
-          <button
-            onClick={resetLeadState}
-            style={{
-              position: 'absolute',
-              top: '45px',
-              right: '0px',
-              background: '#ff4444',
-              color: 'white',
-              border: 'none',
-              padding: '4px 8px',
-              'border-radius': '3px',
-              cursor: 'pointer',
-              'font-size': '10px',
-              'z-index': '2001'
-            }}
-          >
-            🔄 Reset
-          </button>
-        </Show>
-      </div>
+      <button
+        class={`reach-us-button ${positionClass}`}
+        style={{
+          background: `linear-gradient(135deg, ${buttonColor}, ${buttonColor}dd)`,
+          color: 'white',
+          'border': 'none',
+          'border-radius': '25px',
+          'font-weight': 600,
+          'font-size': '14px',
+          'box-shadow': '0 4px 12px rgba(0,0,0,0.15)',
+          padding: '12px 24px',
+          cursor: 'pointer',
+          'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          'margin-top': '-1px',
+        }}
+        onClick={handleClick}
+      >
+        {buttonText}
+      </button>
     );
   };
 
+  // Dynamically map lead form color properties from leadsConfig to formStyling
+  createEffect(() => {
+    const config = leadsConfig();
+    if (!config) return;
+    setFormStyling((prev) => ({
+      formContainer: {
+        background: config.formContainerBackground || prev.formContainer.background,
+        borderColor: config.formContainerBorder || prev.formContainer.borderColor,
+      },
+      inputFields: {
+        background: config.inputBackgroundColor || prev.inputFields.background,
+        textColor: config.inputTextColor || prev.inputFields.textColor,
+        borderColor: config.inputBorderColor || prev.inputFields.borderColor,
+      },
+      saveButton: {
+        background: config.saveButtonBackground || prev.saveButton.background,
+        textColor: config.saveButtonTextColor || prev.saveButton.textColor,
+      },
+      // Add more mappings as needed for new color props
+    }));
+  });
+
   return (
     <>
-      {/* ✅ ReachUsButton'ı en üste koy, tüm container'lardan önce */}
-      <Show when={leadsConfig()?.status && ['button', 'both'].includes(leadsConfig()?.triggerMode || '')}>
-        <ReachUsButton />
-      </Show>
-      
-
+      {/* Header JSX'i (close/clear butonlarının olduğu yer) */}
+      <div
+        class="header-container"
+        style={{
+          position: 'relative',
+          display: 'flex',
+          'align-items': 'center',
+          'justify-content': 'space-between',
+          width: '100%',
+          height: '50px',
+          padding: '0 16px',
+          background: '#ffffff',
+          'background-color': '#ffffff',
+          color: props.titleTextColor || props.bubbleTextColor || '#374151',
+          'border-top-left-radius': props.isFullPage ? '0px' : '20px',
+          'border-top-right-radius': props.isFullPage ? '0px' : '20px',
+          'border-bottom': '1px solid #e5e7eb',
+          'box-shadow': '0 1px 2px 0 rgba(0,0,0,0.03)',
+          'z-index': 10,
+          margin: '0',
+        }}
+      >
+        {/* Sol taraf - Top Left Button */}
+        <div style={{ display: 'flex', 'align-items': 'center', gap: '8px', 'min-width': '80px' }}>
+          <Show when={leadsConfig()?.buttonPosition === 'top-left'}>
+            <ReachUsButton />
+          </Show>
+        </div>
+        {/* Orta - Logo/Title + Top Center Button */}
+        <div style={{ flex: 1, display: 'flex', 'align-items': 'center', 'justify-content': 'center', gap: '12px' }}>
+          <Show when={props.titleAvatarSrc}>
+            <div style={{ 'margin-right': '12px' }}>
+              <Avatar initialAvatarSrc={props.titleAvatarSrc} />
+            </div>
+          </Show>
+          <Show when={props.title}>
+            <span class="whitespace-pre-wrap font-semibold text-lg">{props.title}</span>
+          </Show>
+          <Show when={leadsConfig()?.buttonPosition === 'top-center'}>
+            <ReachUsButton />
+          </Show>
+        </div>
+        {/* Sağ taraf - Top Right Button + Header icon buttons (clear/close) */}
+        <div style={{ display: 'flex', 'align-items': 'center', gap: '8px', 'min-width': '80px', 'justify-content': 'flex-end' }}>
+          <Show when={leadsConfig()?.buttonPosition === 'top-right'}>
+            <ReachUsButton />
+          </Show>
+          {/* Header icon buttons (clear/close) */}
+          <button
+            disabled={false}
+            onClick={clearChat}
+            class="header-icon-button transition-all duration-200"
+            style={{
+              padding: '4px',
+              color: '#374151',
+              background: 'none',
+              border: 'none',
+              'box-shadow': 'none',
+              'border-radius': '0',
+            }}
+            title="Clear Chat"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 4V9H4.58152M4.58152 9C5.63742 6.82813 7.87674 5.3 10.5 5.3C13.9779 5.3 16.8 8.12208 16.8 11.6C16.8 15.0779 13.9779 17.9 10.5 17.9C8.63097 17.9 6.99421 17.0561 5.92364 15.7302M4.58152 9H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <Show when={props.closeBot}>
+            <button
+              onClick={props.closeBot}
+              class="header-icon-button transition-all duration-200"
+              style={{
+                padding: '4px',
+                color: '#374151',
+                background: 'none',
+                border: 'none',
+                'box-shadow': 'none',
+                'border-radius': '0',
+              }}
+              title="Close Chat"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+              </svg>
+            </button>
+          </Show>
+        </div>
+      </div>
 
       {startInputType() === 'formInput' && messages().length === 1 ? (
         <FormInputView
@@ -2283,32 +2274,16 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
       ) : (
         <div
           ref={botContainer}
-          class={'relative flex w-full h-full text-base overflow-hidden bg-cover bg-center flex-col chatbot-container ' + props.class}
+          class="flowise-widget-container"
           style={{
-            // ✅ CANVAS BOYUTLARI - Optimize edildi
-            width: props.isFullPage ? '100%' : '420px', // Biraz daraltıldı: 450px -> 420px
-            height: props.isFullPage ? '100%' : '580px', // Biraz azaltıldı: 600px -> 580px
-            'min-width': '380px', // Azaltıldı: 400px -> 380px
-            'min-height': '480px', // Azaltıldı: 500px -> 480px
-            
-            // ✅ MODERN BACKGROUND
-            background: props.backgroundColor || '#ffffff',
-            
-            // ✅ MODERN TYPOGRAPHY
-            'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            'font-size': props.fontSize ? `${props.fontSize}px` : '16px',
-            'line-height': '1.5',
-            
-            // ✅ LAYOUT
-            display: 'flex',
-            'flex-direction': 'column',
-            overflow: 'hidden',
             position: 'relative',
-            
-            // ✅ MODERN STYLING
-            'border-radius': props.isFullPage ? '0px' : '20px',
-            'box-shadow': props.isFullPage ? 'none' : '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-            'backdrop-filter': 'blur(16px)'
+            width: '100%',
+            height: '100%',
+            margin: '0',
+            padding: '0',
+            'font-family': "'Baskerville', Baskerville, 'Times New Roman', Times, serif",
+            'font-weight': 500,
+            // ...diğer eski kodlar veya minimum gerekli stiller...
           }}
           onDragEnter={handleDrag}
         >
@@ -2325,9 +2300,8 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
           {isDragActive() && (uploadsConfig()?.isImageUploadAllowed || isFileUploadAllowed()) && (
             <div
               class="absolute top-0 left-0 bottom-0 right-0 flex flex-col items-center justify-center text-white z-40 gap-4 border-2 border-dashed transition-all duration-300"
-              style={{ 
+              style={{
                 'background': 'rgba(0, 0, 0, 0.8)',
-                'backdrop-filter': 'blur(10px)',
                 'border-color': props.bubbleBackgroundColor || '#3b82f6',
                 'border-radius': '16px',
                 'margin': '8px'
@@ -2351,93 +2325,41 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                 </div>
               </div>
             </div>
-          )}
-          {props.showTitle ? (
-            <div
-              class="flex flex-row items-center w-full flex-shrink-0 px-6 py-4 border-b"
-              style={{
-                background: props.titleBackgroundColor || props.bubbleBackgroundColor || '#3b82f6',
-                color: props.titleTextColor || props.bubbleTextColor || '#ffffff',
-                'border-top-left-radius': props.isFullPage ? '0px' : '20px',
-                'border-top-right-radius': props.isFullPage ? '0px' : '20px',
-                'border-bottom': '1px solid rgba(255, 255, 255, 0.1)',
-                'min-height': '60px', // Azaltıldı: 70px -> 60px
-                'backdrop-filter': 'blur(8px)'
-              }}
-            >
-              <Show when={props.titleAvatarSrc}>
-                <div style={{ 'margin-right': '12px' }}>
-                  <Avatar initialAvatarSrc={props.titleAvatarSrc} />
-                </div>
-              </Show>
-              <Show when={props.title}>
-                <span class="whitespace-pre-wrap font-semibold text-lg">{props.title}</span>
-              </Show>
-              <div style={{ flex: 1 }} />
-              <button
-                disabled={messages().length === 1}
-                onClick={clearChat}
-                class="ml-auto px-4 py-2 rounded-xl font-medium text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  color: props.titleTextColor || props.bubbleTextColor || '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  'backdrop-filter': 'blur(8px)',
-                  'font-family': 'Inter, sans-serif'
-                }}
-                onMouseEnter={(e) => {
-                  if (!e.currentTarget.disabled) {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.25)';
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!e.currentTarget.disabled) {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-                    e.currentTarget.style.transform = 'translateY(0px)';
-                  }
-                }}
-              >
-                Clear Chat
-              </button>
-            </div>
-          ) : null}
-          <div 
+          )}          <div
             class="flex flex-col w-full flex-1 min-h-0 overflow-hidden"
             style={{
               'flex': '1 1 0%',
-              'min-height': '0'
+              'min-height': '0',
+              'background': '#ffffff',
+              'background-color': '#ffffff',
+              'width': '100%',
+              'box-sizing': 'border-box',
+              margin: '0',
+              padding: '0',
+              height: '100%',
+              display: 'flex',
+              'flex-direction': 'column',
             }}
           >
             <div
               ref={chatContainer}
-              class="flex-1 overflow-y-auto px-6 py-6 space-y-4"
+              class="flex-1 overflow-y-auto p-4 space-y-1"
               style={{
-                // ✅ SCROLL BEHAVIOR
-                'scroll-behavior': 'smooth',
-                'overscroll-behavior-y': 'contain',
-                
-                // ✅ FLEX LAYOUT - Critical for proper sizing
-                'flex': '1 1 0%',
+                'background': '#ffffff',
+                'background-color': '#ffffff',
+                'width': '100%',
+                'box-sizing': 'border-box',
+                margin: '0',
+                padding: '16px 12px',
+                display: 'flex',
+                'flex-direction': 'column',
+                gap: '6px', // Daha doğal spacing için azaltıldı
+                flex: '1 1 0%',
                 'min-height': '0',
                 'overflow-y': 'auto',
-                'overflow-x': 'hidden',
-                
-                // ✅ COMPACT SPACING - Daha az padding
-                'padding': '16px 20px', // Azaltıldı: 24px -> 20px, vertical da azaltıldı
-                'gap': '12px', // Azaltıldı: 16px -> 12px
-                
-                // ✅ CUSTOM SCROLLBAR
-                'scrollbar-width': 'thin',
-                'scrollbar-color': 'rgba(0,0,0,0.2) transparent',
-                
-                // ✅ Custom scrollbar for webkit browsers
-                '--scrollbar-track': 'transparent',
-                '--scrollbar-thumb': 'rgba(0,0,0,0.2)',
-                '--scrollbar-thumb-hover': 'rgba(0,0,0,0.3)'
               }}
             >
-              <For each={[...messages()]}>
+              <For each={[...messages()]}> 
                 {(message, index) => {
                   return (
                     <>
@@ -2465,8 +2387,8 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                           backgroundColor={props.botMessage?.backgroundColor}
                           textColor={props.botMessage?.textColor}
                           feedbackColor={props.feedback?.color}
-                          showAvatar={props.botMessage?.showAvatar}
-                          avatarSrc={props.botMessage?.avatarSrc}
+                          showAvatar={true}
+                          avatarSrc=""
                           chatFeedbackStatus={chatFeedbackStatus()}
                           fontSize={props.fontSize}
                           isLoading={loading() && index() === messages().length - 1}
@@ -2481,15 +2403,19 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                           renderHTML={props.renderHTML}
                         />
                       )}
-                      {message.type === 'leadCaptureMessage' && leadsConfig()?.status && !getLocalStorageChatflow(props.chatflowid)?.lead && (
-                        <div 
+                      {message.type === 'leadCaptureMessage' && leadsConfig()?.status && (
+                        <div
                           class="w-full max-w-none"
                           style={{
                             // ✅ LEAD FORM CONTAINER - Boyut kontrollü
-                            'max-height': '320px', // Sabit maksimum yükseklik
-                            'overflow-y': 'auto',
+                            // 'max-height': '320px', // Sabit maksimum yükseklik (KALDIRILDI)
+                            // 'min-height': '180px', // min yükseklik eklendi (opsiyonel, bırakılabilir)
+                            'width': '100%',
+                            'overflow': 'visible', // overflow-y: auto KALDIRILDI, overflow: visible eklendi
                             'margin': '0',
-                            'padding': '0'
+                            'padding': '0',
+                            'display': 'flex',
+                            'align-items': 'stretch',
                           }}
                         >
                           <LeadCaptureBubble
@@ -2501,8 +2427,9 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                             textColor={props.botMessage?.textColor}
                             fontSize={props.fontSize}
                             showAvatar={props.botMessage?.showAvatar}
-                            avatarSrc={props.botMessage?.avatarSrc}
+                            avatarSrc={undefined} // ✅ Force default robot avatar
                             leadsConfig={leadsConfig()}
+                            formStyling={formStyling()}
                             sendButtonColor={props.textInput?.sendButtonColor}
                             isLeadSaved={isLeadSaved()}
                             setIsLeadSaved={setIsLeadSaved}
@@ -2525,9 +2452,8 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               </For>
             </div>
             {/* ✅ STARTER PROMPTS - Canvas style */}
-            <Show when={messages().length === 1}>
-              <Show when={starterPrompts().length > 0}>
-                <div class="w-full flex-shrink-0 px-6 py-4 border-t border-gray-100">
+            <Show when={messages().length === 1}>            <Show when={starterPrompts().length > 0}>
+                <div class="flex-shrink-0 py-4 border-t border-gray-100" style={{ width: '100%' }}>
                   <div class="flex flex-wrap gap-2">
                     <For each={[...starterPrompts()]}>
                       {(key) => (
@@ -2543,9 +2469,8 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               </Show>
             </Show>
             {/* ✅ FOLLOW UP PROMPTS - Canvas style */}
-            <Show when={messages().length > 2 && followUpPromptsStatus()}>
-              <Show when={followUpPrompts().length > 0}>
-                <div class="w-full flex-shrink-0 px-6 py-4 border-t border-gray-100">
+            <Show when={messages().length > 2 && followUpPromptsStatus()}>              <Show when={followUpPrompts().length > 0}>
+                <div class="flex-shrink-0 py-4 border-t border-gray-100" style={{ width: '100%' }}>
                   <div class="flex items-center gap-2 mb-3">
                     <SparklesIcon class="w-4 h-4 text-blue-500" />
                     <span class="text-sm font-medium text-gray-700">Try these prompts</span>
@@ -2566,300 +2491,49 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
             </Show>
             {/* ✅ FILE PREVIEWS - Canvas style */}
             <Show when={previews().length > 0}>
-              <div class="w-full flex items-center justify-start gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+              <div class="flex items-center justify-start gap-3 py-4 border-t border-gray-100 bg-gray-50" style={{ width: '100%' }}>
                 <For each={[...previews()]}>{(item) => <>{previewDisplay(item)}</>}</For>
               </div>
             </Show>
-            {/* ✅ INPUT AREA - Modern, compact, no white space */}
-            <div 
-              class="flex-shrink-0 w-full border-t"
-              style={{ 
-                'border-color': 'rgba(0,0,0,0.08)',
-                'background': 'linear-gradient(to bottom, #ffffff 0%, #f8fafc 100%)',
-                'backdrop-filter': 'blur(12px)',
-                '-webkit-backdrop-filter': 'blur(12px)',
-                'padding': '16px 20px 12px 20px', // ✅ Compact padding
-                'box-shadow': '0 -2px 8px rgba(0,0,0,0.04)'
-              }}
-            >
-              {!isRecording() ? (
-                // ✅ NORMAL INPUT - Modern container düzeltildi
-                <div 
-                  class="flex items-center gap-3 input-container"
-                  style={{
-                    'background': 'rgba(255, 255, 255, 0.95)',
-                    'border': '2px solid #f1f5f9',
-                    'border-radius': '12px',
-                    'padding': props.textInput?.padding || '6px 10px',
-                    'transition': 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-                    'box-shadow': '0 2px 8px rgba(0, 0, 0, 0.04)',
-                    'backdrop-filter': 'blur(8px)',
-                    'width': '100%',
-                    'min-height': props.textInput?.containerMinHeight || '36px'
-                  }}
-                  onFocus={() => {
-                    // Focus styling
-                    const container = document.querySelector('.input-container') as HTMLElement;
-                    if (container) {
-                      container.style.borderColor = props.textInput?.sendButtonColor || '#3b82f6';
-                      container.style.boxShadow = `0 0 0 3px ${props.textInput?.sendButtonColor || '#3b82f6'}20`;
-                    }
-                  }}
-                >
-                  
-                  {/* ✅ LEFT BUTTONS - Compact icons */}
-                  <div class="flex items-center gap-1">
-                    {/* Upload buttons as small icons */}
-                    {uploadsConfig()?.isImageUploadAllowed && (
-                      <label class="cursor-pointer">
-                        <input
-                          type="file"
-                          multiple
-                          accept={uploadsConfig()?.imgUploadSizeAndTypes.map((allowed) => allowed.fileTypes).join(',')}
-                          style={{ display: 'none' }}
-                          onChange={handleFileChange}
-                        />
-                        <button 
-                          type="button"
-                          class="p-2 rounded-lg transition-colors duration-200 hover:bg-gray-100"
-                          style={{ 'color': '#6b7280' }}
-                          title="Upload Image"
-                        >
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                          </svg>
-                        </button>
-                      </label>
-                    )}
-                    
-                    {/* File upload */}
-                    {(uploadsConfig()?.isRAGFileUploadAllowed || fullFileUpload()) && (
-                      <label class="cursor-pointer">
-                        <input
-                          type="file"
-                          multiple
-                          accept={fullFileUpload() ? fullFileUploadAllowedTypes() : uploadsConfig()?.fileUploadSizeAndTypes.map((allowed) => allowed.fileTypes).join(',')}
-                          style={{ display: 'none' }}
-                          onChange={handleFileChange}
-                        />
-                        <button 
-                          type="button"
-                          class="p-2 rounded-lg transition-colors duration-200 hover:bg-gray-100"
-                          style={{ 'color': '#6b7280' }}
-                          title="Upload File"
-                        >
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5a2.5 2.5 0 0 0 5 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.31 2.69 6 6 6s6-2.69 6-6V6h-2.5z"/>
-                          </svg>
-                        </button>
-                      </label>
-                    )}
-                    
-                    {/* Voice recording */}
-                    {uploadsConfig()?.isSpeechToTextEnabled && (
-                      <button 
-                        type="button"
-                        class="p-2 rounded-lg transition-colors duration-200 hover:bg-gray-100"
-                        style={{ 'color': '#6b7280' }}
-                        title="Record Audio"
-                        onClick={onMicrophoneClicked}
-                      >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/>
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-
-                  {/* ✅ TEXT INPUT - Full width, single line focused */}
-                  <div class="flex-1 min-w-0 flex items-center">
-                    <textarea
-                      placeholder={props.textInput?.placeholder || "Type your message..."}
-                      value={userInput()}
-                      onInput={(e) => {
-                        setUserInput(e.target.value);
-                        trackActivity();
-                        const target = e.target as HTMLTextAreaElement;
-                        target.style.height = 'auto';
-                        target.style.height = Math.min(target.scrollHeight, parseInt(props.textInput?.textareaMaxHeight || '60px')) + 'px';
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          handleSubmit(userInput());
-                        }
-                      }}
-                      style={{
-                        'background': 'transparent',
-                        'border': 'none',
-                        'outline': 'none',
-                        'resize': 'none',
-                        'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                        'font-size': `${props.textInput?.fontSize || props.fontSize || 15}px`,
-                        'color': props.textInput?.textColor || '#111827',
-                        'line-height': '1.5',
-                        'padding': '6px 0',
-                        'width': '100%',
-                        'min-height': props.textInput?.textareaMinHeight || '20px',
-                        'max-height': props.textInput?.textareaMaxHeight || '60px',
-                        'overflow-y': 'auto',
-                        'font-weight': '400',
-                        'overflow-x': 'hidden'
-                      }}
-                      disabled={getInputDisabled()}
-                      rows={1}
-                    />
-                  </div>
-
-                  {/* ✅ SEND BUTTON - Circular, right side */}
-                  <div class="flex-shrink-0">
-
-                  <button
-                    disabled={getInputDisabled() || !userInput().trim()}
-                    onClick={() => handleSubmit(userInput())}
-                    class="transition-all duration-200 disabled:opacity-50"
-                    style={{
-                      'background': getInputDisabled() || !userInput().trim()
-                        ? '#e5e7eb'
-                        : `linear-gradient(135deg, ${props.textInput?.sendButtonColor || '#3b82f6'} 0%, ${props.textInput?.sendButtonColor || '#1d4ed8'} 100%)`,
-                      'color': getInputDisabled() || !userInput().trim() ? '#9ca3af' : '#ffffff',
-                      'border': 'none',
-                      'border-radius': '50%',
-                      'padding': '0',
-                      'cursor': getInputDisabled() || !userInput().trim() ? 'not-allowed' : 'pointer',
-                      'display': 'flex',
-                      'align-items': 'center',
-                      'justify-content': 'center',
-                      'width': props.textInput?.buttonSize || '28px',
-                      'height': props.textInput?.buttonSize || '28px',
-                      'box-shadow': getInputDisabled() || !userInput().trim()
-                        ? 'none'
-                        : '0 2px 8px rgba(59, 130, 246, 0.3)',
-                      'transform': 'translateY(0)',
-                      'flex-shrink': '0'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!getInputDisabled() && userInput().trim()) {
-                        e.currentTarget.style.transform = 'translateY(-1px) scale(1.05)';
-                        e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.4)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!getInputDisabled() && userInput().trim()) {
-                        e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                        e.currentTarget.style.boxShadow = '0 2px 8px rgba(59, 130, 246, 0.3)';
-                      }
-                    }}
-                    title="Send Message"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"> {/* ✅ SMALLER ICON: 16x16 -> 12x12 */}
-                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                    </svg>
-                  </button>
-                  </div>
-                </div>
-              ) : (
-                // ✅ RECORDING STATE
-                <>
-                  {recordingNotSupported() ? (
-                    <div class="w-full flex items-center justify-between p-4 rounded-xl shadow-sm" style={{ 
-                      background: 'rgba(247, 250, 252, 0.8)',
-                      border: '1px solid rgba(226, 232, 240, 0.8)',
-                      'backdrop-filter': 'blur(8px)'
-                    }}>
-                      <div class="w-full flex items-center justify-between gap-3">
-                        <span class="text-base text-gray-700 font-medium">Please use a modern browser like Chrome or Firefox that supports audio recording.</span>
-                        <button
-                          class="py-2 px-6 justify-center flex items-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-all duration-200"
-                          type="button"
-                          onClick={() => onRecordingCancelled()}
-                        >
-                          Got it
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      class="h-[58px] flex items-center justify-between chatbot-input border border-[#eeeeee] rounded-xl"
-                      data-testid="input"
-                      style={{
-                        margin: 'auto',
-                        'background-color': props.textInput?.backgroundColor ?? defaultBackgroundColor,
-                        color: props.textInput?.textColor ?? defaultTextColor,
-                      }}
-                    >
-                      <div class="flex items-center gap-3 px-4 py-2">
-                        <span>
-                          <CircleDotIcon color="red" />
-                        </span>
-                        <span>{elapsedTime() || '00:00'}</span>
-                        {isLoadingRecording() && <span class="ml-1.5">Sending...</span>}
-                      </div>
-                      <div class="flex items-center">
-                        <CancelButton buttonColor={props.textInput?.sendButtonColor} type="button" class="m-0" onClick={onRecordingCancelled}>
-                          <span style={{ 'font-family': 'Inter, sans-serif' }}>Cancel</span>
-                        </CancelButton>
-                        <SendButton
-                          sendButtonColor={props.textInput?.sendButtonColor}
-                          type="button"
-                          isDisabled={loading()}
-                          class="m-0"
-                          onClick={onRecordingStopped}
-                        >
-                          <span style={{ 'font-family': 'Inter, sans-serif' }}>Send</span>
-                        </SendButton>
-                      </div>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-            {/* ✅ FOOTER - Minimal, clean, no empty space */}
-            <div 
-              class="flex-shrink-0 w-full flex justify-center items-center"
-              style={{
-                'background': 'transparent', // ✅ Tamamen şeffaf
-                'padding': '6px 16px 8px 16px', // ✅ Çok minimal padding
-                'border-top': 'none', // ✅ Üst border kaldırıldı
-                'margin-top': '0' // ✅ Üst margin yok
-              }}
-            >
+            {/* ✅ REAL INPUT AREA - TextInput component - TAM GENİŞLİK */}
+            <Show when={!showLeadForm()}>
               <div 
-                style={{
-                  'font-size': '10px', // ✅ Daha küçük font
-                  'color': '#a1a1aa', // ✅ Daha açık gri
-                  'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  'font-weight': '400', // ✅ Normal weight
-                  'opacity': '0.8', // ✅ Hafif şeffaflık
-                  'text-align': 'center',
-                  'line-height': '1',
-                  'letter-spacing': '0.025em'
+                class="flex-shrink-0 border-t border-gray-200" 
+                style={{ 
+                  width: '100%',
+                  'flex-shrink': '0',
+                  'flex-grow': '0',
+                  'box-sizing': 'border-box',
+                  margin: '0',
+                  padding: '0',
                 }}
               >
-                Powered by{' '}
-                <a 
-                  href="https://flowera.ai/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  style={{
-                    'color': '#6366f1', // ✅ Daha yumuşak mavi
-                    'text-decoration': 'none',
-                    'font-weight': '500', // ✅ Hafif bold
-                    'transition': 'color 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = '#4f46e5';
-                    e.currentTarget.style.textDecoration = 'underline';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#6366f1';
-                    e.currentTarget.style.textDecoration = 'none';
-                  }}
-                >
-                  Flowera
-                </a>
+                <TextInput
+                  backgroundColor="#ffffff"
+                  textColor="#000000"
+                  placeholder={props.textInput?.placeholder}
+                  sendButtonColor={props.textInput?.sendButtonColor}
+                  fontSize={props.fontSize}
+                  disabled={getInputDisabled()}
+                  onSubmit={handleSubmit}
+                  inputValue={userInput()}
+                  onInputChange={(value: string) => setUserInput(value)}
+                  uploadsConfig={uploadsConfig()}
+                  setPreviews={setPreviews}
+                  onMicrophoneClicked={onMicrophoneClicked}
+                  handleFileChange={handleFileChange}
+                  sendMessageSound={props.textInput?.sendMessageSound}
+                  sendSoundLocation={props.textInput?.sendSoundLocation}
+                />
               </div>
-            </div>
+            </Show>
+            {/* ✅ BADGE COMPONENT - WHITE BACKGROUND */}
+            <Badge
+              footer={props.footer}
+              badgeBackgroundColor="#ffffff"
+              poweredByTextColor={props.poweredByTextColor}
+              botContainer={botContainer}
+            />
           </div>
         </div>
       )}

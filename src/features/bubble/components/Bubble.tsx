@@ -1,4 +1,4 @@
-import { createSignal, Show, splitProps, onCleanup, createEffect } from 'solid-js';
+import { createSignal, Show, splitProps, onCleanup, createEffect, onMount } from 'solid-js';
 import styles from '../../../assets/index.css';
 import { BubbleButton } from './BubbleButton';
 import { BubbleParams } from '../types';
@@ -12,65 +12,12 @@ const defaultIconColor = 'white';
 export type BubbleProps = BotProps & BubbleParams;
 
 export const Bubble = (props: BubbleProps) => {
-  const [bubbleProps] = splitProps(props, ['theme']);
-
-  // Get chat window dimensions from theme or use defaults
+  const [bubbleProps] = splitProps(props, ['theme']);  // Get chat window dimensions from theme or use defaults
   const chatWindowWidth = bubbleProps.theme?.chatWindow?.width || 350;
-  const chatWindowHeight = bubbleProps.theme?.chatWindow?.height || 500;
-
-  // ✅ CSS injection'ı buraya ekleyin (Bubble component'inin başında)
-  createEffect(() => {
-    if (typeof document !== 'undefined') {
-      const existingStyle = document.getElementById('bubble-custom-styles');
-      if (existingStyle) {
-        existingStyle.remove();
-      }
-
-      const style = document.createElement('style');
-      style.setAttribute('id', 'bubble-custom-styles');
-      style.textContent = `
-        /* BUBBLE LEVEL CSS - Highest priority */
-        .chatbot-container textarea {
-          min-height: 20px !important;
-          max-height: 60px !important;
-          padding: 6px 0 !important;
-          font-size: 15px !important;
-        }
-        
-        .input-container {
-          min-height: 36px !important;
-          padding: 6px 10px !important;
-        }
-        
-        /* Force horizontal layout */
-        .chatbot-input-container {
-          display: flex !important;
-          flex-direction: row !important;
-          align-items: center !important;
-          gap: 12px !important;
-          min-height: 36px !important;
-        }
-        
-        /* Send button smaller */
-        button[title="Send Message"] {
-          width: 28px !important;
-          height: 28px !important;
-        }
-        
-        button[title="Send Message"] svg {
-          width: 12px !important;
-          height: 12px !important;
-        }
-
-        /* DEBUG - Test renkleri */
-        .chatbot-container .input-container {
-          border: 3px solid red !important;
-          background: yellow !important;
-        }
-      `;
-      document.head.appendChild(style);
-      console.log('🎨 Bubble CSS injected with DEBUG colors');
-    }
+  const chatWindowHeight = bubbleProps.theme?.chatWindow?.height || 550; // Artırıldı: 500 -> 550
+  // ✅ CSS INJECTION REMOVED - Using Bot.tsx and index.css instead
+  onMount(() => {
+    console.log('🎯 Bubble mounted - CSS handled by Bot.tsx');
   });
 
   const [isBotOpened, setIsBotOpened] = createSignal(false);
@@ -96,10 +43,9 @@ export const Bubble = (props: BubbleProps) => {
   onCleanup(() => {
     setIsBotStarted(false);
   });
-
   const buttonSize = getBubbleButtonSize(props.theme?.button?.size);
   const buttonBottom = props.theme?.button?.bottom ?? 20;
-  const chatWindowBottom = buttonBottom + buttonSize + 10;
+  const chatWindowBottom = buttonBottom + buttonSize + 15; // ✅ 10px'den 15px'e artırıldı - daha fazla boşluk
 
   // Add viewport meta tag dynamically
   createEffect(() => {
@@ -142,8 +88,7 @@ export const Bubble = (props: BubbleProps) => {
         openDelay={bubbleProps.theme?.button?.autoWindowOpen?.openDelay}
         autoOpenOnMobile={bubbleProps.theme?.button?.autoWindowOpen?.autoOpenOnMobile ?? false}
       />
-      
-      <div
+        <div
         part="bot"
         style={{
           position: 'fixed',
@@ -159,11 +104,15 @@ export const Bubble = (props: BubbleProps) => {
           'transform-origin': 'bottom right',
           transform: isBotOpened() ? 'scale3d(1, 1, 1)' : 'scale3d(0, 0, 1)',
           'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
-          'background-color': bubbleProps.theme?.chatWindow?.backgroundColor || '#ffffff',
-          'background-image': 'none',
+          
+          // ✅ FORCE WHITE BACKGROUND - Multiple fallbacks
+          background: '#ffffff !important',
+          'background-color': '#ffffff !important',
+          'background-image': 'none !important',
           'background-size': 'cover',
           'background-position': 'center',
           'background-repeat': 'no-repeat',
+          
           'z-index': '42424241', // Button'dan 1 düşük
           'border-radius': '12px',
           overflow: 'hidden',
@@ -174,63 +123,34 @@ export const Bubble = (props: BubbleProps) => {
           `fixed rounded-lg` +
           (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none')
         }
-      >
-        <Show when={isBotStarted()}>
+      >        <Show when={isBotStarted()}>
           <div style={{ 
             height: '100%', 
             display: 'flex', 
             'flex-direction': 'column',
             position: 'relative',
-            'min-height': '0' // ✅ EKLENEN
-          }}>
-            <Show when={isBotOpened()}>
-              <button
-                onClick={closeBot}
-                style={{
-                  position: 'absolute',
-                  top: '6px',
-                  right: '6px',
-                  width: '32px',
-                  height: '32px',
-                  'z-index': '9999',
-                  background: 'rgba(0,0,0,0.5)',
-                  border: 'none',
-                  'border-radius': '50%',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  'align-items': 'center',
-                  'justify-content': 'center',
-                  transition: 'all 0.2s ease'
-                }}
-                title="Close Chat"
-              >
-                <svg viewBox="0 0 24 24" width="16" height="16">
-                  <path
-                    fill={bubbleProps.theme?.button?.iconColor ?? defaultIconColor}
-                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
-                  />
-                </svg>
-              </button>
-            </Show>
-            
-            <div style={{ 
+            'min-height': '0', // ✅ EKLENEN
+            background: '#ffffff !important',
+            'background-color': '#ffffff !important'
+          }}>            {/* Close button artık Bot.tsx header'da - duplicate kaldırıldı */}
+              <div style={{ 
               height: '100%', 
               display: 'flex', 
               'flex-direction': 'column',
               'min-height': '0', // ✅ EKLENEN
-              flex: '1 1 0%'     // ✅ EKLENEN
-            }}>
-              <Bot
-                backgroundColor={bubbleProps.theme?.chatWindow?.backgroundColor}
+              flex: '1 1 0%',     // ✅ EKLENEN
+              background: '#ffffff !important',
+              'background-color': '#ffffff !important'
+            }}>              <Bot
+                backgroundColor="#ffffff"
                 formBackgroundColor={bubbleProps.theme?.form?.backgroundColor}
                 formTextColor={bubbleProps.theme?.form?.textColor}
                 badgeBackgroundColor={bubbleProps.theme?.chatWindow?.backgroundColor}
                 bubbleBackgroundColor={bubbleProps.theme?.button?.backgroundColor ?? defaultButtonColor}
                 bubbleTextColor={bubbleProps.theme?.button?.iconColor ?? defaultIconColor}
                 showTitle={bubbleProps.theme?.chatWindow?.showTitle}
-                showAgentMessages={bubbleProps.theme?.chatWindow?.showAgentMessages}
-                title={bubbleProps.theme?.chatWindow?.title}
-                titleAvatarSrc={undefined}
+                showAgentMessages={bubbleProps.theme?.chatWindow?.showAgentMessages}                title={bubbleProps.theme?.chatWindow?.title}
+                titleAvatarSrc={bubbleProps.theme?.chatWindow?.titleAvatarSrc}
                 titleTextColor={bubbleProps.theme?.chatWindow?.titleTextColor}
                 titleBackgroundColor={bubbleProps.theme?.chatWindow?.titleBackgroundColor}
                 welcomeMessage={bubbleProps.theme?.chatWindow?.welcomeMessage}
@@ -249,10 +169,10 @@ export const Bubble = (props: BubbleProps) => {
                   textareaMinHeight: '20px',
                   fontSize: 15
                 }}
-                
                 botMessage={{
                   ...bubbleProps.theme?.chatWindow?.botMessage,
-                  showAvatar: false
+                  showAvatar: true,
+                  avatarSrc: undefined  // ✅ Undefined = default robot avatar kullan
                 }}
                 userMessage={{
                   ...bubbleProps.theme?.chatWindow?.userMessage,

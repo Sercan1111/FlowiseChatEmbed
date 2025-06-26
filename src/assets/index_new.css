@@ -1,0 +1,41 @@
+/* ✅ REMOVE ALL AGGRESSIVE OVERRIDES */
+/* Keep only essential custom styling */
+
+:host {
+  --chatbot-container-bg-image: none;
+  --chatbot-container-bg-color: #ffffff; /* ✅ Changed from transparent */
+  --chatbot-container-font-family: 'Inter', 'Open Sans'; /* ✅ Your custom font first */
+  
+  /* Keep default variables but with your custom values */
+  --chatbot-button-bg-color: #0042da;
+  --chatbot-button-color: #ffffff;
+  --chatbot-host-bubble-bg-color: #f7f8ff;
+  --chatbot-host-bubble-color: #303235;
+  --chatbot-guest-bubble-bg-color: #3b81f6;
+  --chatbot-guest-bubble-color: #ffffff;
+  --chatbot-input-bg-color: #ffffff;
+  --chatbot-input-color: #303235;
+  --chatbot-input-placeholder-color: #9095a0;
+  --chatbot-header-bg-color: #ffffff;
+  --chatbot-header-color: #303235;
+  --chatbot-border-radius: 6px;
+}
+
+/* ✅ MINIMAL CUSTOM OVERRIDES - Only what's necessary */
+.chatbot-container {
+  background: #ffffff !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ✅ KEEP YOUR LEAD FORM STYLING - This is important custom feature */
+.chatbot-host-bubble {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ✅ INPUT CUSTOM FONT */
+.text-input {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* ✅ REMOVE ALL OTHER AGGRESSIVE OVERRIDES */
+/* All the nuclear CSS overrides should be removed */
