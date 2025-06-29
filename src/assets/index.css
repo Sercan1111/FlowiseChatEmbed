@@ -550,6 +550,7 @@ flowise-fullchatbot {
 }
 
 .lead-capture-container .phone-input-wrapper input[type="tel"] {
+  width: calc(100% - 2px) !important;
   padding-left: 10px !important; /* was 16px */
   padding-right: 10px !important; /* was 16px */
   font-size: 15px !important;
@@ -603,6 +604,7 @@ flowise-fullchatbot {
 }
 
 .lead-capture-container .phone-input-wrapper input[type="tel"] {
+  width: calc(100% - 2px) !important;
   padding-left: 6px !important; /* was 10px */
   padding-right: 6px !important; /* was 10px */
   font-size: 12px !important;

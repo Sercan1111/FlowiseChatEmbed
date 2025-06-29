@@ -2496,37 +2496,35 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               </div>
             </Show>
             {/* ✅ REAL INPUT AREA - TextInput component - TAM GENİŞLİK */}
-            <Show when={!showLeadForm()}>
-              <div 
-                class="flex-shrink-0 border-t border-gray-200" 
-                style={{ 
-                  width: '100%',
-                  'flex-shrink': '0',
-                  'flex-grow': '0',
-                  'box-sizing': 'border-box',
-                  margin: '0',
-                  padding: '0',
-                }}
-              >
-                <TextInput
-                  backgroundColor="#ffffff"
-                  textColor="#000000"
-                  placeholder={props.textInput?.placeholder}
-                  sendButtonColor={props.textInput?.sendButtonColor}
-                  fontSize={props.fontSize}
-                  disabled={getInputDisabled()}
-                  onSubmit={handleSubmit}
-                  inputValue={userInput()}
-                  onInputChange={(value: string) => setUserInput(value)}
-                  uploadsConfig={uploadsConfig()}
-                  setPreviews={setPreviews}
-                  onMicrophoneClicked={onMicrophoneClicked}
-                  handleFileChange={handleFileChange}
-                  sendMessageSound={props.textInput?.sendMessageSound}
-                  sendSoundLocation={props.textInput?.sendSoundLocation}
-                />
-              </div>
-            </Show>
+            <div 
+              class="flex-shrink-0 border-t border-gray-200" 
+              style={{ 
+                width: '100%',
+                'flex-shrink': '0',
+                'flex-grow': '0',
+                'box-sizing': 'border-box',
+                margin: '0',
+                padding: '0',
+              }}
+            >
+              <TextInput
+                backgroundColor="#ffffff"
+                textColor="#000000"
+                placeholder={props.textInput?.placeholder}
+                sendButtonColor={props.textInput?.sendButtonColor}
+                fontSize={props.fontSize}
+                disabled={getInputDisabled()}
+                onSubmit={handleSubmit}
+                inputValue={userInput()}
+                onInputChange={(value: string) => setUserInput(value)}
+                uploadsConfig={uploadsConfig()}
+                setPreviews={setPreviews}
+                onMicrophoneClicked={onMicrophoneClicked}
+                handleFileChange={handleFileChange}
+                sendMessageSound={props.textInput?.sendMessageSound}
+                sendSoundLocation={props.textInput?.sendSoundLocation}
+              />
+            </div>
             {/* ✅ BADGE COMPONENT - WHITE BACKGROUND */}
             <Badge
               footer={props.footer}

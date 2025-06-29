@@ -199,370 +199,390 @@ export const LeadCaptureBubble = (props: Props) => {
     return props.fieldTouched?.[fieldName] || fieldTouched()[fieldName];
   };
   return (
-    <div
-      class="flex flex-row justify-start mb-4 items-start host-container lead-capture-container"
-      style={{
-        width: '100%',
-        margin: '0',
-        padding: '0',
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        background: 'transparent',
-      } as JSX.CSSProperties}
-    >
-      {/* Avatar (optional, always left) */}
-      {props.showAvatar !== false && (
-        <div class="mr-3 flex-shrink-0" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' } as JSX.CSSProperties}>
-          <Avatar initialAvatarSrc={props.avatarSrc} />
-        </div>
-      )}
-      {/* Bubble container */}
-      <div class="flex flex-col flex-1" style={{ alignItems: 'flex-start', width: '100%' } as JSX.CSSProperties}>
-        <div
-          class="chatbot-host-bubble prose relative"
-          data-testid="host-bubble"
-          style={{
-            display: 'block',
-            position: 'relative',
-            padding: '6px',
-            borderRadius: '8px',
-            backgroundColor: props.backgroundColor || '#fff',
-            border: `1px solid ${props.formStyling?.formContainer?.borderColor || '#e5e7eb'}`,
-            color: props.textColor || '#1e293b',
-            width: '100%',
-            maxWidth: '220px',
-            minWidth: '120px',
-            fontSize: `${props.fontSize || 14}px`,
-            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-            lineHeight: '1.4',
-            boxSizing: 'border-box',
-            overflow: 'visible',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-          } as JSX.CSSProperties}
-        >
-          {/* HEADER: Close, Reach Us */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            width: '100%',
-            marginBottom: '2px',
-            minHeight: '24px',
-            position: 'relative',
-            gap: 0,
-          } as JSX.CSSProperties}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: '0 0 auto' } as JSX.CSSProperties}>
-              {/* Close Button */}
-              <Show when={props.onDismiss}>
-                <button
-                  onClick={props.onDismiss}
-                  class="absolute transition-all duration-200"
-                  style={{
-                    position: 'relative',
-                    top: '0',
-                    left: '0',
-                    zIndex: 1,
-                    backgroundColor: 'rgba(0,0,0,0.08)',
-                    border: 'none',
-                    borderRadius: '50%',
-                    width: '22px',
-                    height: '22px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#374151',
-                    fontSize: '15px',
-                    fontWeight: 400,
-                    transition: 'all 0.2s ease'
-                  } as JSX.CSSProperties}
-                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.16)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.08)'; }}
-                  title="Close"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-              </Show>
-            </div>
-            <div style={{ flex: 1 }} />
-            {/* Reach Us Button (props.reachUsHandler) */}
-            <Show when={props.reachUsHandler}>
-              <button
-                onClick={props.reachUsHandler}
-                class="transition-all duration-200"
-                style={{
-                  position: 'relative',
-                  right: 0,
-                  top: 0,
-                  zIndex: 1,
-                  background: '#3b82f6',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  padding: '2px 10px',
-                  minWidth: '60px',
-                  height: '22px',
-                  cursor: 'pointer',
-                  marginLeft: 'auto',
-                  boxShadow: '0 1px 4px rgba(59,130,246,0.10)',
-                  alignSelf: 'flex-end',
-                } as JSX.CSSProperties}
-                title="Reach Us"
-              >
-                Reach Us
-              </button>
-            </Show>
+    <>
+      {/* Dinamik olarak config'den gelen background'u !important ile uygula */}
+      <style>{`
+        #leadform-container-bg {
+          background-color: ${
+            props.formStyling?.formContainer?.background ||
+            props.leadsConfig?.formContainerBackground ||
+            props.leadsConfig?.inputBackgroundColor ||
+            '#fff'
+          } !important;
+        }
+      `}</style>
+      <div
+        class="flex flex-row justify-start mb-4 items-start host-container lead-capture-container"
+        style={{
+          width: '100%',
+          margin: '0',
+          padding: '0',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          background: 'transparent',
+        } as JSX.CSSProperties}
+      >
+        {/* Avatar (optional, always left) */}
+        {props.showAvatar !== false && (
+          <div class="mr-3 flex-shrink-0" style={{ width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' } as JSX.CSSProperties}>
+            <Avatar initialAvatarSrc={props.avatarSrc} />
           </div>
-          {/* BAŞLIK - kutusuz, üstte, sade */}
-          <div style={{
-            'font-size': '14px',
-            'font-weight': '500',
-            'line-height': '1.3',
-            'color': props.textColor || '#1e293b',
-            'margin-bottom': '2px',
-            'margin-top': '2px',
-            'padding': '0',
-            'background': 'none',
-            'border': 'none',
-            'box-shadow': 'none',
-            'text-align': 'left',
-          } as JSX.CSSProperties}>
-            {props.title || props.leadsConfig?.title || 'HEY'}
-          </div>
-          {/* FORM */}
-          <form
+        )}
+        {/* Bubble container */}
+        <div class="flex flex-col flex-1" style={{ alignItems: 'flex-start', width: '100%' } as JSX.CSSProperties}>
+          <div
+            id="leadform-container-bg"
+            class="chatbot-host-bubble prose relative leadform-container-embed"
+            data-testid="host-bubble"
             style={{
-              'display': 'flex',
-              'flex-direction': 'column',
-              'gap': '3px', // was 6px
-              'width': '100%'
+              display: 'block',
+              position: 'relative',
+              padding: '6px',
+              borderRadius: '8px',
+              // backgroundColor burada kalsın, fallback için
+              backgroundColor:
+                props.formStyling?.formContainer?.background ||
+                props.leadsConfig?.formContainerBackground ||
+                props.leadsConfig?.inputBackgroundColor ||
+                '#fff',
+              border: `1px solid ${props.leadsConfig?.formContainerBorder || props.formStyling?.formContainer?.borderColor || '#e5e7eb'}`,
+              color: props.textColor || '#1e293b',
+              width: '100%',
+              maxWidth: '220px',
+              minWidth: '120px',
+              fontSize: `${props.fontSize || 14}px`,
+              fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              lineHeight: '1.4',
+              boxSizing: 'border-box',
+              overflow: 'visible',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
             } as JSX.CSSProperties}
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (props.onFormSubmit) {
-                props.onFormSubmit({
-                  name: leadName(),
-                  email: leadEmail(),
-                  phone: leadPhone(),
-                  message: leadMessage()
-                });
-              } else {
-                handleSubmit(e);
-              }
-            }}
           >
-            {/* NAME FIELD */}
-            <Show when={props.leadsConfig?.name !== false}>
-              <div class="flex flex-col gap-1">
-                <input
-                  class="transition-all duration-200"
-                  placeholder="Name"
-                  name="name"
-                  style={{
-                    ...getInputStyle('name'),
-                    boxSizing: 'border-box',
-                    padding: '7px 8px', // sağdan ve soldan 8px, overflow'u engeller
-                    fontSize: '14px',
-                    borderRadius: '6px',
-                    height: '30px',
-                    minHeight: '30px',
-                    maxHeight: '30px',
-                    width: '100%',
-                    margin: 0,
-                  } as JSX.CSSProperties}
-                  value={leadName()}
-                  onChange={(e) => {
-                    const value = e.currentTarget.value;
-                    setLeadName(value);
-                    if (isFieldTouched('name')) {
-                      if (props.onFieldValidation) {
-                        props.onFieldValidation('name', value);
-                      } else {
-                        validateField('name', value);
-                      }
-                    }
-                  }}
-                  onBlur={() => handleFieldBlur('name', leadName())}
-                />
-                <Show when={getCurrentError('name')}>
-                  <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
-                    {getCurrentError('name')}
-                  </div>
-                </Show>
-              </div>
-            </Show>
-            {/* EMAIL FIELD */}
-            <Show when={props.leadsConfig?.email !== false}>
-              <div class="flex flex-col gap-1">
-                <input
-                  class="transition-all duration-200"
-                  placeholder="Email Address"
-                  name="email"
-                  type="email"
-                  style={{
-                    ...getInputStyle('email'),
-                    boxSizing: 'border-box',
-                    padding: '7px 8px',
-                    fontSize: '14px',
-                    borderRadius: '6px',
-                    height: '30px',
-                    minHeight: '30px',
-                    maxHeight: '30px',
-                    width: '100%',
-                    margin: 0,
-                  } as JSX.CSSProperties}
-                  value={leadEmail()}
-                  onChange={(e) => {
-                    const value = e.currentTarget.value;
-                    setLeadEmail(value);
-                    if (isFieldTouched('email')) {
-                      if (props.onFieldValidation) {
-                        props.onFieldValidation('email', value);
-                      } else {
-                        validateField('email', value);
-                      }
-                    }
-                  }}
-                  onBlur={() => handleFieldBlur('email', leadEmail())}
-                />
-                <Show when={getCurrentError('email')}>
-                  <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
-                    {getCurrentError('email')}
-                  </div>
-                </Show>
-              </div>
-            </Show>
-            {/* PHONE FIELD */}
-            <Show when={props.leadsConfig?.phone !== false}>
-              <div class="flex flex-col gap-1">
-                <PhoneInput
-                  placeholder="Phone Number"
-                  value={leadPhone()}
-                  onChange={(value) => {
-                    setLeadPhone(value || '');
-                    if (isFieldTouched('phone')) {
-                      if (props.onFieldValidation) {
-                        props.onFieldValidation('phone', value || '');
-                      } else {
-                        validateField('phone', value || '');
-                      }
-                    }
-                  }}
-                  onBlur={() => handleFieldBlur('phone', leadPhone())}
-                  style={{
-                    padding: '7px 8px',
-                    fontSize: '14px',
-                    borderRadius: '6px',
-                    height: '30px',
-                    minHeight: '30px',
-                    maxHeight: '30px',
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    margin: '0',
-                  }}
-                />
-                <Show when={getCurrentError('phone')}>
-                  <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
-                    {getCurrentError('phone')}
-                  </div>
-                </Show>
-              </div>
-            </Show>
-            {/* MESSAGE FIELD */}
-            <Show when={props.leadsConfig?.enableMessage !== false}>
-              <div class="flex flex-col gap-1">
-                <textarea
-                  class="transition-all duration-200"
-                  placeholder=""
-                  name="message"
-                  rows={2}
-                  style={{
-                    ...getInputStyle('message'),
-                    resize: 'vertical',
-                    minHeight: '38px',
-                    maxHeight: '50px',
-                    padding: '7px 8px',
-                    fontSize: '14px',
-                    borderRadius: '6px',
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    margin: 0,
-                  } as JSX.CSSProperties}
-                  value={leadMessage()}
-                  onChange={(e) => {
-                    const value = e.currentTarget.value;
-                    setLeadMessage(value);
-                    if (isFieldTouched('message')) {
-                      if (props.onFieldValidation) {
-                        props.onFieldValidation('message', value);
-                      } else {
-                        validateField('message', value);
-                      }
-                    }
-                  }}
-                  onBlur={() => handleFieldBlur('message', leadMessage())}
-                />
-                <Show when={getCurrentError('message')}>
-                  <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
-                    {getCurrentError('message')}
-                  </div>
-                </Show>
-              </div>
-            </Show>
-            {/* SAVE BUTTON */}
+            {/* HEADER: Close, Reach Us */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              marginTop: '2px',
+              justifyContent: 'space-between',
+              width: '100%',
+              marginBottom: '2px',
+              minHeight: '24px',
+              position: 'relative',
+              gap: 0,
             } as JSX.CSSProperties}>
-              <button
-                type="submit"
-                disabled={isLeadSaving()}
-                style={{
-                  borderRadius: '12px',
-                  background: `linear-gradient(135deg, ${props.formStyling?.saveButton?.background || '#3b82f6'}, ${props.formStyling?.saveButton?.background || '#3b82f6'}dd)`,
-                  color: props.formStyling?.saveButton?.textColor || '#ffffff',
-                  boxShadow: `0 2px 8px ${props.formStyling?.saveButton?.background ? `${props.formStyling?.saveButton?.background}20` : 'rgba(59, 130, 246, 0.18)'}`,
-                  border: 'none',
-                  padding: '7px 0',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  cursor: isLeadSaving() ? 'not-allowed' : 'pointer',
-                  transition: 'all 0.2s ease',
-                  width: '100%',
-                  opacity: isLeadSaving() ? '0.7' : '1',
-                  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  height: '30px',
-                  minHeight: '30px',
-                  maxHeight: '30px',
-                } as JSX.CSSProperties}
-                onMouseEnter={(e) => {
-                  if (!isLeadSaving()) {
-                    e.currentTarget.style.background = `linear-gradient(135deg, ${props.formStyling?.saveButton?.background || '#3b82f6'}dd, ${props.formStyling?.saveButton?.background || '#3b82f6'})`;
-                    e.currentTarget.style.transform = 'translateY(-1px)';
-                    e.currentTarget.style.boxShadow = `0 4px 12px ${props.formStyling?.saveButton?.background ? `${props.formStyling?.saveButton?.background}30` : 'rgba(59, 130, 246, 0.22)'}`;
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isLeadSaving()) {
-                    e.currentTarget.style.background = `linear-gradient(135deg, ${props.formStyling?.saveButton?.background || '#3b82f6'}, ${props.formStyling?.saveButton?.background || '#3b82f6'}dd)`;
-                    e.currentTarget.style.transform = 'translateY(0)';
-                    e.currentTarget.style.boxShadow = `0 2px 8px ${props.formStyling?.saveButton ? `${props.formStyling?.saveButton?.background}20` : 'rgba(59, 130, 246, 0.18)'}`;
-                  }
-                }}
-              >
-                {isLeadSaving() ? 'Saving...' : 'Save'}
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flex: '0 0 auto' } as JSX.CSSProperties}>
+                {/* Close Button */}
+                <Show when={props.onDismiss}>
+                  <button
+                    onClick={props.onDismiss}
+                    class="absolute transition-all duration-200"
+                    style={{
+                      position: 'relative',
+                      top: '0',
+                      left: '0',
+                      zIndex: 1,
+                      backgroundColor: 'rgba(0,0,0,0.08)',
+                      border: 'none',
+                      borderRadius: '50%',
+                      width: '22px',
+                      height: '22px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: '#374151',
+                      fontSize: '15px',
+                      fontWeight: 400,
+                      transition: 'all 0.2s ease'
+                    } as JSX.CSSProperties}
+                    onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.16)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.08)'; }}
+                    title="Close"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </Show>
+              </div>
+              <div style={{ flex: 1 }} />
+              {/* Reach Us Button (props.reachUsHandler) */}
+              <Show when={props.reachUsHandler}>
+                <button
+                  onClick={props.reachUsHandler}
+                  class="transition-all duration-200"
+                  style={{
+                    position: 'relative',
+                    right: 0,
+                    top: 0,
+                    zIndex: 1,
+                    background: '#3b82f6',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    padding: '2px 10px',
+                    minWidth: '60px',
+                    height: '22px',
+                    cursor: 'pointer',
+                    marginLeft: 'auto',
+                    boxShadow: '0 1px 4px rgba(59,130,246,0.10)',
+                    alignSelf: 'flex-end',
+                  } as JSX.CSSProperties}
+                  title="Reach Us"
+                >
+                  Reach Us
+                </button>
+              </Show>
             </div>
-          </form>
+            {/* BAŞLIK - kutusuz, üstte, sade */}
+            <div style={{
+              'font-size': '14px',
+              'font-weight': '500',
+              'line-height': '1.3',
+              'color': props.textColor || '#1e293b',
+              'margin-bottom': '2px',
+              'margin-top': '2px',
+              'padding': '0',
+              'background': 'none',
+              'border': 'none',
+              'box-shadow': 'none',
+              'text-align': 'left',
+            } as JSX.CSSProperties}>
+              {props.title || props.leadsConfig?.title || ''}
+            </div>
+            {/* FORM */}
+            <form
+              style={{
+                'display': 'flex',
+                'flex-direction': 'column',
+                'gap': '3px', // was 6px
+                'width': '100%'
+              } as JSX.CSSProperties}
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (props.onFormSubmit) {
+                  props.onFormSubmit({
+                    name: leadName(),
+                    email: leadEmail(),
+                    phone: leadPhone(),
+                    message: leadMessage()
+                  });
+                } else {
+                  handleSubmit(e);
+                }
+              }}
+            >
+              {/* NAME FIELD */}
+              <Show when={props.leadsConfig?.name !== false}>
+                <div class="flex flex-col gap-1">
+                  <input
+                    class="transition-all duration-200"
+                    placeholder="Name"
+                    name="name"
+                    style={{
+                      ...getInputStyle('name'),
+                      boxSizing: 'border-box',
+                      padding: '7px 8px', // sağdan ve soldan 8px, overflow'u engeller
+                      fontSize: '14px',
+                      borderRadius: '6px',
+                      height: '30px',
+                      minHeight: '30px',
+                      maxHeight: '30px',
+                      width: '100%',
+                      margin: 0,
+                    } as JSX.CSSProperties}
+                    value={leadName()}
+                    onChange={(e) => {
+                      const value = e.currentTarget.value;
+                      setLeadName(value);
+                      if (isFieldTouched('name')) {
+                        if (props.onFieldValidation) {
+                          props.onFieldValidation('name', value);
+                        } else {
+                          validateField('name', value);
+                        }
+                      }
+                    }}
+                    onBlur={() => handleFieldBlur('name', leadName())}
+                  />
+                  <Show when={getCurrentError('name')}>
+                    <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
+                      {getCurrentError('name')}
+                    </div>
+                  </Show>
+                </div>
+              </Show>
+              {/* EMAIL FIELD */}
+              <Show when={props.leadsConfig?.email !== false}>
+                <div class="flex flex-col gap-1">
+                  <input
+                    class="transition-all duration-200"
+                    placeholder="Email Address"
+                    name="email"
+                    type="email"
+                    style={{
+                      ...getInputStyle('email'),
+                      boxSizing: 'border-box',
+                      padding: '7px 8px',
+                      fontSize: '14px',
+                      borderRadius: '6px',
+                      height: '30px',
+                      minHeight: '30px',
+                      maxHeight: '30px',
+                      width: '100%',
+                      margin: 0,
+                    } as JSX.CSSProperties}
+                    value={leadEmail()}
+                    onChange={(e) => {
+                      const value = e.currentTarget.value;
+                      setLeadEmail(value);
+                      if (isFieldTouched('email')) {
+                        if (props.onFieldValidation) {
+                          props.onFieldValidation('email', value);
+                        } else {
+                          validateField('email', value);
+                        }
+                      }
+                    }}
+                    onBlur={() => handleFieldBlur('email', leadEmail())}
+                  />
+                  <Show when={getCurrentError('email')}>
+                    <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
+                      {getCurrentError('email')}
+                    </div>
+                  </Show>
+                </div>
+              </Show>
+              {/* PHONE FIELD */}
+              <Show when={props.leadsConfig?.phone !== false}>
+                <div class="flex flex-col gap-1">
+                  <PhoneInput
+                    placeholder="Phone Number"
+                    value={leadPhone()}
+                    onChange={(value) => {
+                      setLeadPhone(value || '');
+                      if (isFieldTouched('phone')) {
+                        if (props.onFieldValidation) {
+                          props.onFieldValidation('phone', value || '');
+                        } else {
+                          validateField('phone', value || '');
+                        }
+                      }
+                    }}
+                    onBlur={() => handleFieldBlur('phone', leadPhone())}
+                    style={{
+                      ...getInputStyle('phone'),
+                      height: '30px',
+                      minHeight: '30px',
+                      maxHeight: '30px',
+                      width: '100%', // ✅ BU SEKILDE OLSUN
+                      boxSizing: 'border-box',
+                      margin: '0',
+                    }}
+                    inputBackgroundColor={props.leadsConfig?.inputBackgroundColor}
+                    inputTextColor={props.leadsConfig?.inputTextColor}
+                    inputBorderColor={props.leadsConfig?.inputBorderColor}
+                  />
+                  <Show when={getCurrentError('phone')}>
+                    <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
+                      {getCurrentError('phone')}
+                    </div>
+                  </Show>
+                </div>
+              </Show>
+              {/* MESSAGE FIELD */}
+              <Show when={props.leadsConfig?.enableMessage !== false}>
+                <div class="flex flex-col gap-1">
+                  <textarea
+                    class="transition-all duration-200"
+                    placeholder=""
+                    name="message"
+                    rows={2}
+                    style={{
+                      ...getInputStyle('message'),
+                      resize: 'vertical',
+                      minHeight: '38px',
+                      maxHeight: '50px',
+                      padding: '7px 8px',
+                      fontSize: '14px',
+                      borderRadius: '6px',
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      margin: 0,
+                    } as JSX.CSSProperties}
+                    value={leadMessage()}
+                    onChange={(e) => {
+                      const value = e.currentTarget.value;
+                      setLeadMessage(value);
+                      if (isFieldTouched('message')) {
+                        if (props.onFieldValidation) {
+                          props.onFieldValidation('message', value);
+                        } else {
+                          validateField('message', value);
+                        }
+                      }
+                    }}
+                    onBlur={() => handleFieldBlur('message', leadMessage())}
+                  />
+                  <Show when={getCurrentError('message')}>
+                    <div style={{ 'color': '#ef4444', 'font-size': '11px', 'margin-top': '1px' }}>
+                      {getCurrentError('message')}
+                    </div>
+                  </Show>
+                </div>
+              </Show>
+              {/* SAVE BUTTON */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginTop: '2px',
+              } as JSX.CSSProperties}>
+                <button
+                  type="submit"
+                  disabled={isLeadSaving()}
+                  style={{
+                    borderRadius: '12px',
+                    background: `linear-gradient(135deg, ${props.formStyling?.saveButton?.background || '#3b82f6'}, ${props.formStyling?.saveButton?.background || '#3b82f6'}dd)`,
+                    color: props.formStyling?.saveButton?.textColor || '#ffffff',
+                    boxShadow: `0 2px 8px ${props.formStyling?.saveButton?.background ? `${props.formStyling?.saveButton?.background}20` : 'rgba(59, 130, 246, 0.18)'}`,
+                    border: 'none',
+                    padding: '7px 0',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    cursor: isLeadSaving() ? 'not-allowed' : 'pointer',
+                    transition: 'all 0.2s ease',
+                    width: '100%',
+                    opacity: isLeadSaving() ? '0.7' : '1',
+                    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    height: '30px',
+                    minHeight: '30px',
+                    maxHeight: '30px',
+                  } as JSX.CSSProperties}
+                  onMouseEnter={(e) => {
+                    if (!isLeadSaving()) {
+                      e.currentTarget.style.background = `linear-gradient(135deg, ${props.formStyling?.saveButton?.background || '#3b82f6'}dd, ${props.formStyling?.saveButton?.background || '#3b82f6'})`;
+                      e.currentTarget.style.transform = 'translateY(-1px)';
+                      e.currentTarget.style.boxShadow = `0 4px 12px ${props.formStyling?.saveButton?.background ? `${props.formStyling?.saveButton?.background}30` : 'rgba(59, 130, 246, 0.22)'}`;
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isLeadSaving()) {
+                      e.currentTarget.style.background = `linear-gradient(135deg, ${props.formStyling?.saveButton?.background || '#3b82f6'}, ${props.formStyling?.saveButton?.background || '#3b82f6'}dd)`;
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = `0 2px 8px ${props.formStyling?.saveButton ? `${props.formStyling?.saveButton?.background}20` : 'rgba(59, 130, 246, 0.18)'}`;
+                    }
+                  }}
+                >
+                  {isLeadSaving() ? 'Saving...' : 'Save'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };

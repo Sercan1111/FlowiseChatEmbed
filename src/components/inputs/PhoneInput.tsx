@@ -12,6 +12,9 @@ export interface PhoneInputProps {
   defaultCountry?: string;
   disabled?: boolean;
   required?: boolean;
+  inputBackgroundColor?: string;
+  inputTextColor?: string;
+  inputBorderColor?: string;
 }
 
 export const PhoneInput = (props: PhoneInputProps) => {
@@ -107,8 +110,20 @@ export const PhoneInput = (props: PhoneInputProps) => {
           'align-items': 'center',
           border: '1px solid #e2e8f0',
           'border-radius': '8px',
-          'background-color': '#ffffff',
-          overflow: 'hidden',
+          margin: '0',
+          width: '100%', // diğer inputlarla aynı
+          'box-sizing': 'border-box',
+          padding: '7px 8px', // name input ile aynı padding
+          background: props.inputBackgroundColor || '#ffffff',
+          color: props.inputTextColor || '#000000',
+          'font-size': '16px',
+          'font-family': 'Roboto, sans-serif',
+          'font-weight': '400',
+          transition: '0.2s',
+          outline: 'none',
+          'line-height': '1.5',
+          'box-shadow': 'none',
+          height: '30px',
           ...props.style
         }}
       >
@@ -122,12 +137,12 @@ export const PhoneInput = (props: PhoneInputProps) => {
             'align-items': 'center',
             padding: '14px 12px',
             border: 'none',
-            background: '#ffffff',
+            background: props.inputBackgroundColor || '#ffffff',
             cursor: props.disabled ? 'not-allowed' : 'pointer',
-            'border-right': '1px solid #e2e8f0',
+            'border-right': `1px solid ${props.inputBorderColor || '#e2e8f0'}`,
             'font-size': '16px',
-            'min-width': '80px',
-            'flex-shrink': '0'
+            'min-width': '48px', // daha kompakt flag alanı
+            'flex-shrink': '0',
           }}
         >
           {/* ✅ FLAG IMG TAG - CDN images */}
@@ -176,11 +191,16 @@ export const PhoneInput = (props: PhoneInputProps) => {
           disabled={props.disabled}
           required={props.required}
           style={{
-            flex: '1',            border: 'none',
+            width: '100%', // flex kaldırıldı, width eklendi
+            border: 'none',
             outline: 'none',
-            padding: '14px 16px',
+            padding: '7px 8px',
             'font-size': '16px',
-            'background-color': '#ffffff'
+            'background-color': props.inputBackgroundColor || '#ffffff',
+            color: props.inputTextColor || '#000000',
+            'border-radius': '6px',
+            margin: '0',
+            'box-sizing': 'border-box',
           }}
         />
       </div>
