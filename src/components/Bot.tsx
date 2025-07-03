@@ -9,15 +9,9 @@ import {
   getChatbotConfig,
   FeedbackRatingType,
   createAttachmentWithFormData,
-  addLeadQuery, 
+  addLeadQuery,
 } from '@/queries/sendMessageQuery';
-import { 
-  validateLeadForm, 
-  validateFieldRealTime, 
-  RateLimiter,
-  type FormData,
-  type ValidationResult 
-} from '@/utils/leadValidation';
+import { validateLeadForm, validateFieldRealTime, RateLimiter, type FormData, type ValidationResult } from '@/utils/leadValidation';
 import { TextInput } from './inputs/textInput';
 import { GuestBubble } from './bubbles/GuestBubble';
 import { BotBubble } from './bubbles/BotBubble';
@@ -191,31 +185,31 @@ export type BotProps = {
 
 export type LeadsConfig = {
   status: boolean;
-  
+
   // Trigger Settings
   triggerMode?: 'auto' | 'button' | 'inactivity' | 'both';
   buttonText?: string;
   buttonColor?: string;
   buttonPosition?: 'top-left' | 'top-right' | 'top-center';
   inactivityDuration?: number;
-  
+
   // Form Content
   title?: string;
   successMessage?: string;
-  
+
   // Form Fields
   name?: boolean;
   email?: boolean;
   phone?: boolean;
   enableMessage?: boolean;
-  
+
   // Validation Settings
   emailValidationLevel?: 'basic' | 'strict';
   blockDisposableEmail?: boolean;
   minNameLength?: number;
   maxNameLength?: number;
   blockTestNames?: boolean;
-  
+
   // Styling
   formContainerBackground?: string;
   formContainerBorder?: string;
@@ -364,7 +358,7 @@ interface FormInputViewProps {
     label: string;
     name: string;
     type: 'string' | 'number' | 'boolean' | 'options';
-    options?: Array<{ name: string; label: string; }>;
+    options?: Array<{ name: string; label: string }>;
   }>;
   onSubmit: (formData: Record<string, any>) => void;
   parentBackgroundColor?: string;
@@ -525,7 +519,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     name: false,
     email: false,
     phone: false,
-    message: false
+    message: false,
   });
 
   // ✅ Rate limiter instance
@@ -540,17 +534,17 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const [formStyling, setFormStyling] = createSignal({
     formContainer: {
       background: '#ffffff',
-      borderColor: '#e2e8f0'
+      borderColor: '#e2e8f0',
     },
     inputFields: {
       background: '#ffffff',
       textColor: '#000000',
-      borderColor: '#e2e8f0'
+      borderColor: '#e2e8f0',
     },
     saveButton: {
       background: '#3b82f6',
-      textColor: '#ffffff'
-    }
+      textColor: '#ffffff',
+    },
   });
 
   // ✅ Real-time validation handler
@@ -559,12 +553,12 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (!config) return false;
 
     const error = validateFieldRealTime(fieldName, value, config);
-    
+
     if (error) {
-      setFieldErrors(prev => ({ ...prev, [fieldName]: error }));
+      setFieldErrors((prev) => ({ ...prev, [fieldName]: error }));
       return false;
     } else {
-      setFieldErrors(prev => {
+      setFieldErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[fieldName];
         return newErrors;
@@ -577,7 +571,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
   const handleFieldBlur = (fieldName: string, value: string) => {
     setFieldTouched((prev) => ({
       ...prev,
-      [fieldName]: true
+      [fieldName]: true,
     }));
     handleFieldValidation(fieldName, value);
   };
@@ -592,7 +586,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     if (!rateLimitCheck.allowed) {
       setFieldErrors((prev) => ({
         ...prev,
-        general: rateLimitCheck.message || 'Rate limit exceeded'
+        general: rateLimitCheck.message || 'Rate limit exceeded',
       }));
       return;
     }
@@ -602,12 +596,12 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       name: true,
       email: true,
       phone: true,
-      message: true
+      message: true,
     });
 
     // Validate entire form
     const validation = validateLeadForm(formData, config);
-    
+
     if (!validation.isValid) {
       setFieldErrors(validation.errors);
       return;
@@ -632,7 +626,7 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        message: formData.message
+        message: formData.message,
       };
 
       console.log('💾 Saving lead with data:', body);
@@ -640,28 +634,28 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
       const result = await addLeadQuery({
         apiHost: props.apiHost,
         body,
-        onRequest: props.onRequest
+        onRequest: props.onRequest,
       });
 
       if (result.data) {
         const data = result.data;
         console.log('✅ Lead saved successfully:', data);
-      
-        // Update localStorage 
+
+        // Update localStorage
         const currentStorage = getLocalStorageChatflow(props.chatflowid) || {};
         setLocalStorageChatflow(props.chatflowid, data.chatId || chatId(), {
           ...currentStorage,
-          lead: { 
-            name: formData.name, 
-            email: formData.email, 
-            phone: formData.phone 
-          }
+          lead: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+          },
         });
 
         // State updates
         setIsLeadSaved(true);
         setLeadEmail(formData.email);
-        
+
         // Success message
         setMessages((prevMessages) => {
           const allMessages = [...cloneDeep(prevMessages)];
@@ -676,17 +670,16 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
         setFieldErrors({});
         setShowLeadForm(false);
         setMessages((prevMessages) => prevMessages.filter((msg) => msg.type !== 'leadCaptureMessage'));
-        
       } else if (result.error) {
         console.error('❌ Lead save failed:', result.error);
         setFieldErrors({
-          general: result.error.message || 'Failed to save your information. Please try again.'
+          general: result.error.message || 'Failed to save your information. Please try again.',
         });
       }
     } catch (error: any) {
       console.error('❌ Lead save error:', error);
       setFieldErrors({
-        general: error.message || 'Failed to save your information. Please try again.'
+        general: error.message || 'Failed to save your information. Please try again.',
       });
     }
   };
@@ -745,24 +738,27 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
 
   // drag & drop
   const [isDragActive, setIsDragActive] = createSignal(false);
-  const [uploadedFiles, setUploadedFiles] = createSignal<{ file: File; type: string }[]>([]);  const [fullFileUploadAllowedTypes, setFullFileUploadAllowedTypes] = createSignal('*');  // Removed all CSS injections to prevent conflicts
+  const [uploadedFiles, setUploadedFiles] = createSignal<{ file: File; type: string }[]>([]);
+  const [fullFileUploadAllowedTypes, setFullFileUploadAllowedTypes] = createSignal('*'); // Removed all CSS injections to prevent conflicts
 
-// lead capture activity tracking
-const [lastActivityTime, setLastActivityTime] = createSignal(Date.now());
-let currentInactivityTimer: NodeJS.Timeout | null = null;
-const [showLeadForm, setShowLeadForm] = createSignal<boolean>(false);
-const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false);  // ✅ Activity tracking function - timer'ı da reset eder
+  // lead capture activity tracking
+  const [lastActivityTime, setLastActivityTime] = createSignal(Date.now());
+  let currentInactivityTimer: NodeJS.Timeout | null = null;
+  const [showLeadForm, setShowLeadForm] = createSignal<boolean>(false);
+  const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); // ✅ Activity tracking function - timer'ı da reset eder
   const trackActivity = () => {
     setLastActivityTime(Date.now());
     resetInactivityTimer();
-    
+
     // Yeni timer başlat (sadece gerekli koşullarda)
     const config = leadsConfig();
-    if (config?.status && 
-        ['inactivity', 'both'].includes(config?.triggerMode || '') &&
-        !isLeadSaved() && 
-        !leadFormDismissed() &&
-        !getLocalStorageChatflow(props.chatflowid)?.lead) {
+    if (
+      config?.status &&
+      ['inactivity', 'both'].includes(config?.triggerMode || '') &&
+      !isLeadSaved() &&
+      !leadFormDismissed() &&
+      !getLocalStorageChatflow(props.chatflowid)?.lead
+    ) {
       startInactivityTimer();
     }
   };
@@ -771,22 +767,22 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
     const leadSaved = isLeadSaved();
     const formDismissed = leadFormDismissed();
     const storage = getLocalStorageChatflow(props.chatflowid);
-    
+
     if (storage?.lead || !config?.status || leadSaved || formDismissed) {
       return;
     }
-    
+
     if (!['inactivity', 'both'].includes(config?.triggerMode || '')) {
       return;
     }
 
     const inactivityDuration = (config?.inactivityDuration || 30) * 1000;
-    
+
     const timer = setTimeout(() => {
       const now = Date.now();
       const timeSinceLastActivity = now - lastActivityTime();
       const requiredInactivityTime = inactivityDuration;
-      
+
       if (timeSinceLastActivity >= requiredInactivityTime) {
         if (!isLeadSaved() && !leadFormDismissed() && !showLeadForm()) {
           showLeadCaptureForm();
@@ -798,14 +794,13 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
             showLeadCaptureForm();
           }
         }, remainingTime);
-        
+
         currentInactivityTimer = newTimer;
       }
     }, inactivityDuration);
-    
+
     currentInactivityTimer = timer;
   };
-
 
   createMemo(() => {
     const customerId = (props.chatflowConfig?.vars as any)?.customerId;
@@ -819,11 +814,11 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
       delete newStorage.lead;
       setLocalStorageChatflow(props.chatflowid, chatId(), newStorage);
     }
-    
+
     setLeadFormDismissed(false);
     setIsLeadSaved(false);
     setShowLeadForm(false);
-    
+
     if (leadsConfig()?.status && ['inactivity', 'both'].includes(leadsConfig()?.triggerMode || '')) {
       resetInactivityTimer();
       startInactivityTimer();
@@ -837,16 +832,18 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
       style.setAttribute('data-custom-css', 'true');
       style.textContent = props.chatflowConfig.customCSS as string;
       document.head.appendChild(style);
-        // Cleanup on unmount
+      // Cleanup on unmount
       return () => {
         const existingStyle = document.querySelector('[data-custom-css="true"]');
         if (existingStyle) {
           document.head.removeChild(existingStyle);
         }
-      };    }  });
-    onMount(async () => {
+      };
+    }
+  });
+  onMount(async () => {
     console.log('🚀 Bot onMount started');
-    
+
     // ✅ GÜÇLÜ EMOJİ DESTEĞİ
     if (!document.getElementById('flowise-emoji-css')) {
       const emojiCSS = document.createElement('style');
@@ -874,25 +871,27 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
       `;
       document.head.appendChild(emojiCSS);
     }
-    
+
     // ✅ CRITICAL: Initialize messages with welcome message first
     const existingMessages = getLocalStorageChatflow(props.chatflowid)?.chatHistory;
     if (!existingMessages || existingMessages.length === 0) {
       console.log('✅ Initializing with welcome message');
-      setMessages([{
-        message: props.welcomeMessage ?? defaultWelcomeMessage,
-        type: 'apiMessage',
-      }]);
+      setMessages([
+        {
+          message: props.welcomeMessage ?? defaultWelcomeMessage,
+          type: 'apiMessage',
+        },
+      ]);
     } else {
       console.log('✅ Loading existing messages from localStorage');
       setMessages(existingMessages);
     }
-    
+
     // Removed shadow DOM CSS injection to prevent conflicts
 
     // ✅ SESSION RESET: Her sayfa yenilendiğinde leadFormDismissed false olur
     setLeadFormDismissed(false);
-    
+
     // ✅ CRITICAL: localStorage'taki dismiss state'ini de temizle (Canvas'ta böyle oluyor)
     const currentStorage = getLocalStorageChatflow(props.chatflowid) || {};
     if (currentStorage.leadFormDismissed) {
@@ -900,159 +899,157 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
       delete newStorage.leadFormDismissed; // ✅ localStorage'tan dismiss state'ini kaldır
       setLocalStorageChatflow(props.chatflowid, chatId(), newStorage);
     }
-    
+
     // ✅ DEBUG MODE: URL'de debug=true varsa localStorage'ı temizle
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('debug') === 'true') {
-        console.log('🐛 DEBUG MODE: Clearing localStorage');
-        setDebugMode(true);
-        
-        // FloWise related localStorage'ı temizle
-        Object.keys(localStorage).forEach(key => {
-          if (key.includes('Flowera') || key.includes('chatbot')) {
-            console.log('🗑️ Removing:', key);
-            localStorage.removeItem(key);
+      console.log('🐛 DEBUG MODE: Clearing localStorage');
+      setDebugMode(true);
+
+      // FloWise related localStorage'ı temizle
+      Object.keys(localStorage).forEach((key) => {
+        if (key.includes('Flowera') || key.includes('chatbot')) {
+          console.log('🗑️ Removing:', key);
+          localStorage.removeItem(key);
+        }
+      });
+    }
+
+    console.log('Props chatflowConfig:', props.chatflowConfig);
+
+    // clearChatOnReload kontrolü
+    if (props.clearChatOnReload) {
+      clearChat();
+      window.addEventListener('beforeunload', clearChat);
+    }
+
+    // API'den chatbot configuration'ı çek
+    try {
+      const configResponse = await getChatbotConfig({
+        chatflowid: props.chatflowid,
+        apiHost: props.apiHost,
+        onRequest: props.onRequest,
+      });
+
+      console.log('📡 API Response:', configResponse.data);
+
+      if (configResponse.data) {
+        const chatbotConfig = configResponse.data;
+
+        if (chatbotConfig.leads) {
+          const finalLeadsConfig = {
+            // Önce HTML config'i al (fallback)
+            ...(props.chatflowConfig?.leads || {}),
+            // Sonra API config ile override et (Canvas öncelikli)
+            ...chatbotConfig.leads,
+          };
+
+          setLeadsConfig(finalLeadsConfig);
+
+          // ✅ SADECE AUTO MODUNDA FORM GÖSTER:
+          if (finalLeadsConfig.status && finalLeadsConfig.triggerMode === 'auto' && !getLocalStorageChatflow(props.chatflowid)?.lead) {
+            console.log('🔄 AUTO mode: Showing lead form immediately');
+            setMessages((prevMessages) => [...prevMessages, { message: '', type: 'leadCaptureMessage' }]);
           }
-        });
-      }
 
-      console.log('Props chatflowConfig:', props.chatflowConfig);
+          // ✅ INACTIVITY TIMER BAŞLAT (sadece inactivity/both modunda):
+          if (['inactivity', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
+            console.log('⏰ Starting inactivity timer for mode:', finalLeadsConfig.triggerMode);
+            startInactivityTimer();
+          }
 
-      // clearChatOnReload kontrolü
-      if (props.clearChatOnReload) {
-        clearChat();
-        window.addEventListener('beforeunload', clearChat);
-      }
+          // ReachUsButton kontrolü
+          if (finalLeadsConfig.status && ['button', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
+            console.log('✅ ReachUsButton should be visible!');
+            console.log('📝 Button Text:', finalLeadsConfig.buttonText);
+            console.log('🎨 Button Color:', finalLeadsConfig.buttonColor);
+            console.log('📍 Button Position:', finalLeadsConfig.buttonPosition);
+          } else {
+            console.log('❌ ReachUsButton hidden. Status:', finalLeadsConfig.status, 'TriggerMode:', finalLeadsConfig.triggerMode);
+          }
+        } else {
+          console.log('❌ No leads config in API response');
 
-      // API'den chatbot configuration'ı çek
-      try {
-        const configResponse = await getChatbotConfig({
+          // Props'ta leads config varsa onu kullan
+          if (props.chatflowConfig?.leads) {
+            console.log('✅ Using props leads config as fallback');
+            setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+          }
+        }
+
+        // Diğer config'ler...
+        if (chatbotConfig.uploads) {
+          setUploadsConfig(chatbotConfig.uploads);
+        }
+
+        // ✅ Form styling config (Canvas renkleri)
+        if (chatbotConfig.formStyling) {
+          console.log('🎨 Form styling config received:', chatbotConfig.formStyling);
+          setFormStyling(chatbotConfig.formStyling);
+        }
+
+        // Starter prompts
+        if (chatbotConfig.starterPrompts) {
+          setStarterPrompts(chatbotConfig.starterPrompts);
+        }
+
+        // Chat feedback
+        if (chatbotConfig.chatFeedback) {
+          setChatFeedbackStatus(chatbotConfig.chatFeedback.status);
+        }
+
+        // Follow-up prompts
+        if (chatbotConfig.followUpPrompts) {
+          setFollowUpPromptsStatus(chatbotConfig.followUpPrompts.status);
+        }
+
+        // Full file upload
+        if (chatbotConfig.fullFileUpload) {
+          setFullFileUpload(chatbotConfig.fullFileUpload.status);
+        }
+
+        // StreamAvailable kontrol...
+        const { data } = await isStreamAvailableQuery({
           chatflowid: props.chatflowid,
           apiHost: props.apiHost,
           onRequest: props.onRequest,
         });
-
-        console.log('📡 API Response:', configResponse.data);
-
-        if (configResponse.data) {
-          const chatbotConfig = configResponse.data;
-          
-          if (chatbotConfig.leads) {
-            const finalLeadsConfig = {
-              // Önce HTML config'i al (fallback)
-              ...(props.chatflowConfig?.leads || {}),
-              // Sonra API config ile override et (Canvas öncelikli)
-              ...chatbotConfig.leads
-            };
-            
-            setLeadsConfig(finalLeadsConfig);
-            
-            // ✅ SADECE AUTO MODUNDA FORM GÖSTER:
-            if (finalLeadsConfig.status && 
-                finalLeadsConfig.triggerMode === 'auto' && 
-                !getLocalStorageChatflow(props.chatflowid)?.lead) {
-              console.log('🔄 AUTO mode: Showing lead form immediately');
-              setMessages((prevMessages) => [...prevMessages, { message: '', type: 'leadCaptureMessage' }]);
-            }
-            
-            // ✅ INACTIVITY TIMER BAŞLAT (sadece inactivity/both modunda):
-            if (['inactivity', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
-              console.log('⏰ Starting inactivity timer for mode:', finalLeadsConfig.triggerMode);
-              startInactivityTimer();
-            }
-            
-            // ReachUsButton kontrolü
-            if (finalLeadsConfig.status && 
-                ['button', 'both'].includes(finalLeadsConfig.triggerMode || '')) {
-              console.log('✅ ReachUsButton should be visible!');
-              console.log('📝 Button Text:', finalLeadsConfig.buttonText);
-              console.log('🎨 Button Color:', finalLeadsConfig.buttonColor);
-              console.log('📍 Button Position:', finalLeadsConfig.buttonPosition);
-            } else {
-              console.log('❌ ReachUsButton hidden. Status:', finalLeadsConfig.status, 'TriggerMode:', finalLeadsConfig.triggerMode);
-            }
-          } else {
-            console.log('❌ No leads config in API response');
-            
-            // Props'ta leads config varsa onu kullan
-            if (props.chatflowConfig?.leads) {
-              console.log('✅ Using props leads config as fallback');
-              setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
-            }
-          }
-          
-          // Diğer config'ler...
-          if (chatbotConfig.uploads) {
-            setUploadsConfig(chatbotConfig.uploads);
-          }
-
-          // ✅ Form styling config (Canvas renkleri)
-          if (chatbotConfig.formStyling) {
-            console.log('🎨 Form styling config received:', chatbotConfig.formStyling);
-            setFormStyling(chatbotConfig.formStyling);
-          }
-          
-          // Starter prompts
-          if (chatbotConfig.starterPrompts) {
-            setStarterPrompts(chatbotConfig.starterPrompts);
-          }
-          
-          // Chat feedback
-          if (chatbotConfig.chatFeedback) {
-            setChatFeedbackStatus(chatbotConfig.chatFeedback.status);
-          }
-          
-          // Follow-up prompts
-          if (chatbotConfig.followUpPrompts) {
-            setFollowUpPromptsStatus(chatbotConfig.followUpPrompts.status);
-          }
-          
-          // Full file upload
-          if (chatbotConfig.fullFileUpload) {
-            setFullFileUpload(chatbotConfig.fullFileUpload.status);
-          }
-          
-          // StreamAvailable kontrol...
-          const { data } = await isStreamAvailableQuery({
-            chatflowid: props.chatflowid,
-            apiHost: props.apiHost,
-            onRequest: props.onRequest,
-          });
-          if (data) {
-            setIsChatFlowAvailableToStream(data?.isStreaming ?? false);
-          }
-        } else {
-          console.log('❌ No API response data');
-          
-          // API response yoksa props config'i kullan
-          if (props.chatflowConfig?.leads) {
-            console.log('✅ Using props leads config (API failed)');
-            setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
-          }
+        if (data) {
+          setIsChatFlowAvailableToStream(data?.isStreaming ?? false);
         }
-      } catch (error) {
-        console.error('❌ API Error:', error);
-        
-        // API error durumunda props config'i kullan
+      } else {
+        console.log('❌ No API response data');
+
+        // API response yoksa props config'i kullan
         if (props.chatflowConfig?.leads) {
-          console.log('✅ Using props leads config (API error fallback)');
-          setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);        }
+          console.log('✅ Using props leads config (API failed)');
+          setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
+        }
       }
+    } catch (error) {
+      console.error('❌ API Error:', error);
 
-      // Storage'dan lead bilgisini kontrol et
-      const savedLead = getLocalStorageChatflow(props.chatflowid)?.lead;
-      if (savedLead) {
-        setIsLeadSaved(true);
-        setLeadEmail(savedLead.email);
+      // API error durumunda props config'i kullan
+      if (props.chatflowConfig?.leads) {
+        console.log('✅ Using props leads config (API error fallback)');
+        setLeadsConfig(props.chatflowConfig.leads as LeadsConfig);
       }
+    }
 
-      if (props.clearChatOnReload) {
-        window.addEventListener('beforeunload', clearChat);
-        return () => {
-          window.removeEventListener('beforeunload', clearChat);
-        };
-      }
-    });
+    // Storage'dan lead bilgisini kontrol et
+    const savedLead = getLocalStorageChatflow(props.chatflowid)?.lead;
+    if (savedLead) {
+      setIsLeadSaved(true);
+      setLeadEmail(savedLead.email);
+    }
+
+    if (props.clearChatOnReload) {
+      window.addEventListener('beforeunload', clearChat);
+      return () => {
+        window.removeEventListener('beforeunload', clearChat);
+      };
+    }
+  });
 
   /**
    * Add each chat message into localStorage
@@ -1082,20 +1079,20 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
       if (props.textInput?.receiveSoundLocation) {
         audioSrc = props.textInput?.receiveSoundLocation;
       }
-      
+
       try {
         audioRef = new Audio(audioSrc);
-        
+
         // Error handling ekle
         audioRef.addEventListener('error', (e) => {
           console.warn('🔇 Audio could not be loaded:', audioSrc, e);
         });
-        
+
         // Promise ile play
         const playPromise = audioRef.play();
-        
+
         if (playPromise !== undefined) {
-          playPromise.catch(error => {
+          playPromise.catch((error) => {
             console.warn('🔇 Audio playback failed:', error);
             // Ses çalmazsa sessizce devam et
           });
@@ -1530,10 +1527,10 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
   };
 
   // Handle form submission
-const handleSubmit = async (value: string | object, action?: IAction | undefined | null, humanInput?: any) => {
-  trackActivity(); // ✅ ADD: Activity tracking on submit
-  
-  if (typeof value === 'string' && value.trim() === '') {
+  const handleSubmit = async (value: string | object, action?: IAction | undefined | null, humanInput?: any) => {
+    trackActivity(); // ✅ ADD: Activity tracking on submit
+
+    if (typeof value === 'string' && value.trim() === '') {
       const containsFile = previews().filter((item) => !item.mime.startsWith('image') && item.type !== 'audio').length > 0;
       if (!previews().length || (previews().length && containsFile)) {
         return;
@@ -1746,9 +1743,9 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
           type: 'apiMessage',
         },
       ];
-        if (leadsConfig()?.status && leadsConfig()?.triggerMode === 'auto' && !getLocalStorageChatflow(props.chatflowid)?.lead) {
-          messages.push({ message: '', type: 'leadCaptureMessage' });
-        }
+      if (leadsConfig()?.status && leadsConfig()?.triggerMode === 'auto' && !getLocalStorageChatflow(props.chatflowid)?.lead) {
+        messages.push({ message: '', type: 'leadCaptureMessage' });
+      }
       setMessages(messages);
     } catch (error: any) {
       const errorData = error.response.data || `${error.response.status}: ${error.response.statusText}`;
@@ -1759,7 +1756,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
     if (chatContainer) {
       setTimeout(() => {
         if (chatContainer) {
-            chatContainer.scrollTo(0, chatContainer.scrollHeight);
+          chatContainer.scrollTo(0, chatContainer.scrollHeight);
         }
       }, 100);
     }
@@ -1816,7 +1813,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
     const currentConfig = leadsConfig();
     const leadSaved = isLeadSaved();
     const formDismissed = leadFormDismissed();
-    
+
     console.log('🔄 Activity effect triggered');
     console.log('📊 Dependencies:', {
       lastActivityTime: activityTime,
@@ -1824,31 +1821,32 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
       triggerMode: currentConfig?.triggerMode,
       leadSaved,
       formDismissed,
-      showLeadFormState: showLeadForm()
+      showLeadFormState: showLeadForm(),
     });
-    
-    if (!currentConfig?.status || leadSaved || formDismissed) { // ✅ SESSION state
+
+    if (!currentConfig?.status || leadSaved || formDismissed) {
+      // ✅ SESSION state
       console.log('❌ Effect early return - config/saved/dismissed');
       return;
     }
-    
+
     if (!['inactivity', 'both'].includes(currentConfig?.triggerMode || '')) {
       console.log('❌ Effect early return - wrong trigger mode');
       return;
     }
-    
+
     // ✅ Sadece lead kaydını kontrol et, son bariyerimiz
     const storage = getLocalStorageChatflow(props.chatflowid);
     console.log('📦 Effect storage data:', storage);
-    
+
     if (storage?.lead) {
       console.log('❌ Effect early return - lead already saved in storage');
       return;
     }
-      console.log('✅ Effect: All checks passed, restarting timer');
+    console.log('✅ Effect: All checks passed, restarting timer');
     resetInactivityTimer();
     startInactivityTimer();
-  }, [lastActivityTime, leadsConfig, isLeadSaved, leadFormDismissed]);
+  });
 
   const addRecordingToPreviews = (blob: Blob) => {
     let mimeType = '';
@@ -1912,10 +1910,10 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
     if (!files || files.length === 0) {
       return;
     }
-    
+
     type FileListItem = Promise<FilePreview>;
     type UploadedFileItem = { file: File; type: string };
-    
+
     const filesList: FileListItem[] = [];
     const uploadedFiles: UploadedFileItem[] = [];
     for (const file of files) {
@@ -1933,7 +1931,8 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
         uploadedFiles.push({ file, type: fullFileUpload() ? 'file:full' : 'file:rag' });
       }
       const reader = new FileReader();
-      const { name } = file;      filesList.push(
+      const { name } = file;
+      filesList.push(
         new Promise((resolve) => {
           reader.onload = (evt) => {
             if (!evt?.target?.result) {
@@ -1945,7 +1944,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               preview: URL.createObjectURL(file),
               mime: file.type,
               name: file.name,
-              type: file.type
+              type: file.type,
             });
           };
           reader.readAsDataURL(file);
@@ -2095,17 +2094,15 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
   const getInputDisabled = (): boolean => {
     const messagesArray = messages();
     const leadFormOpen = showLeadForm();
-    
+
     // ✅ SADECE şu koşullarda disabled olsun:
     return Boolean(
       loading() ||
-      !props.chatflowid ||
-
-      leadFormOpen ||
-      // ✅ Bu koşulu kaldır veya düzelt - input'u sürekli disable ediyor
-      // (leadsConfig()?.status && !isLeadSaved() && leadsConfig()?.triggerMode === 'auto') ||
-      (messagesArray[messagesArray.length - 1]?.action && 
-      Object.keys(messagesArray[messagesArray.length - 1].action as any).length > 0)
+        !props.chatflowid ||
+        leadFormOpen ||
+        // ✅ Bu koşulu kaldır veya düzelt - input'u sürekli disable ediyor
+        // (leadsConfig()?.status && !isLeadSaved() && leadsConfig()?.triggerMode === 'auto') ||
+        (messagesArray[messagesArray.length - 1]?.action && Object.keys(messagesArray[messagesArray.length - 1].action as any).length > 0),
     );
   };
 
@@ -2125,7 +2122,6 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
       };
     }),
   );
-
 
   const previewDisplay = (item: FilePreview) => {
     if (item.mime.startsWith('image/')) {
@@ -2162,14 +2158,14 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
   // Reach Us Button - Always visible when configured
   const ReachUsButton = () => {
     const config = leadsConfig();
-    
+
     // Only hide if there's no config at all
     if (!config || !config.status) return null;
-    
+
     // Show button if buttonPosition is set OR if triggerMode includes 'button'
     const shouldShow = config.buttonPosition || (config.triggerMode && ['button', 'both'].includes(config.triggerMode));
     if (!shouldShow) return null;
-    
+
     // Class mapping
     const position = config.buttonPosition || 'top-right';
     let positionClass = 'reach-us-top-right';
@@ -2184,7 +2180,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
         style={{
           background: `linear-gradient(135deg, ${buttonColor}, ${buttonColor}dd)`,
           color: 'white',
-          'border': 'none',
+          border: 'none',
           'border-radius': '25px',
           'font-weight': 600,
           'font-size': '14px',
@@ -2288,7 +2284,13 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
             title="Clear Chat"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 4V9H4.58152M4.58152 9C5.63742 6.82813 7.87674 5.3 10.5 5.3C13.9779 5.3 16.8 8.12208 16.8 11.6C16.8 15.0779 13.9779 17.9 10.5 17.9C8.63097 17.9 6.99421 17.0561 5.92364 15.7302M4.58152 9H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M4 4V9H4.58152M4.58152 9C5.63742 6.82813 7.87674 5.3 10.5 5.3C13.9779 5.3 16.8 8.12208 16.8 11.6C16.8 15.0779 13.9779 17.9 10.5 17.9C8.63097 17.9 6.99421 17.0561 5.92364 15.7302M4.58152 9H9"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
           <Show when={props.closeBot}>
@@ -2355,10 +2357,10 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
             <div
               class="absolute top-0 left-0 bottom-0 right-0 flex flex-col items-center justify-center text-white z-40 gap-4 border-2 border-dashed transition-all duration-300"
               style={{
-                'background': 'rgba(0, 0, 0, 0.8)',
+                background: 'rgba(0, 0, 0, 0.8)',
                 'border-color': props.bubbleBackgroundColor || '#3b82f6',
                 'border-radius': '16px',
-                'margin': '8px'
+                margin: '8px',
               }}
             >
               <div class="text-center">
@@ -2370,23 +2372,22 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                     {(allowed) => (
                       <div class="text-center">
                         <span class="font-medium">{allowed.fileTypes?.join(', ')}</span>
-                        {allowed.maxUploadSize && (
-                          <span class="block text-xs opacity-70">Max: {allowed.maxUploadSize} MB</span>
-                        )}
+                        {allowed.maxUploadSize && <span class="block text-xs opacity-70">Max: {allowed.maxUploadSize} MB</span>}
                       </div>
                     )}
                   </For>
                 </div>
               </div>
             </div>
-          )}          <div
+          )}{' '}
+          <div
             class="flex flex-col w-full flex-1 min-h-0 overflow-hidden"
             style={{
-              'flex': '1 1 0%',
+              flex: '1 1 0%',
               'min-height': '0',
-              'background': '#ffffff',
+              background: '#ffffff',
               'background-color': '#ffffff',
-              'width': '100%',
+              width: '100%',
               'box-sizing': 'border-box',
               margin: '0',
               padding: '0',
@@ -2399,9 +2400,9 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               ref={chatContainer}
               class="flex-1 overflow-y-auto p-4 space-y-1"
               style={{
-                'background': '#ffffff',
+                background: '#ffffff',
                 'background-color': '#ffffff',
-                'width': '100%',
+                width: '100%',
                 'box-sizing': 'border-box',
                 margin: '0',
                 padding: '16px 12px',
@@ -2413,7 +2414,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                 'overflow-y': 'auto',
               }}
             >
-              <For each={[...messages()]}> 
+              <For each={[...messages()]}>
                 {(message, index) => {
                   return (
                     <>
@@ -2464,11 +2465,11 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                             // ✅ LEAD FORM CONTAINER - Boyut kontrollü
                             // 'max-height': '320px', // Sabit maksimum yükseklik (KALDIRILDI)
                             // 'min-height': '180px', // min yükseklik eklendi (opsiyonel, bırakılabilir)
-                            'width': '100%',
-                            'overflow': 'visible', // overflow-y: auto KALDIRILDI, overflow: visible eklendi
-                            'margin': '0',
-                            'padding': '0',
-                            'display': 'flex',
+                            width: '100%',
+                            overflow: 'visible', // overflow-y: auto KALDIRILDI, overflow: visible eklendi
+                            margin: '0',
+                            padding: '0',
+                            display: 'flex',
                             'align-items': 'stretch',
                           }}
                         >
@@ -2492,7 +2493,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                             fieldErrors={fieldErrors()}
                             fieldTouched={fieldTouched()}
                             onFieldValidation={handleFieldValidation}
-                            onFieldBlur={handleFieldBlur} 
+                            onFieldBlur={handleFieldBlur}
                             onFormSubmit={handleLeadFormSubmit}
                             title={leadsConfig()?.title || DEFAULT_FORM_TITLE}
                           />
@@ -2506,7 +2507,9 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               </For>
             </div>
             {/* ✅ STARTER PROMPTS - Canvas style */}
-            <Show when={messages().length === 1}>            <Show when={starterPrompts().length > 0}>
+            <Show when={messages().length === 1}>
+              {' '}
+              <Show when={starterPrompts().length > 0}>
                 <div class="flex-shrink-0 py-4 border-t border-gray-100" style={{ width: '100%' }}>
                   <div class="flex flex-wrap gap-2">
                     <For each={[...starterPrompts()]}>
@@ -2525,35 +2528,36 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
             {/* ✅ FOLLOW UP PROMPTS - Canvas style */}
             <Show when={messages().length > 2 && followUpPromptsStatus()}>
               <Show when={followUpPrompts().length > 0}>
-                <div 
+                <div
                   class="follow-up-prompts-container"
-                  style={{ 
+                  style={{
                     width: '100%',
                     padding: '12px 16px',
                     display: 'flex',
                     'flex-direction': 'column',
-                    gap: '8px'
+                    gap: '8px',
                   }}
                 >
                   <div style={{ display: 'flex', 'align-items': 'center', gap: '6px' }}>
                     <SparklesIcon class="w-4 h-4" style={{ color: '#3b82f6' }} />
-                    <span style={{ 
-                      'font-size': '12px', 
-                      'font-weight': '500', 
-                      color: '#374151',
-                      'line-height': '1.4'
-                    }}>
-                    </span>
+                    <span
+                      style={{
+                        'font-size': '12px',
+                        'font-weight': '500',
+                        color: '#374151',
+                        'line-height': '1.4',
+                      }}
+                    />
                   </div>
-                  <div 
-                    style={{ 
-                      display: 'flex', 
+                  <div
+                    style={{
+                      display: 'flex',
                       'flex-wrap': 'wrap',
                       gap: '4px',
                       'align-items': 'flex-start',
                       'justify-content': 'flex-start',
                       width: '100%',
-                      'box-sizing': 'border-box'
+                      'box-sizing': 'border-box',
                     }}
                   >
                     <For each={[...followUpPrompts()]}>
@@ -2576,9 +2580,9 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               </div>
             </Show>
             {/* ✅ REAL INPUT AREA - TextInput component - TAM GENİŞLİK */}
-            <div 
-              class="flex-shrink-0 border-t border-gray-200" 
-              style={{ 
+            <div
+              class="flex-shrink-0 border-t border-gray-200"
+              style={{
                 width: '100%',
                 'flex-shrink': '0',
                 'flex-grow': '0',
@@ -2606,12 +2610,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               />
             </div>
             {/* ✅ BADGE COMPONENT - WHITE BACKGROUND */}
-            <Badge
-              footer={props.footer}
-              badgeBackgroundColor="#ffffff"
-              poweredByTextColor={props.poweredByTextColor}
-              botContainer={botContainer}
-            />
+            <Badge footer={props.footer} badgeBackgroundColor="#ffffff" poweredByTextColor={props.poweredByTextColor} botContainer={botContainer} />
           </div>
         </div>
       )}

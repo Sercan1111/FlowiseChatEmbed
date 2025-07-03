@@ -34,7 +34,7 @@ export const FollowUpPromptBubble = (props: Props) => (
         'white-space': 'normal',
         'word-wrap': 'break-word',
         'overflow-wrap': 'break-word',
-        'flex-shrink': '0'
+        'flex-shrink': '0',
       }}
       onMouseOver={(e) => {
         (e.target as HTMLElement).style.backgroundColor = 'rgba(33, 150, 243, 0.05)';

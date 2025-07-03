@@ -229,30 +229,28 @@ export const countries: Country[] = [
 ];
 
 // ✅ Helper functions
-export const getCountryByCode = (code: string): Country | undefined => 
-  countries.find(c => c.code === code);
+export const getCountryByCode = (code: string): Country | undefined => countries.find((c) => c.code === code);
 
-export const getCountryByDialCode = (dialCode: string): Country | undefined => 
-  countries.find(c => c.dialCode === dialCode);
+export const getCountryByDialCode = (dialCode: string): Country | undefined => countries.find((c) => c.dialCode === dialCode);
 
 export const formatPhoneNumber = (phoneNumber: string, country: Country): string => {
   if (!phoneNumber) return '';
-  
+
   // Remove any existing country code
   let cleanNumber = phoneNumber.replace(/^\+/, '').replace(/^0+/, '');
-  
+
   // Remove the country's dial code if it's at the beginning
   const dialCodeWithoutPlus = country.dialCode.replace('+', '');
   if (cleanNumber.startsWith(dialCodeWithoutPlus)) {
     cleanNumber = cleanNumber.substring(dialCodeWithoutPlus.length);
   }
-  
+
   return `${country.dialCode}${cleanNumber}`;
 };
 
 export const parsePhoneInput = (input: string): { country?: Country; nationalNumber: string } => {
   if (!input) return { nationalNumber: '' };
-  
+
   // If starts with +, try to find matching country
   if (input.startsWith('+')) {
     for (const country of countries) {
@@ -262,6 +260,6 @@ export const parsePhoneInput = (input: string): { country?: Country; nationalNum
       }
     }
   }
-  
+
   return { nationalNumber: input };
 };

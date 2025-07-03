@@ -13,8 +13,8 @@ export const ShortTextInput = (props: ShortTextInputProps) => {
 
   const handleInput = (e) => {
     if (props.ref) {
-      e.currentTarget.style.height = "auto";
-      e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+      e.currentTarget.style.height = 'auto';
+      e.currentTarget.style.height = e.currentTarget.scrollHeight + 'px';
       local.onInput(e.currentTarget.value);
     }
   };

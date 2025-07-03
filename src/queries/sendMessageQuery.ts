@@ -134,7 +134,7 @@ export const sendFileDownloadQuery = ({ apiHost = 'http://localhost:3000', body,
 export const addLeadQuery = ({ apiHost = 'http://localhost:3000', body, onRequest }: LeadCaptureRequest) =>
   sendRequest<any>({
     method: 'POST',
-    url: `${apiHost}/api/v1/public-leads`,  
+    url: `${apiHost}/api/v1/public-leads`,
     body,
-    onRequest: onRequest, 
+    onRequest: onRequest,
   });

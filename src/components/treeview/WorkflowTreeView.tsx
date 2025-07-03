@@ -350,10 +350,10 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
         // Find the parent iteration node
         let parentNode: WorkflowNode | undefined;
         for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i].nodeId === parentId) {
-              parentNode = { ...nodes[i] };
-              break;
-            }
+          if (nodes[i].nodeId === parentId) {
+            parentNode = { ...nodes[i] };
+            break;
+          }
         }
         if (!parentNode) return;
 
@@ -688,7 +688,8 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
         'font-size': props.fontSize ? `${props.fontSize}px` : `${defaultFontSize}px`,
       }}
     >
-      {/* Collapsible header */}      <div
+      {/* Collapsible header */}{' '}
+      <div
         class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 transition-colors duration-150"
         onClick={togglePanel}
         style={{
@@ -707,7 +708,6 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
           </h2>
         </div>
       </div>
-
       {/* JSON Syntax Highlighting Styles */}
       <style>{`
         .json-viewer .string { color: #7ac35c; }
@@ -746,7 +746,6 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
           filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
         }
       `}</style>
-
       {/* Collapsible content */}
       <Show when={isPanelExpanded()}>
         <div class="border-t">
@@ -756,7 +755,8 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
             </RichTreeView>
           </div>
 
-          {selectedNode() && (            <div
+          {selectedNode() && (
+            <div
               class="mx-4 mb-4 p-4 rounded border node-details-panel"
               style={{
                 'background-color': '#ffffff',
@@ -779,7 +779,8 @@ export const WorkflowTreeView = (props: WorkflowTreeViewProps) => {
               </div>
 
               <div
-                class="json-viewer text-xs overflow-auto max-h-60 p-2 rounded font-mono"                style={{
+                class="json-viewer text-xs overflow-auto max-h-60 p-2 rounded font-mono"
+                style={{
                   'background-color': '#ffffff',
                   'white-space': 'pre-wrap',
                   'word-break': 'break-word',

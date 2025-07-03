@@ -136,7 +136,9 @@ export const TextInput = (props: TextInputProps) => {
       if (allowedFileTypes.includes('*')) return '*';
       else return allowedFileTypes;
     }
-    return '*';  };  return (
+    return '*';
+  };
+  return (
     <div
       class="chatbot-input border border-[#eeeeee] p-0 m-0 bg-white"
       data-testid="input"
@@ -222,7 +224,20 @@ export const TextInput = (props: TextInputProps) => {
           </RecordAudioButton>
         ) : null}
         {/* FLEX ROW: ShortTextInput + SendButton */}
-        <div class="input-row-container" style={{ width: '100%', padding: '0 12px', 'box-sizing': 'border-box', display: 'flex', 'flex-direction': 'row', 'align-items': 'center', position: 'relative', height: '40px', 'max-height': '40px' }}>
+        <div
+          class="input-row-container"
+          style={{
+            width: '100%',
+            padding: '0 12px',
+            'box-sizing': 'border-box',
+            display: 'flex',
+            'flex-direction': 'row',
+            'align-items': 'center',
+            position: 'relative',
+            height: '40px',
+            'max-height': '40px',
+          }}
+        >
           <ShortTextInput
             ref={inputRef as HTMLTextAreaElement}
             onInput={handleInput}
@@ -240,24 +255,26 @@ export const TextInput = (props: TextInputProps) => {
             type="button"
             isDisabled={props.disabled || isSendButtonDisabled()}
             class="chatbot-send-button"
-            style={{
-              position: 'absolute',
-              right: '16px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '32px',
-              height: '32px',
-              backgroundColor: '#3b82f6',
-              border: 'none',
-              borderRadius: '50%',
-              cursor: props.disabled || isSendButtonDisabled() ? 'not-allowed' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: 0,
-              minWidth: '32px',
-              boxShadow: 'none',
-            } as JSX.CSSProperties}
+            style={
+              {
+                position: 'absolute',
+                right: '16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: '32px',
+                height: '32px',
+                backgroundColor: '#3b82f6',
+                border: 'none',
+                borderRadius: '50%',
+                cursor: props.disabled || isSendButtonDisabled() ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 0,
+                minWidth: '32px',
+                boxShadow: 'none',
+              } as JSX.CSSProperties
+            }
             on:click={submit}
           />
         </div>

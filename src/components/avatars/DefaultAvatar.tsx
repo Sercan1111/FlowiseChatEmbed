@@ -1,41 +1,44 @@
 import { isMobile } from '@/utils/isMobileSignal';
 import robotAvatar from './robot.png';
 
-export const DefaultAvatar = () => {  return (
+export const DefaultAvatar = () => {
+  return (
     <figure
       // ✅ DEFAULT RESPONSIVE CLASSES - Back to original
       class={
-        'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' + 
-        (isMobile() ? 'w-6 h-6 text-sm' : 'w-10 h-10 text-xl')
+        'flex justify-center items-center rounded-full text-white relative flex-shrink-0 ' + (isMobile() ? 'w-6 h-6 text-sm' : 'w-10 h-10 text-xl')
       }
-      data-testid="default-avatar"      style={{
+      data-testid="default-avatar"
+      style={{
         // ✅ FIXED SIZE - No margin overrides
-        'width': isMobile() ? '24px' : '40px',
-        'height': isMobile() ? '24px' : '40px',
+        width: isMobile() ? '24px' : '40px',
+        height: isMobile() ? '24px' : '40px',
         'flex-shrink': '0',
-        'box-sizing': 'border-box'
+        'box-sizing': 'border-box',
       }}
-    >{/* ✅ KEEP YOUR ROBOT IMAGE - Custom robot preserved */}
+    >
+      {/* ✅ KEEP YOUR ROBOT IMAGE - Custom robot preserved */}
       <div
         style={{
-          'width': '100%',
-          'height': '100%',
+          width: '100%',
+          height: '100%',
           'border-radius': '50%',
-          'background': '#f8f9fa',
-          'display': 'flex',
+          background: '#f8f9fa',
+          display: 'flex',
           'align-items': 'center',
           'justify-content': 'center',
-          'overflow': 'hidden'
-        }}      >
+          overflow: 'hidden',
+        }}
+      >
         {/* ✅ OPTION 1: Use your robot image */}
         <img
           src={robotAvatar} // Your robot image from import
           alt="Assistant Avatar"
           style={{
-            'width': '70%',
-            'height': '70%',
+            width: '70%',
+            height: '70%',
             'border-radius': '50%',
-            'object-fit': 'cover'
+            'object-fit': 'cover',
           }}
           onError={(e) => {
             // ✅ FALLBACK: Default SVG if robot image fails

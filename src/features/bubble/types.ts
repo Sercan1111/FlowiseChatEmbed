@@ -28,7 +28,7 @@ export type TextInputTheme = {
   sendSoundLocation?: string;
   receiveMessageSound?: boolean;
   receiveSoundLocation?: string;
-  
+
   // ✅ YENİ: Compact design props ekliyoruz
   inputHeight?: string;
   buttonSize?: string;

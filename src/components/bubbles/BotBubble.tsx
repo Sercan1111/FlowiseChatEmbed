@@ -9,9 +9,7 @@ import { AgentReasoningBubble } from './AgentReasoningBubble';
 import { TickIcon, XIcon } from '../icons';
 import { SourceBubble } from '../bubbles/SourceBubble';
 import { DateTimeToggleTheme } from '@/features/bubble/types';
-import { WorkflowTreeView
-  
- } from '../treeview/WorkflowTreeView';
+import { WorkflowTreeView } from '../treeview/WorkflowTreeView';
 
 type Props = {
   message: MessageType;
@@ -49,7 +47,7 @@ export const BotBubble = (props: Props) => {
     showAvatar: props.showAvatar,
     avatarSrc: props.avatarSrc,
     messageText: props.message?.message?.substring(0, 50) + '...',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 
   Marked.setOptions({ isNoP: true, sanitize: props.renderHTML !== undefined ? !props.renderHTML : true });
@@ -399,7 +397,8 @@ export const BotBubble = (props: Props) => {
       console.error('Error formatting date:', error);
       return '';
     }
-  };  return (
+  };
+  return (
     <div>
       {/* ✅ AVATAR POSITIONING: Avatar solda, mesajlar sağda - Padding kaldırıldı, daha geniş alan */}
       <div class="flex flex-row justify-start mb-1 items-start host-container">
@@ -417,7 +416,8 @@ export const BotBubble = (props: Props) => {
               <div>
                 <WorkflowTreeView workflowData={props.message.agentFlowExecutedData} indentationLevel={24} />
               </div>
-            )}          {props.showAgentMessages && props.message.agentReasoning && (
+            )}{' '}
+          {props.showAgentMessages && props.message.agentReasoning && (
             <details ref={botDetailsEl} class="mb-2 px-6 py-3 rounded-[6px]" style={{ 'min-width': '250px', 'max-width': '85%' }}>
               <summary class="cursor-pointer">
                 <span class="italic">Agent Messages</span>
@@ -454,7 +454,9 @@ export const BotBubble = (props: Props) => {
                 }}
               </For>
             </div>
-          )}          {props.message.message && (            <span
+          )}{' '}
+          {props.message.message && (
+            <span
               ref={setBotMessageRef}
               class="prose bot-message"
               data-testid="host-bubble"
@@ -470,7 +472,7 @@ export const BotBubble = (props: Props) => {
                 'overflow-wrap': 'break-word',
                 // 'word-wrap': 'break-word !important', // kaldırıldı, class ile override
                 // 'white-space': 'pre-wrap !important', // kaldırıldı, class ile override
-                'hyphens': 'auto',
+                hyphens: 'auto',
                 padding: '12px 20px',
                 width: 'fit-content',
                 'box-sizing': 'border-box',
@@ -482,7 +484,8 @@ export const BotBubble = (props: Props) => {
                 'margin-bottom': '4px', // Daha doğal spacing için azaltıldı
               }}
             />
-          )}          {props.message.action && (
+          )}{' '}
+          {props.message.action && (
             <div class="px-4 py-2 flex flex-row justify-start space-x-2">
               <For each={props.message.action.elements || []}>
                 {(action) => {
@@ -517,7 +520,8 @@ export const BotBubble = (props: Props) => {
               </For>
             </div>
           )}
-        </div>      </div>
+        </div>{' '}
+      </div>
       <div>
         {props.message.sourceDocuments && props.message.sourceDocuments.length && (
           <>
@@ -546,13 +550,11 @@ export const BotBubble = (props: Props) => {
             </div>
           </>
         )}
-      </div>      <div>
+      </div>{' '}
+      <div>
         {props.chatFeedbackStatus && props.message.messageId && (
           <>
-            <div 
-              class="flex items-center px-2 pb-2"
-              style={{ 'margin-left': props.showAvatar ? '48px' : '0' }}
-            >
+            <div class="flex items-center px-2 pb-2" style={{ 'margin-left': props.showAvatar ? '48px' : '0' }}>
               <CopyToClipboardButton feedbackColor={props.feedbackColor} onClick={() => copyMessageToClipboard()} />
               <Show when={copiedMessage()}>
                 <div class="copied-message" style={{ color: props.feedbackColor ?? defaultFeedbackColor }}>

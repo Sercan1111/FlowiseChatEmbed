@@ -70,7 +70,7 @@ export const Bubble = (props: BubbleProps) => {
         <style>{props.theme?.customCSS}</style>
       </Show>
       <style>{styles}</style>
-      
+
       <Tooltip
         showTooltip={showTooltip && !isBotOpened()}
         position={buttonPosition()}
@@ -80,7 +80,7 @@ export const Bubble = (props: BubbleProps) => {
         tooltipTextColor={bubbleProps.theme?.tooltip?.tooltipTextColor}
         tooltipFontSize={bubbleProps.theme?.tooltip?.tooltipFontSize}
       />
-      
+
       <BubbleButton
         {...bubbleProps.theme?.button}
         toggleBot={toggleBot}
@@ -108,7 +108,7 @@ export const Bubble = (props: BubbleProps) => {
           'transform-origin': 'bottom right',
           transform: isBotOpened() ? 'scale3d(1, 1, 1)' : 'scale3d(0, 0, 1)',
           'box-shadow': 'rgb(0 0 0 / 16%) 0px 5px 40px',
-          
+
           // ✅ FORCE WHITE BACKGROUND - Multiple fallbacks
           background: '#ffffff !important',
           'background-color': '#ffffff !important',
@@ -116,37 +116,38 @@ export const Bubble = (props: BubbleProps) => {
           'background-size': 'cover',
           'background-position': 'center',
           'background-repeat': 'no-repeat',
-          
+
           'z-index': '42424241',
           'border-radius': '12px',
           overflow: 'hidden',
           display: 'flex',
           'flex-direction': 'column',
         }}
-        class={
-          `fixed rounded-lg` +
-          (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none')
-        }
+        class={`fixed rounded-lg` + (isBotOpened() ? ' opacity-1' : ' opacity-0 pointer-events-none')}
       >
         <Show when={isBotStarted()}>
-          <div style={{ 
-            height: '100%', 
-            display: 'flex', 
-            'flex-direction': 'column',
-            position: 'relative',
-            'min-height': '0',
-            background: '#ffffff !important',
-            'background-color': '#ffffff !important'
-          }}>
-            <div style={{ 
-              height: '100%', 
-              display: 'flex', 
+          <div
+            style={{
+              height: '100%',
+              display: 'flex',
               'flex-direction': 'column',
+              position: 'relative',
               'min-height': '0',
-              flex: '1 1 0%',
               background: '#ffffff !important',
-              'background-color': '#ffffff !important'
-            }}>
+              'background-color': '#ffffff !important',
+            }}
+          >
+            <div
+              style={{
+                height: '100%',
+                display: 'flex',
+                'flex-direction': 'column',
+                'min-height': '0',
+                flex: '1 1 0%',
+                background: '#ffffff !important',
+                'background-color': '#ffffff !important',
+              }}
+            >
               <Bot
                 backgroundColor="#ffffff"
                 formBackgroundColor={bubbleProps.theme?.form?.backgroundColor}
@@ -163,23 +164,19 @@ export const Bubble = (props: BubbleProps) => {
                 welcomeMessage={bubbleProps.theme?.chatWindow?.welcomeMessage}
                 errorMessage={bubbleProps.theme?.chatWindow?.errorMessage}
                 poweredByTextColor={bubbleProps.theme?.chatWindow?.poweredByTextColor}
-                
                 // ✅ FIX: textInput props - kullanıcı ayarlarını override etme!
                 textInput={bubbleProps.theme?.chatWindow?.textInput}
-                
                 // ✅ FIX: botMessage props - avatarSrc ve showAvatar düzgün geçir
                 botMessage={{
                   ...bubbleProps.theme?.chatWindow?.botMessage,
                   showAvatar: bubbleProps.theme?.chatWindow?.botMessage?.showAvatar ?? true,
-                  avatarSrc: bubbleProps.theme?.chatWindow?.botMessage?.avatarSrc
+                  avatarSrc: bubbleProps.theme?.chatWindow?.botMessage?.avatarSrc,
                 }}
-                
                 // ✅ FIX: userMessage props - kullanıcı ayarlarını koru
                 userMessage={{
                   ...bubbleProps.theme?.chatWindow?.userMessage,
-                  showAvatar: bubbleProps.theme?.chatWindow?.userMessage?.showAvatar ?? false
+                  showAvatar: bubbleProps.theme?.chatWindow?.userMessage?.showAvatar ?? false,
                 }}
-                
                 feedback={bubbleProps.theme?.chatWindow?.feedback}
                 fontSize={bubbleProps.theme?.chatWindow?.fontSize}
                 footer={bubbleProps.theme?.chatWindow?.footer}
@@ -187,8 +184,8 @@ export const Bubble = (props: BubbleProps) => {
                 theme={{
                   chatWindow: {
                     width: chatWindowWidth,
-                    height: chatWindowHeight
-                  }
+                    height: chatWindowHeight,
+                  },
                 }}
                 starterPrompts={bubbleProps.theme?.chatWindow?.starterPrompts}
                 starterPromptFontSize={bubbleProps.theme?.chatWindow?.starterPromptFontSize}

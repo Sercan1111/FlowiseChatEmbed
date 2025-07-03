@@ -18,13 +18,11 @@ export interface PhoneInputProps {
 }
 
 export const PhoneInput = (props: PhoneInputProps) => {
-  const [selectedCountry, setSelectedCountry] = createSignal<Country>(
-    getCountryByCode(props.defaultCountry || 'US') || countries[0]
-  );
+  const [selectedCountry, setSelectedCountry] = createSignal<Country>(getCountryByCode(props.defaultCountry || 'US') || countries[0]);
   const [nationalNumber, setNationalNumber] = createSignal('');
   const [dropdownOpen, setDropdownOpen] = createSignal(false);
   const [searchQuery, setSearchQuery] = createSignal('');
-  
+
   // ✅ Initialize refs with undefined and proper types
   let inputRef: HTMLInputElement | undefined;
   let dropdownRef: HTMLDivElement | undefined;
@@ -44,11 +42,9 @@ export const PhoneInput = (props: PhoneInputProps) => {
   const filteredCountries = () => {
     const query = searchQuery().toLowerCase();
     if (!query) return countries;
-    
-    return countries.filter(country => 
-      country.name.toLowerCase().includes(query) ||
-      country.dialCode.includes(query) ||
-      country.code.toLowerCase().includes(query)
+
+    return countries.filter(
+      (country) => country.name.toLowerCase().includes(query) || country.dialCode.includes(query) || country.code.toLowerCase().includes(query),
     );
   };
 
@@ -57,11 +53,11 @@ export const PhoneInput = (props: PhoneInputProps) => {
     setSelectedCountry(country);
     setDropdownOpen(false);
     setSearchQuery('');
-    
+
     // Update the full phone number
     const fullNumber = formatPhoneNumber(nationalNumber(), country);
     props.onChange(fullNumber);
-    
+
     // Focus back to input
     inputRef?.focus();
   };
@@ -71,7 +67,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
     // Only allow numbers - no symbols since country code is handled separately
     const cleanValue = value.replace(/[^\d]/g, '');
     setNationalNumber(cleanValue);
-    
+
     // Update the full phone number
     const fullNumber = formatPhoneNumber(cleanValue, selectedCountry());
     props.onChange(fullNumber);
@@ -97,13 +93,9 @@ export const PhoneInput = (props: PhoneInputProps) => {
   });
 
   return (
-    <div 
-      class="phone-input-container" 
-      ref={dropdownRef!} 
-      style={{ position: 'relative', width: '100%' }}
-    >
+    <div class="phone-input-container" ref={dropdownRef!} style={{ position: 'relative', width: '100%' }}>
       {/* Main Input Container */}
-      <div 
+      <div
         class="phone-input-wrapper"
         style={{
           display: 'flex',
@@ -124,7 +116,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
           'line-height': '1.5',
           'box-shadow': 'none',
           height: '30px',
-          ...props.style
+          ...props.style,
         }}
       >
         {/* Country Selector Button */}
@@ -132,7 +124,8 @@ export const PhoneInput = (props: PhoneInputProps) => {
           type="button"
           class="country-selector-button"
           onClick={toggleDropdown}
-          disabled={props.disabled}          style={{
+          disabled={props.disabled}
+          style={{
             display: 'flex',
             'align-items': 'center',
             padding: '14px 12px',
@@ -146,16 +139,16 @@ export const PhoneInput = (props: PhoneInputProps) => {
           }}
         >
           {/* ✅ FLAG IMG TAG - CDN images */}
-          <img 
-            src={selectedCountry().flag} 
+          <img
+            src={selectedCountry().flag}
             alt={selectedCountry().code}
-            style={{ 
-              width: '20px', 
-              height: '15px', 
+            style={{
+              width: '20px',
+              height: '15px',
               'margin-right': '8px',
               'object-fit': 'cover',
               'border-radius': '2px',
-              'flex-shrink': '0'
+              'flex-shrink': '0',
             }}
             onError={(e) => {
               // Fallback to emoji if image fails
@@ -163,20 +156,18 @@ export const PhoneInput = (props: PhoneInputProps) => {
               console.warn('Flag image failed to load:', selectedCountry().flag);
             }}
           />
-          <span style={{ 'margin-right': '4px', color: '#6b7280', 'font-size': '14px' }}>
-            {selectedCountry().dialCode}
-          </span>
-          <svg 
-            width="12" 
-            height="12" 
-            viewBox="0 0 12 12" 
+          <span style={{ 'margin-right': '4px', color: '#6b7280', 'font-size': '14px' }}>{selectedCountry().dialCode}</span>
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
             fill="none"
-            style={{ 
+            style={{
               transform: dropdownOpen() ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.2s ease'
+              transition: 'transform 0.2s ease',
             }}
           >
-            <path d="M3 4.5L6 7.5L9 4.5" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 4.5L6 7.5L9 4.5" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
         </button>
 
@@ -184,7 +175,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
         <input
           ref={inputRef!}
           type="tel"
-          placeholder={props.placeholder || "Phone number"}
+          placeholder={props.placeholder || 'Phone number'}
           value={nationalNumber()}
           onInput={(e) => handleNumberInput(e.currentTarget.value)}
           onKeyPress={(e) => {
@@ -223,7 +214,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
 
       {/* Dropdown */}
       <Show when={dropdownOpen()}>
-        <div 
+        <div
           class="country-dropdown"
           style={{
             position: 'absolute',
@@ -237,7 +228,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
             'box-shadow': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
             'margin-top': '4px',
             'max-height': '200px',
-            'overflow-y': 'auto'
+            'overflow-y': 'auto',
           }}
         >
           {/* Search Input */}
@@ -253,7 +244,7 @@ export const PhoneInput = (props: PhoneInputProps) => {
                 border: '1px solid #e2e8f0',
                 'border-radius': '6px',
                 outline: 'none',
-                'font-size': '14px'
+                'font-size': '14px',
               }}
             />
           </div>
@@ -276,25 +267,26 @@ export const PhoneInput = (props: PhoneInputProps) => {
                     cursor: 'pointer',
                     'text-align': 'left',
                     'font-size': '14px',
-                    transition: 'background-color 0.2s ease'
+                    transition: 'background-color 0.2s ease',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.backgroundColor = '#f3f4f6';
-                  }}                  onMouseLeave={(e) => {
+                  }}
+                  onMouseLeave={(e) => {
                     e.currentTarget.style.backgroundColor = '#ffffff';
                   }}
                 >
                   {/* ✅ FLAG IMG TAG - CDN images in dropdown */}
-                  <img 
-                    src={country.flag} 
+                  <img
+                    src={country.flag}
                     alt={country.code}
-                    style={{ 
-                      width: '20px', 
-                      height: '15px', 
+                    style={{
+                      width: '20px',
+                      height: '15px',
                       'margin-right': '12px',
                       'object-fit': 'cover',
                       'border-radius': '2px',
-                      'flex-shrink': '0'
+                      'flex-shrink': '0',
                     }}
                     onError={(e) => {
                       // Fallback to emoji if image fails
@@ -302,12 +294,8 @@ export const PhoneInput = (props: PhoneInputProps) => {
                       console.warn('Flag image failed to load:', country.flag);
                     }}
                   />
-                  <span style={{ flex: '1', color: '#1f2937' }}>
-                    {country.name}
-                  </span>
-                  <span style={{ color: '#6b7280', 'margin-left': '8px' }}>
-                    {country.dialCode}
-                  </span>
+                  <span style={{ flex: '1', color: '#1f2937' }}>{country.name}</span>
+                  <span style={{ color: '#6b7280', 'margin-left': '8px' }}>{country.dialCode}</span>
                 </button>
               )}
             </For>

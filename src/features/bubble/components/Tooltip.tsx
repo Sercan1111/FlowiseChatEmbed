@@ -18,7 +18,7 @@ type TooltipProps = {
 const Tooltip = (props: TooltipProps) => {
   const formattedTooltipMessage = () => {
     const message = props.tooltipMessage ?? defaultTooltipMessage;
-    
+
     if (message.length > 20) {
       return message
         .split(' ')
@@ -37,7 +37,7 @@ const Tooltip = (props: TooltipProps) => {
         .map((arr) => arr.join(' '))
         .join('\n');
     }
-    
+
     return message;
   };
 
@@ -67,15 +67,16 @@ const Tooltip = (props: TooltipProps) => {
           transition: 'all 0.3s ease',
         }}
       >
-        <span 
+        <span
           class="emoji-text"
           style={{
-            'font-family': '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Android Emoji", "EmojiSymbols", "Twemoji", "JoyPixels", "Symbola" !important',
+            'font-family':
+              '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Android Emoji", "EmojiSymbols", "Twemoji", "JoyPixels", "Symbola" !important',
             'font-variant-emoji': 'unicode',
             'text-rendering': 'optimizeLegibility',
             'unicode-bidi': 'embed',
             display: 'inline-block',
-            'line-height': '1.2'
+            'line-height': '1.2',
           }}
         >
           {formattedTooltipMessage()}

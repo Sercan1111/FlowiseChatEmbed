@@ -3,13 +3,13 @@ import { LeadsConfig } from '@/components/Bot';
 // ✅ Canvas'taki validation patterns
 const emailValidationPatterns = {
   basic: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  strict: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+  strict: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
 };
 
 // ✅ Canvas'taki disposable email domains
 const disposableEmailDomains = [
   '10minutemail.com',
-  'tempmail.org', 
+  'tempmail.org',
   'guerrillamail.com',
   'throwaway.email',
   'temp-mail.org',
@@ -30,7 +30,7 @@ const disposableEmailDomains = [
   'pokemail.net',
   'spam4.me',
   'grr.la',
-  'guerrillamail.com'
+  'guerrillamail.com',
 ];
 
 // ✅ Canvas'taki test name patterns
@@ -86,17 +86,17 @@ export const validatePhone = (phone: string, config: LeadsConfig) => {
   if (!phone || phone.trim().length === 0) {
     return { valid: false, message: 'Phone number is required' };
   }
-  
+
   // Extract only the national number part (after country code)
   const parts = phone.split(' ');
   const nationalNumber = parts.length > 1 ? parts.slice(1).join('') : phone;
-  
+
   // Only allow digits in national number (no symbols since country code is separate)
   const phoneRegex = /^\d{7,15}$/;
   if (!phoneRegex.test(nationalNumber)) {
     return { valid: false, message: 'Please enter a valid phone number (7-15 digits)' };
   }
-  
+
   return { valid: true };
 };
 
@@ -156,17 +156,17 @@ export class RateLimiter {
 
   canAttempt(): { allowed: boolean; message?: string } {
     const now = Date.now();
-    
+
     // Remove old attempts outside time window
-    this.attempts = this.attempts.filter(time => now - time < this.timeWindow);
+    this.attempts = this.attempts.filter((time) => now - time < this.timeWindow);
 
     // Check if too many attempts
     if (this.attempts.length >= this.maxAttempts) {
       const oldestAttempt = Math.min(...this.attempts);
       const waitTime = Math.ceil((this.timeWindow - (now - oldestAttempt)) / 1000);
-      return { 
-        allowed: false, 
-        message: `Too many attempts. Please wait ${waitTime} seconds.` 
+      return {
+        allowed: false,
+        message: `Too many attempts. Please wait ${waitTime} seconds.`,
       };
     }
 
@@ -175,9 +175,9 @@ export class RateLimiter {
       const lastAttempt = Math.max(...this.attempts);
       if (now - lastAttempt < this.minInterval) {
         const waitTime = Math.ceil((this.minInterval - (now - lastAttempt)) / 1000);
-        return { 
-          allowed: false, 
-          message: `Please wait ${waitTime} seconds before submitting again.` 
+        return {
+          allowed: false,
+          message: `Please wait ${waitTime} seconds before submitting again.`,
         };
       }
     }
@@ -206,7 +206,7 @@ export const validateLeadForm = (formData: FormData, config: LeadsConfig): Valid
     }
   }
 
-  // Email validation  
+  // Email validation
   if (config.email) {
     const emailValidation = validateEmail(formData.email, config);
     if (!emailValidation.valid) {
@@ -232,7 +232,7 @@ export const validateLeadForm = (formData: FormData, config: LeadsConfig): Valid
 
   return {
     isValid: Object.keys(errors).length === 0,
-    errors
+    errors,
   };
 };
 
@@ -279,9 +279,4 @@ export const getEmailDomain = (email: string): string => {
 };
 
 // ✅ Export all utilities
-export {
-  emailValidationPatterns,
-  disposableEmailDomains,
-  testNamePatterns,
-  isDisposableEmail
-};
+export { emailValidationPatterns, disposableEmailDomains, testNamePatterns, isDisposableEmail };

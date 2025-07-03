@@ -13,7 +13,7 @@ export const TestInputFix = () => {
     padding: '12px 16px',
     border: '1px solid #e5e7eb',
     borderRadius: '12px',
-    background: '#ffffff'
+    background: '#ffffff',
   };
 
   const inputStyle = {
@@ -25,7 +25,7 @@ export const TestInputFix = () => {
     background: 'transparent',
     fontSize: '15px',
     padding: '8px 0',
-    resize: 'none' as const
+    resize: 'none' as const,
   };
   const buttonStyle = {
     width: '32px',
@@ -37,21 +37,13 @@ export const TestInputFix = () => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   };
 
   return (
     <div style={containerStyle}>
-      <textarea
-        style={inputStyle}
-        placeholder="Type your message..."
-        value={userInput()}
-        onInput={(e) => setUserInput(e.target.value)}
-        rows={1}
-      />
-      <button style={buttonStyle}>
-        →
-      </button>
+      <textarea style={inputStyle} placeholder="Type your message..." value={userInput()} onInput={(e) => setUserInput(e.target.value)} rows={1} />
+      <button style={buttonStyle}>→</button>
     </div>
   );
 };

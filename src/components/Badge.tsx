@@ -46,15 +46,15 @@ export const Badge = (props: Props) => {
           style={{
             color: '#000000',
             'background-color': '#e0e7ff !important',
-            'background': '#e0e7ff !important',
+            background: '#e0e7ff !important',
             'background-image': 'none !important',
             'backdrop-filter': 'none !important',
             'box-shadow': 'none !important',
-            'border': 'none !important',
+            border: 'none !important',
             'border-bottom-left-radius': '12px',
             'border-bottom-right-radius': '12px',
             'text-align': 'center',
-            'display': 'flex',
+            display: 'flex',
             'justify-content': 'center',
             'align-items': 'center',
             'font-weight': '400',
@@ -80,11 +80,11 @@ export const Badge = (props: Props) => {
               'font-family': 'Roboto, sans-serif',
               color: props.footer?.textColor ?? props.poweredByTextColor ?? '#6b46c1',
               'background-color': 'transparent !important',
-              'background': 'transparent !important',
+              background: 'transparent !important',
               'background-image': 'none !important',
               'letter-spacing': 'normal',
               'word-spacing': 'normal',
-              'margin-left': '4px'
+              'margin-left': '4px',
             }}
           >
             <strong>{props.footer?.company ?? 'Flowise'}</strong>
@@ -97,17 +97,17 @@ export const Badge = (props: Props) => {
           style={{
             color: props.footer?.textColor ?? props.poweredByTextColor ?? '#6b46c1',
             'background-color': '#e0e7ff !important',
-            'background': '#e0e7ff !important',
+            background: '#e0e7ff !important',
             'background-image': 'none !important',
             'backdrop-filter': 'none !important',
             'box-shadow': 'none !important',
-            'border': 'none !important',
+            border: 'none !important',
             'border-bottom-left-radius': '12px',
             'border-bottom-right-radius': '12px',
             'text-align': 'center',
-            'display': 'flex',
+            display: 'flex',
             'justify-content': 'center',
-            'align-items': 'center'
+            'align-items': 'center',
           }}
         >
           {/* Empty footer when showFooter is false */}
