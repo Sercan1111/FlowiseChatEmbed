@@ -31,6 +31,10 @@ module.exports = {
     theme: {
         ...rem2px(defaultTheme),
         extend: {
+            fontFamily: {
+                'emoji': ['"Apple Color Emoji"', '"Segoe UI Emoji"', '"Noto Color Emoji"', '"Android Emoji"', '"EmojiSymbols"', '"Twemoji"', '"JoyPixels"', '"Symbola"', 'system-ui', 'sans-serif'],
+                'sans': ['system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"']
+            },
             keyframes: {
                 'fade-in': {
                     '0%': {

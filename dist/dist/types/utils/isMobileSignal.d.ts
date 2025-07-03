@@ -1,1 +1,1 @@
-export declare const isMobile: import("solid-js").Accessor<boolean | undefined>, setIsMobile: import("solid-js").Setter<boolean | undefined>;
+export declare const isMobile: import("solid-js").Accessor<boolean>, setIsMobile: import("solid-js").Setter<boolean>;

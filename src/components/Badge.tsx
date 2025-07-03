@@ -62,9 +62,12 @@ export const Badge = (props: Props) => {
             'margin-top': '15px',
             'font-size': '13px',
             'z-index': 10,
+            'letter-spacing': 'normal',
+            'word-spacing': 'normal',
+            'line-height': '1.4',
           }}
         >
-          Powered by{' '}
+          Powered by&nbsp;
           <a
             ref={liteBadge}
             href={props.footer?.companyLink ?? 'https://flowiseai.com'}
@@ -78,30 +81,37 @@ export const Badge = (props: Props) => {
               color: props.footer?.textColor ?? props.poweredByTextColor ?? '#6b46c1',
               'background-color': 'transparent !important',
               'background': 'transparent !important',
-              'background-image': 'none !important'
+              'background-image': 'none !important',
+              'letter-spacing': 'normal',
+              'word-spacing': 'normal',
+              'margin-left': '4px'
             }}
           >
             <strong>{props.footer?.company ?? 'Flowise'}</strong>
           </a>
         </span>
       </Show>
-      <Show when={props.footer?.showFooter === false}>        <span
+      <Show when={props.footer?.showFooter === false}>
+        <span
           class="w-full px-[10px] pt-[6px] pb-[10px] m-auto text-[13px]"
           style={{
             color: props.footer?.textColor ?? props.poweredByTextColor ?? '#6b46c1',
-            'background-color': '#e0e7ff !important', // ✅ Açık mor
+            'background-color': '#e0e7ff !important',
             'background': '#e0e7ff !important',
             'background-image': 'none !important',
             'backdrop-filter': 'none !important',
             'box-shadow': 'none !important',
-            'border': 'none !important',            'border-bottom-left-radius': '12px',
+            'border': 'none !important',
+            'border-bottom-left-radius': '12px',
             'border-bottom-right-radius': '12px',
-            'text-align': 'center', // ✅ Explicit center alignment
+            'text-align': 'center',
             'display': 'flex',
             'justify-content': 'center',
             'align-items': 'center'
           }}
-        />
+        >
+          {/* Empty footer when showFooter is false */}
+        </span>
       </Show>
     </>
   );

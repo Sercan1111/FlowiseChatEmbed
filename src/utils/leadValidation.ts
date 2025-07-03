@@ -88,7 +88,7 @@ export const validatePhone = (phone: string, config: LeadsConfig) => {
   }
   
   // Simple regex - only numbers and special characters
-  const phoneRegex = /^[\+]?[0-9\s\-\(\)\.]{7,20}$/;
+  const phoneRegex = /^[+]?[0-9\s\-().]{7,20}$/;
   if (!phoneRegex.test(phone)) {
     return { valid: false, message: 'Please enter a valid phone number' };
   }
@@ -144,7 +144,7 @@ export class RateLimiter {
   private readonly timeWindow: number;
   private readonly minInterval: number;
 
-  constructor(maxAttempts: number = 3, timeWindow: number = 60000, minInterval: number = 5000) {
+  constructor(maxAttempts = 3, timeWindow = 60000, minInterval = 5000) {
     this.maxAttempts = maxAttempts;
     this.timeWindow = timeWindow;
     this.minInterval = minInterval;

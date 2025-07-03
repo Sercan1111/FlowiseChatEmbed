@@ -11,8 +11,10 @@ export const registerWebComponents = () => {
   
   console.log('🔧 Registering web components with instant fixes...');
   
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore - type mismatch with web components is expected
   customElement('flowise-fullchatbot', defaultBotProps, Full);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore - type mismatch with web components is expected
   customElement('flowise-chatbot', defaultBotProps, Bubble);
   

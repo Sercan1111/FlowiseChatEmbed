@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+
+/* FLOWISE EMOJI FIX - En güçlü emoji desteği */
+* {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", 
+               "Android Emoji", "EmojiSymbols", "EmojiOne Color", 
+               "Twemoji Mozilla", system-ui, -apple-system, sans-serif !important;
+}
+
+/* Tooltip özel emoji desteği */
+.tooltip,
+.tooltip *,
+[data-testid*="tooltip"],
+div[class*="tooltip"] {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji" !important;
+  font-variant-emoji: unicode !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-feature-settings: "liga" 1, "kern" 1, "calt" 1 !important;
+  -moz-font-feature-settings: "liga" 1, "kern" 1, "calt" 1 !important;
+  font-feature-settings: "liga" 1, "kern" 1, "calt" 1 !important;
+}
+
+/* Unicode emoji zorlaması */
+.emoji-support {
+  unicode-bidi: embed !important;
+  direction: ltr !important;
+  font-synthesis: none !important;
+}
+
+
+
 /* Flowise Embed Widget - Default CSS Variables */
 :host {
   --chatbot-container-bg-image: none;

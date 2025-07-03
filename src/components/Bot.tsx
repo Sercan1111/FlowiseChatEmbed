@@ -847,6 +847,34 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
     onMount(async () => {
     console.log('🚀 Bot onMount started');
     
+    // ✅ GÜÇLÜ EMOJİ DESTEĞİ
+    if (!document.getElementById('flowise-emoji-css')) {
+      const emojiCSS = document.createElement('style');
+      emojiCSS.id = 'flowise-emoji-css';
+      emojiCSS.textContent = `
+        /* Ultra güçlü emoji desteği */
+        *, *::before, *::after {
+          font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", 
+                       "Android Emoji", "EmojiSymbols", "EmojiOne Color", 
+                       "Twemoji Mozilla", system-ui, sans-serif !important;
+        }
+        
+        .tooltip, .tooltip *, 
+        [class*="tooltip"], [class*="tooltip"] *,
+        [data-testid*="tooltip"], [data-testid*="tooltip"] * {
+          font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji" !important;
+          font-variant-emoji: unicode !important;
+          text-rendering: optimizeLegibility !important;
+          -webkit-font-feature-settings: "liga" 1, "kern" 1 !important;
+          -moz-font-feature-settings: "liga" 1, "kern" 1 !important;
+          font-feature-settings: "liga" 1, "kern" 1 !important;
+          unicode-bidi: embed !important;
+          font-synthesis: none !important;
+        }
+      `;
+      document.head.appendChild(emojiCSS);
+    }
+    
     // ✅ CRITICAL: Initialize messages with welcome message first
     const existingMessages = getLocalStorageChatflow(props.chatflowid)?.chatHistory;
     if (!existingMessages || existingMessages.length === 0) {
@@ -1054,8 +1082,28 @@ const [leadFormDismissed, setLeadFormDismissed] = createSignal<boolean>(false); 
       if (props.textInput?.receiveSoundLocation) {
         audioSrc = props.textInput?.receiveSoundLocation;
       }
-      audioRef = new Audio(audioSrc);
-      audioRef.play();
+      
+      try {
+        audioRef = new Audio(audioSrc);
+        
+        // Error handling ekle
+        audioRef.addEventListener('error', (e) => {
+          console.warn('🔇 Audio could not be loaded:', audioSrc, e);
+        });
+        
+        // Promise ile play
+        const playPromise = audioRef.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.warn('🔇 Audio playback failed:', error);
+            // Ses çalmazsa sessizce devam et
+          });
+        }
+      } catch (error) {
+        console.warn('🔇 Audio initialization failed:', error);
+        // Ses hatası olursa sessizce devam et
+      }
     }
   };
 
@@ -2111,11 +2159,17 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
     }
   };
 
-  // Visual Debug ReachUsButton
+  // Reach Us Button - Always visible when configured
   const ReachUsButton = () => {
     const config = leadsConfig();
-    if (!config?.status) return null;
-    if (!['button', 'both'].includes(config?.triggerMode || '')) return null;
+    
+    // Only hide if there's no config at all
+    if (!config || !config.status) return null;
+    
+    // Show button if buttonPosition is set OR if triggerMode includes 'button'
+    const shouldShow = config.buttonPosition || (config.triggerMode && ['button', 'both'].includes(config.triggerMode));
+    if (!shouldShow) return null;
+    
     // Class mapping
     const position = config.buttonPosition || 'top-right';
     let positionClass = 'reach-us-top-right';
@@ -2139,6 +2193,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
           cursor: 'pointer',
           'font-family': 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
           'margin-top': '-1px',
+          'z-index': 1000,
         }}
         onClick={handleClick}
       >
@@ -2173,6 +2228,7 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
     <>
       {/* Header JSX'i (close/clear butonlarının olduğu yer) */}
       <div
+        data-testid="chat-header"
         class="header-container"
         style={{
           position: 'relative',
@@ -2193,22 +2249,20 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
           margin: '0',
         }}
       >
-        {/* Sol taraf - Top Left Button */}
-        <div style={{ display: 'flex', 'align-items': 'center', gap: '8px', 'min-width': '80px' }}>
-          <Show when={leadsConfig()?.buttonPosition === 'top-left'}>
-            <ReachUsButton />
-          </Show>
-        </div>
-        {/* Orta - Logo/Title + Top Center Button */}
-        <div style={{ flex: 1, display: 'flex', 'align-items': 'center', 'justify-content': 'center', gap: '12px' }}>
+        {/* Sol taraf - Avatar + Title + Top Left Button */}
+        <div style={{ display: 'flex', 'align-items': 'center', gap: '12px', 'min-width': '200px' }}>
           <Show when={props.titleAvatarSrc}>
-            <div style={{ 'margin-right': '12px' }}>
-              <Avatar initialAvatarSrc={props.titleAvatarSrc} />
-            </div>
+            <Avatar initialAvatarSrc={props.titleAvatarSrc} />
           </Show>
           <Show when={props.title}>
             <span class="whitespace-pre-wrap font-semibold text-lg">{props.title}</span>
           </Show>
+          <Show when={leadsConfig()?.buttonPosition === 'top-left'}>
+            <ReachUsButton />
+          </Show>
+        </div>
+        {/* Orta - Top Center Button (if needed) */}
+        <div style={{ flex: 1, display: 'flex', 'align-items': 'center', 'justify-content': 'center', gap: '12px' }}>
           <Show when={leadsConfig()?.buttonPosition === 'top-center'}>
             <ReachUsButton />
           </Show>
@@ -2387,8 +2441,8 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
                           backgroundColor={props.botMessage?.backgroundColor}
                           textColor={props.botMessage?.textColor}
                           feedbackColor={props.feedback?.color}
-                          showAvatar={true}
-                          avatarSrc=""
+                          showAvatar={props.botMessage?.showAvatar ?? true}
+                          avatarSrc={props.botMessage?.avatarSrc ?? ''}
                           chatFeedbackStatus={chatFeedbackStatus()}
                           fontSize={props.fontSize}
                           isLoading={loading() && index() === messages().length - 1}
@@ -2469,13 +2523,39 @@ const handleSubmit = async (value: string | object, action?: IAction | undefined
               </Show>
             </Show>
             {/* ✅ FOLLOW UP PROMPTS - Canvas style */}
-            <Show when={messages().length > 2 && followUpPromptsStatus()}>              <Show when={followUpPrompts().length > 0}>
-                <div class="flex-shrink-0 py-4 border-t border-gray-100" style={{ width: '100%' }}>
-                  <div class="flex items-center gap-2 mb-3">
-                    <SparklesIcon class="w-4 h-4 text-blue-500" />
-                    <span class="text-sm font-medium text-gray-700">Try these prompts</span>
+            <Show when={messages().length > 2 && followUpPromptsStatus()}>
+              <Show when={followUpPrompts().length > 0}>
+                <div 
+                  class="follow-up-prompts-container"
+                  style={{ 
+                    width: '100%',
+                    padding: '12px 16px',
+                    display: 'flex',
+                    'flex-direction': 'column',
+                    gap: '8px'
+                  }}
+                >
+                  <div style={{ display: 'flex', 'align-items': 'center', gap: '6px' }}>
+                    <SparklesIcon class="w-4 h-4" style={{ color: '#3b82f6' }} />
+                    <span style={{ 
+                      'font-size': '12px', 
+                      'font-weight': '500', 
+                      color: '#374151',
+                      'line-height': '1.4'
+                    }}>
+                    </span>
                   </div>
-                  <div class="flex flex-wrap gap-2">
+                  <div 
+                    style={{ 
+                      display: 'flex', 
+                      'flex-wrap': 'wrap',
+                      gap: '4px',
+                      'align-items': 'flex-start',
+                      'justify-content': 'flex-start',
+                      width: '100%',
+                      'box-sizing': 'border-box'
+                    }}
+                  >
                     <For each={[...followUpPrompts()]}>
                       {(prompt, index) => (
                         <FollowUpPromptBubble

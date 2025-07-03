@@ -11,12 +11,21 @@ const url = require('@rollup/plugin-url');
 /** @type {import('rollup').RollupOptions} */
 module.exports = {
   input: 'src/web.ts',
-  output: {
-    file: 'dist/web.umd.js',
-    format: 'umd',
-    name: 'FlowiseChatbot',
-    sourcemap: true
-  },
+  output: [
+    // UMD format (mevcut - geriye uyumluluk için)
+    {
+      file: 'dist/web.umd.js',
+      format: 'umd',
+      name: 'FlowiseChatbot',
+      sourcemap: true
+    },
+    // ES6 modules format (YENİ - modern import/export için)
+    {
+      file: 'dist/web.js',
+      format: 'es',
+      sourcemap: true
+    }
+  ],
   plugins: [
     nodeResolve({
       browser: true,
@@ -57,7 +66,8 @@ module.exports = {
         allowSyntheticDefaultImports: true,
         esModuleInterop: true
       }
-    }),    postcss({
+    }),
+    postcss({
       extensions: ['.css'],
       extract: false,
       inject: true,

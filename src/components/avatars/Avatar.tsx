@@ -23,8 +23,12 @@ export const Avatar = (props: { initialAvatarSrc?: string }) => {
         <img 
           src={avatarSrc()} 
           alt="Bot avatar" 
-          // ✅ DEFAULT CLASSES - Clean and simple
-          class="rounded-full object-cover w-full h-full"
+          // ✅ FIXED SIZING - w-full h-full kaldırıldı!
+          class="rounded-full object-cover"
+          style={{
+            width: isMobile() ? '24px' : '40px',   // ✅ Fixed size
+            height: isMobile() ? '24px' : '40px',  // ✅ Fixed size
+          }}
           onError={() => {
             setAvatarSrc(undefined);
           }}
