@@ -68,8 +68,8 @@ export const PhoneInput = (props: PhoneInputProps) => {
 
   // Handle number input
   const handleNumberInput = (value: string) => {
-    // Only allow numbers, spaces, dashes, parentheses
-    const cleanValue = value.replace(/[^\d\s\-\(\)]/g, '');
+    // Only allow numbers - no symbols since country code is handled separately
+    const cleanValue = value.replace(/[^\d]/g, '');
     setNationalNumber(cleanValue);
     
     // Update the full phone number
@@ -187,6 +187,22 @@ export const PhoneInput = (props: PhoneInputProps) => {
           placeholder={props.placeholder || "Phone number"}
           value={nationalNumber()}
           onInput={(e) => handleNumberInput(e.currentTarget.value)}
+          onKeyPress={(e) => {
+            // Block non-numeric characters immediately
+            const char = e.key;
+            if (!/[0-9]/.test(char) && char !== 'Backspace' && char !== 'Delete' && char !== 'Tab' && char !== 'Enter') {
+              e.preventDefault();
+            }
+          }}
+          onPaste={(e) => {
+            // Handle paste events - only allow numeric content
+            e.preventDefault();
+            const paste = e.clipboardData?.getData('text') || '';
+            const numericOnly = paste.replace(/[^\d]/g, '');
+            if (numericOnly) {
+              handleNumberInput(nationalNumber() + numericOnly);
+            }
+          }}
           onBlur={props.onBlur}
           disabled={props.disabled}
           required={props.required}

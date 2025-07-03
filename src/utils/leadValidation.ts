@@ -87,10 +87,14 @@ export const validatePhone = (phone: string, config: LeadsConfig) => {
     return { valid: false, message: 'Phone number is required' };
   }
   
-  // Simple regex - only numbers and special characters
-  const phoneRegex = /^[+]?[0-9\s\-().]{7,20}$/;
-  if (!phoneRegex.test(phone)) {
-    return { valid: false, message: 'Please enter a valid phone number' };
+  // Extract only the national number part (after country code)
+  const parts = phone.split(' ');
+  const nationalNumber = parts.length > 1 ? parts.slice(1).join('') : phone;
+  
+  // Only allow digits in national number (no symbols since country code is separate)
+  const phoneRegex = /^\d{7,15}$/;
+  if (!phoneRegex.test(nationalNumber)) {
+    return { valid: false, message: 'Please enter a valid phone number (7-15 digits)' };
   }
   
   return { valid: true };

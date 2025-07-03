@@ -17,4 +17,4 @@
 2:   var t = {};
 3:   for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];[39m
 ...and 1 other occurrence
-[32mcreated [1mdist/web.umd.js, dist/web.js[22m in [1m17.7s[22m[39m
+[32mcreated [1mdist/web.umd.js, dist/web.js[22m in [1m19.2s[22m[39m
